@@ -1,7 +1,31 @@
+
+import javax.xml.bind.JAXBException;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
+    public static final String XML_FILE_NAME = "test files/ex1-sanity-small.xml";
+
+    public static void main(String[] args) throws JAXBException {
+          hard_coded_sanity_check();
+          //sanity_check_loaded_from_xml();
+
+        System.out.println("Done");
+    }
+
+    //not done yet :)
+    private static void sanity_check_loaded_from_xml() {
+        Machine Enigma =new Machine();
+        Enigma.loadMachineFromFile(XML_FILE_NAME);
+        Scanner s =new Scanner(System.in);
+//        //sending full string
+        String input_string = s.nextLine();
+        System.out.println("input char = "+input_string);
+        System.out.println(Enigma.run_encrypt_on_string(input_string.toUpperCase()));
+
+    }
+
+    private static void hard_coded_sanity_check() {
+        Machine Enigma=new Machine("ABCDEF");
         Line one0 =new Line('C','D');
         Line one1 =new Line('D','C');
         Line one2 =new Line('E','B');
@@ -34,27 +58,23 @@ public class Main {
         rotor2.Line_arr.add(one4_4);
         rotor2.Line_arr.add(one5_5);
 
-
-        Machine Enigma =new Machine();
         Enigma.Rotor_arr.add(rotor1);
         Enigma.Rotor_arr.add(rotor2);
+
         Scanner s =new Scanner(System.in);
-        char temp='0';
-        String temp2 = s.nextLine();
-        System.out.println("input char = "+temp2);
-        System.out.println(Enigma.enter_string(temp2));
+//        //sending full string
+        String input_string = s.nextLine();
+        System.out.println("input char = "+input_string);
+        System.out.println(Enigma.run_encrypt_on_string(input_string.toUpperCase()));
 
 
-//        while (temp!='p')
+        //sending char by char
+//        char temp='a';
+//                while (temp!='p')
 //        {
 //            temp = s.next().charAt(0);
 //            System.out.println("input char = "+temp);
 //            Enigma.enter_char(temp);
-//            // Print the read value
-//
 //        }
-        System.out.println("Done");
-
-
     }
 }

@@ -1,7 +1,7 @@
 import java.util.*;
 
 public class Rotor {
-    public List<Line> Line_arr=new ArrayList<Line>() ;
+    public final List<Line> Line_arr=new ArrayList<Line>() ;
     public int notch_index;
     public int rotator_index = 0;
 
@@ -19,7 +19,7 @@ public class Rotor {
     }
 
 
-    public int get_exit_index(int index) {
+    public int get_exit_index_from_right(int index) {
 
         int real_index=(index+rotator_index)%Line_arr.size();
         char right_char=Line_arr.get(real_index).right_char;
@@ -63,4 +63,5 @@ public class Rotor {
         return rotator_exit_index;
 
     }
+
 }
