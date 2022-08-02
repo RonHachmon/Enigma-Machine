@@ -1,5 +1,7 @@
 
 import jaxb_classes.CTEEnigma;
+import jaxb_classes.CTEReflector;
+import jaxb_classes.CTEReflectors;
 
 import javax.xml.bind.JAXBException;
 import java.util.ArrayList;
@@ -8,53 +10,50 @@ import java.util.List;
 import java.util.Map;
 
 public class Machine {
-    public final  Map <Character, Integer> char_map;
-    public final Map <Integer,Character> reverse_char_map;
-    public   Map <Character, Character> switch_plug;
+    public final  Map <Character, Integer> char_map =new HashMap<>();
+    public final Map <Integer,Character> reverse_char_map =new HashMap<>() ;
+    public final Map <Character, Character> switch_plug=new HashMap<>();
     public List<Rotor> Rotor_arr=new ArrayList<>();
-    public final Reflector ref;
+    public final List<Reflector> reflector_array=new ArrayList<>();
+    public Reflector selected_reflector;
     public Machine()
     {
 
-        char_map = new HashMap<>();
-        reverse_char_map = new HashMap<>();
-        switch_plug = new HashMap<>();
-        switch_plug.put('A','F');
-        switch_plug.put('F','A');
-        ref = new Reflector();
-        //System.out.println("Char Set: "+ char_map);
-        System.out.println("Reflector:"+ ref);
+        this.initilize_reflector();
     }
+
+
+
     public Machine(String char_set)
     {
-
-        char_map = new HashMap<>();
-        reverse_char_map = new HashMap<>();
-        switch_plug = new HashMap<>();
-        switch_plug.put('A','F');
-        switch_plug.put('F','A');
         set_char_map(char_set);
         set_reverse_char_map();
-        ref = new Reflector();
+        selected_reflector = new Reflector();
         System.out.println("Char Set: "+ char_map);
-        System.out.println("Reflector:"+ ref);
+        System.out.println("Reflector:"+ selected_reflector);
     }
 
+    private void initilize_reflector() {
+        for (int i = 0; i <5; i++) {
+            reflector_array.add(null);
+        }
+    }
 
 
     private void set_reverse_char_map() {
         char_map.forEach((key, value) -> reverse_char_map.put(value, key));
     }
+    public void add_switch_plug(char first_letter,char second_letter)
+    {
+        if(switch_plug.put(first_letter,second_letter)!=null
+            ||switch_plug.put(second_letter,first_letter)!=null)
+        {
+            //throw duplicate char
+        }
+
+    }
 
 
-//    private void set_char_map() {
-//
-//        char first_char='A';
-//        for (int i = 0; i <6 ; i++) {
-//            char_map.put(first_char,i);
-//            first_char++;
-//        }
-//    }
 
     private void set_char_map(String char_set) {
         //maybe change to lambda, not sure how to iterate with index
@@ -63,7 +62,6 @@ public class Machine {
             {
                 //throw duplicate char
             }
-
         }
 
     }
@@ -87,7 +85,7 @@ public class Machine {
         }
 
         System.out.println("    Reflector:");
-        running_index= ref.get_exit_index(running_index);
+        running_index= selected_reflector.get_exit_index(running_index);
 
         //run char thought left side of Rotors
         for (int i = Rotor_arr.size()-1; i >=0 ; i--) {
@@ -158,7 +156,36 @@ public class Machine {
     }
 
     private void load_reflector(CTEEnigma enigma_machine) {
+        CTEReflectors xml_reflextor_arr = enigma_machine.getCTEMachine().getCTEReflectors();
+        Reflector current_reflector;
+        for (CTEReflector xml_reflector: xml_reflextor_arr.getCTEReflector())
+        {
+            current_reflector = Reflector.create_reflector_from_XML(xml_reflector,char_map.size());
+            int position =  Machine.converte_roman_to_int(xml_reflector.getId());
+            System.out.println("Reflector:"+ current_reflector);
+            reflector_array.set(position,current_reflector);
+        }
 
+    }
+    private static int converte_roman_to_int(String roman_number)
+    {
+        switch (roman_number)
+        {
+            case "I":
+                return 0;
+            case("II"):
+                return 1;
+            case("III"):
+                return 2;
+            case("IV"):
+                return 3;
+            case("V"):
+                return 4;
+            default:
+                //throw .. 
+                
+        }
+        return -1;
     }
 
     private void load_char_set(CTEEnigma enigma_machine) {
