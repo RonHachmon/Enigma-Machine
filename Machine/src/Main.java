@@ -1,5 +1,7 @@
 
 import javax.xml.bind.JAXBException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
@@ -16,6 +18,7 @@ public class Main {
     private static void sanity_check_loaded_from_xml() {
         Machine Enigma =new Machine();
         Enigma.loadMachineFromFile(XML_FILE_NAME);
+        Enigma.add_switch_plug('A','F');
         Scanner s =new Scanner(System.in);
 //        //sending full string
         String input_string = s.nextLine();
@@ -60,12 +63,17 @@ public class Main {
 
         Enigma.Rotor_arr.add(rotor1);
         Enigma.Rotor_arr.add(rotor2);
+        Enigma.add_switch_plug('A','F');
+        String input_string;
+//        input though keyboard
+//        Scanner s =new Scanner(System.in);
+//       sending full string
+//        String input_string = s.nextLine();
 
-        Scanner s =new Scanner(System.in);
-//        //sending full string
-        String input_string = s.nextLine();
+        input_string="AABBCCDDEEFF";
         System.out.println("input char = "+input_string);
-        System.out.println(Enigma.run_encrypt_on_string(input_string.toUpperCase()));
+        System.out.println("Machine output  "+Enigma.run_encrypt_on_string(input_string.toUpperCase()));
+        System.out.println("Expected output "+"CEEFBDFCDAAB");
 
 
         //sending char by char
