@@ -1,21 +1,19 @@
 
-import jaxb_classes.CTEEnigma;
-import jaxb_classes.CTEReflector;
-import jaxb_classes.CTEReflectors;
+import jaxb_classes.*;
 
 import javax.xml.bind.JAXBException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Machine {
     public final  Map <Character, Integer> char_map =new HashMap<>();
     public final Map <Integer,Character> reverse_char_map =new HashMap<>() ;
     public final Map <Character, Character> switch_plug=new HashMap<>();
-    public List<Rotor> Rotor_arr=new ArrayList<>();
+    public List<Rotor> selected_rotors=new ArrayList<>();
+    private List<Rotor> all_rotors=new ArrayList<>();
     public final List<Reflector> reflector_array=new ArrayList<>();
     public Reflector selected_reflector;
+    private int amount_of_rotor_needed;
     public Machine()
     {
 
@@ -65,6 +63,23 @@ public class Machine {
         }
 
     }
+    public void setSelected_reflector(int reflector_id)
+    {
+
+        this.selected_reflector=this.reflector_array.get(reflector_id);
+        if( this.selected_reflector==null)
+        {
+            //throw reflector does not exist
+        }
+    }
+    public void setSelected_rotors(int ...rotors_id)
+    {
+        //throw out of bound or does not exist
+        for (int id:rotors_id) {
+            selected_rotors.add(all_rotors.get(id));
+
+        }
+    }
     public Character run_encrypt_on_char(char input)
     {
         input = run_char_through_switch_plug(input);
@@ -73,24 +88,24 @@ public class Machine {
         Character result;
 
         //run char thought right side of Rotors
-        for (int i =0; i <Rotor_arr.size() ; i++) {
+        for (int i =0; i <selected_rotors.size() ; i++) {
             System.out.println("    Rotor number: "+(i+1));
             if(toRotate)
             {
-                Rotor_arr.get(i).rotate();
-                toRotate = Rotor_arr.get(i).is_rotor_on_notch();
+                selected_rotors.get(i).rotate();
+                toRotate = selected_rotors.get(i).is_rotor_on_notch();
             }
 
-            running_index =  Rotor_arr.get(i).get_exit_index_from_right(running_index);
+            running_index =  selected_rotors.get(i).get_exit_index_from_right(running_index);
         }
 
         System.out.println("    Reflector:");
         running_index= selected_reflector.get_exit_index(running_index);
 
         //run char thought left side of Rotors
-        for (int i = Rotor_arr.size()-1; i >=0 ; i--) {
+        for (int i = selected_rotors.size()-1; i >=0 ; i--) {
             System.out.println("    Rotor number: "+(i+1));
-            running_index = Rotor_arr.get(i).get_exit_index_from_left(running_index);
+            running_index = selected_rotors.get(i).get_exit_index_from_left(running_index);
 
         }
 
@@ -125,7 +140,7 @@ public class Machine {
 
             CTEEnigma enigma_machine = null;
             try {
-                enigma_machine = JAXBClassGenerator.unmarshall("test files/ex1-sanity-small.xml", CTEEnigma.class);
+                enigma_machine = JAXBClassGenerator.unmarshall(file_name, CTEEnigma.class);
             } catch (JAXBException var5) {
 //                String msg;
 //                if (var5.getLinkedException() instanceof FileNotFoundException) {
@@ -153,6 +168,21 @@ public class Machine {
     }
 
     private void load_rotators(CTEEnigma enigma_machine) {
+        List<CTERotor> xml_rotors_arr = enigma_machine.getCTEMachine().getCTERotors().getCTERotor();
+        amount_of_rotor_needed = enigma_machine.getCTEMachine().getRotorsCount();
+        xml_rotors_arr = xml_rotors_arr.stream().
+                                            sorted(Comparator.comparing(CTERotor::getId)).
+                                            collect(Collectors.toList());
+        Rotor current_rotor;
+        for (CTERotor xml_rotor: xml_rotors_arr)
+        {
+            current_rotor = Rotor.create_rotor_from_XML(xml_rotor);
+            all_rotors.add(current_rotor);
+            System.out.println("Rotor:");
+            System.out.println(current_rotor);
+            System.out.println( );
+        }
+
     }
 
     private void load_reflector(CTEEnigma enigma_machine) {
@@ -201,5 +231,17 @@ public class Machine {
             return false;
         String file_ending = file_name.substring(file_name.length() - file_type.length()).toLowerCase();
         return file_ending.compareTo(file_type)==0;
+    }
+
+
+    //currently hard coded, should recive an array of char for each rotor and set rotor start position based on the char
+    //Example {O , D ,X } O on most left array (last array), D middle , x most right array (first array) on selected rotors
+    //should receive 10 index for X , 2 for D and 12 for O
+    public void set_starting_index() {
+//        this.selected_rotors.get(0).set_starting_index(2);
+//        this.selected_rotors.get(1).set_starting_index(2);
+        this.selected_rotors.get(0).set_starting_index(10);
+        this.selected_rotors.get(1).set_starting_index(2);
+        this.selected_rotors.get(2).set_starting_index(12);
     }
 }
