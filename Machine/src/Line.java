@@ -21,11 +21,11 @@ public class Line {
         this.right_char = right_char;
     }
 
-    public char getLeft_char() {
+    public char getLeftChar() {
         return left_char;
     }
 
-    public char getRight_char() {
+    public char getRightChar() {
         return right_char;
     }
 }

@@ -1,4 +1,3 @@
-import jaxb_classes.CTEReflect;
 import jaxb_classes.CTEReflector;
 
 
@@ -45,25 +44,26 @@ public class Reflector {
         return -1;
 
     }
-    public static Reflector create_reflector_from_XML(CTEReflector xml_reflector, int size)
+    public static Reflector createReflectorFromXML(CTEReflector xmlReflector, int size)
     {
+
         Reflector reflector =new Reflector(size);
-        xml_reflector.getCTEReflect().forEach(reflect -> {
+        xmlReflector.getCTEReflect().forEach(reflect -> {
             if(reflect.getInput()>size||reflect.getOutput()>size)
             {
-                //throw outOfBound
+                throw new IllegalArgumentException("Invalid reflector, input/output out of char collection bounds");
             }
             if(reflect.getInput()<=0||reflect.getOutput()<=0)
             {
-                //throw outOfBound
+                throw new IllegalArgumentException("Invalid reflector, input/output out of char collection bounds");
             }
             if( reflector.int_arr.set(reflect.getInput() - 1, reflect.getInput() - 1)!= EMPTY)
             {
-                //throw duplicate_index
+                throw new IllegalArgumentException("Invalid reflector, duplicate input/output slot" );
             }
             if( reflector.int_arr.set(reflect.getOutput() - 1, reflect.getInput() - 1)!= EMPTY)
             {
-                //throw duplicate_index
+                throw new IllegalArgumentException("Invalid reflector, duplicate input/output slot" );
             }
         });
         return reflector;
