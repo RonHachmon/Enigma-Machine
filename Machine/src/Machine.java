@@ -1,19 +1,19 @@
 
 import jaxb_classes.*;
 
-import javax.xml.bind.JAXBException;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class Machine {
-    public final  Map <Character, Integer> char_map =new HashMap<>();
-    public final Map <Integer,Character> reverse_char_map =new HashMap<>() ;
-    public final Map <Character, Character> switch_plug=new HashMap<>();
-    public List<Rotor> selected_rotors=new ArrayList<>();
-    private List<Rotor> all_rotors=new ArrayList<>();
-    public final List<Reflector> reflector_array=new ArrayList<>();
+    private final  Map <Character, Integer> char_map =new HashMap<>();
+    private final Map <Integer,Character> reverse_char_map =new HashMap<>() ;
+    private final Map <Character, Character> switch_plug=new HashMap<>();
+    private List<Rotor> selected_rotors=new ArrayList<>();
+    private List<Rotor> allRotors =new ArrayList<>();
+    public final List<Reflector> selectedRotorsArray=new ArrayList<>();
     public Reflector selected_reflector;
-    private int amount_of_rotor_needed;
+    private String allChars;
+    private int amountOfRotorNeeded;
     public Machine()
     {
 
@@ -24,8 +24,8 @@ public class Machine {
 
     public Machine(String char_set)
     {
-        set_char_map(char_set);
-        set_reverse_char_map();
+        setCharMap(char_set);
+        setReverseCharMap();
         selected_reflector = new Reflector();
         System.out.println("Char Set: "+ char_map);
         System.out.println("Reflector:"+ selected_reflector);
@@ -33,12 +33,12 @@ public class Machine {
 
     private void initilize_reflector() {
         for (int i = 0; i <5; i++) {
-            reflector_array.add(null);
+            selectedRotorsArray.add(null);
         }
     }
 
 
-    private void set_reverse_char_map() {
+    private void setReverseCharMap() {
         char_map.forEach((key, value) -> reverse_char_map.put(value, key));
     }
     public void add_switch_plug(char first_letter,char second_letter)
@@ -53,7 +53,7 @@ public class Machine {
 
 
 
-    private void set_char_map(String char_set) {
+    private void setCharMap(String char_set) {
         //maybe change to lambda, not sure how to iterate with index
         for (int i = 0; i <char_set.length() ; i++) {
             if(char_map.put(char_set.charAt(i),i)!=null)
@@ -63,10 +63,10 @@ public class Machine {
         }
 
     }
-    public void setSelected_reflector(int reflector_id)
+    public void setSelectedReflector(int reflector_id)
     {
 
-        this.selected_reflector=this.reflector_array.get(reflector_id);
+        this.selected_reflector=this.selectedRotorsArray.get(reflector_id);
         if( this.selected_reflector==null)
         {
             //throw reflector does not exist
@@ -76,7 +76,7 @@ public class Machine {
     {
         //throw out of bound or does not exist
         for (int id:rotors_id) {
-            selected_rotors.add(all_rotors.get(id));
+            selected_rotors.add(allRotors.get(id));
 
         }
     }
@@ -133,73 +133,82 @@ public class Machine {
     return res;
 
     }
-    public void loadMachineFromFile(String file_name)  {
-            if (file_name.length() < 4 || !compare_file_type(file_name,".xml")) {
-                //throw new GameLoadException("File is not an xml");
-            }
-
-            CTEEnigma enigma_machine = null;
-            try {
-                enigma_machine = JAXBClassGenerator.unmarshall(file_name, CTEEnigma.class);
-            } catch (JAXBException var5) {
-//                String msg;
-//                if (var5.getLinkedException() instanceof FileNotFoundException) {
-//                    msg = "File Not Found";
-//                } else {
-//                    msg = "JAXB exception";
-//                }
+//    public void loadMachineFromFile(String file_name)  {
+//            //if (file_name.length() < 4 || !compare_file_type(file_name,".xml")) {
+//                //throw new GameLoadException("File is not an xml");
+//            }
 //
-//                throw new GameLoadException(var5, msg);
-            }
+//            CTEEnigma enigma_machine = null;
+//            try {
+//                enigma_machine = JAXBClassGenerator.unmarshall(file_name, CTEEnigma.class);
+//            } catch (JAXBException var5) {
+////                String msg;
+////                if (var5.getLinkedException() instanceof FileNotFoundException) {
+////                    msg = "File Not Found";
+////                } else {
+////                    msg = "JAXB exception";
+////                }
+////
+////                throw new GameLoadException(var5, msg);
+//            }
+//
+//            if (enigma_machine == null) {
+//                //throw new GameLoadException("Failed to load JAXB class");
+//            }
+//
+//            this.init_members_from_enigma_machine(enigma_machine);
+//            //this.m_GameStatus = GriddlerLogic.eGameStatus.LOADED;
+//    }
 
-            if (enigma_machine == null) {
-                //throw new GameLoadException("Failed to load JAXB class");
-            }
 
-            this.init_members_from_enigma_machine(enigma_machine);
-            //this.m_GameStatus = GriddlerLogic.eGameStatus.LOADED;
-    }
 
-    private void init_members_from_enigma_machine(CTEEnigma enigma_machine) {
-        this.load_char_set(enigma_machine);
-        this.load_rotators(enigma_machine);
-        this.load_reflector(enigma_machine);
-
-    }
-
-    private void load_rotators(CTEEnigma enigma_machine) {
-        List<CTERotor> xml_rotors_arr = enigma_machine.getCTEMachine().getCTERotors().getCTERotor();
-        amount_of_rotor_needed = enigma_machine.getCTEMachine().getRotorsCount();
-        xml_rotors_arr = xml_rotors_arr.stream().
+    public void loadRotators(CTEEnigma enigma_machine) {
+        List<CTERotor> xmlRotorsArr = enigma_machine.getCTEMachine().getCTERotors().getCTERotor();
+        amountOfRotorNeeded = enigma_machine.getCTEMachine().getRotorsCount();
+        xmlRotorsArr = xmlRotorsArr.stream().
                                             sorted(Comparator.comparing(CTERotor::getId)).
                                             collect(Collectors.toList());
-        Rotor current_rotor;
-        for (CTERotor xml_rotor: xml_rotors_arr)
+        Rotor currentRotor;
+        for (CTERotor xmlRotor: xmlRotorsArr)
         {
-            current_rotor = Rotor.create_rotor_from_XML(xml_rotor);
-            all_rotors.add(current_rotor);
+            currentRotor = Rotor.createRotorFromXML(xmlRotor,this.allChars);
+            allRotors.add(currentRotor);
             System.out.println("Rotor:");
-            System.out.println(current_rotor);
+            System.out.println(currentRotor);
             System.out.println( );
         }
 
     }
 
-    private void load_reflector(CTEEnigma enigma_machine) {
-        CTEReflectors xml_reflextor_arr = enigma_machine.getCTEMachine().getCTEReflectors();
-        Reflector current_reflector;
-        for (CTEReflector xml_reflector: xml_reflextor_arr.getCTEReflector())
+    public void loadReflector(CTEEnigma enigma_machine) {
+        CTEReflectors xmlReflextorArr = enigma_machine.getCTEMachine().getCTEReflectors();
+        Reflector currentReflector;
+        for (CTEReflector xmlReflector: xmlReflextorArr.getCTEReflector())
         {
-            current_reflector = Reflector.create_reflector_from_XML(xml_reflector,char_map.size());
-            int position =  Machine.converte_roman_to_int(xml_reflector.getId());
-            System.out.println("Reflector:"+ current_reflector);
-            reflector_array.set(position,current_reflector);
+            currentReflector = Reflector.createReflectorFromXML(xmlReflector,char_map.size());
+            int position =  Machine.converteRomanToInt(xmlReflector.getId());
+            System.out.println("Reflector:"+ currentReflector);
+            selectedRotorsArray.set(position,currentReflector);
         }
 
     }
-    private static int converte_roman_to_int(String roman_number)
+
+
+    public void loadCharSet(CTEEnigma enigma_machine) {
+        String charCollection=enigma_machine.getCTEMachine().getABC();
+        charCollection=charCollection.replaceAll("[\\n\t]", "");
+        if(charCollection.length()%2==1)
+        {
+            throw new IllegalArgumentException("amount of characters must be even");
+        }
+        this.allChars=charCollection;
+        this.setCharMap(charCollection);
+        this.setReverseCharMap();
+    }
+
+    private static int converteRomanToInt(String romanNumber)
     {
-        switch (roman_number)
+        switch (romanNumber)
         {
             case "I":
                 return 0;
@@ -212,36 +221,24 @@ public class Machine {
             case("V"):
                 return 4;
             default:
-                //throw .. 
-                
+                throw new IllegalArgumentException("Invalid Reflector,id must be I,II,III,IV,V");
+
         }
-        return -1;
     }
 
-    private void load_char_set(CTEEnigma enigma_machine) {
-        String char_collection=enigma_machine.getCTEMachine().getABC();
-        char_collection=char_collection.replaceAll("[\\n\t]", "");
-        this.set_char_map(char_collection);
-        this.set_reverse_char_map();
 
-    }
-
-    private boolean compare_file_type(String file_name,String file_type) {
-        if(file_type.length()>=file_name.length())
-            return false;
-        String file_ending = file_name.substring(file_name.length() - file_type.length()).toLowerCase();
-        return file_ending.compareTo(file_type)==0;
-    }
 
 
     //currently hard coded, should recive an array of char for each rotor and set rotor start position based on the char
     //Example {O , D ,X } O on most left array (last array), D middle , x most right array (first array) on selected rotors
     //should receive 10 index for X , 2 for D and 12 for O
-    public void set_starting_index() {
+    public void setStartingIndex() {
 //        this.selected_rotors.get(0).set_starting_index(2);
 //        this.selected_rotors.get(1).set_starting_index(2);
         this.selected_rotors.get(0).set_starting_index(10);
         this.selected_rotors.get(1).set_starting_index(2);
         this.selected_rotors.get(2).set_starting_index(12);
     }
+
+
 }

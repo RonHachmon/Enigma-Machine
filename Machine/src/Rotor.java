@@ -67,22 +67,45 @@ public class Rotor {
 
     }
 
-    public static Rotor create_rotor_from_XML(CTERotor xml_rotor) {
+    public static Rotor createRotorFromXML(CTERotor xml_rotor, String allChars) {
         Rotor rotor =new Rotor();
         rotor.notch_index=xml_rotor.getNotch()-1;
         for (CTEPositioning positioning : xml_rotor.getCTEPositioning()) {
-            //check validity of char
-            // 1. char included in char_set of the machine options:
-            //      a.delegate with the machine as the listener
-            //      b.check validity after Rotor is created on the machine
-            //      c.send char_set as parameter (probably best option)
-            // 2. char not already exist on rotor.
+
+            checkValidChar(rotor,allChars, positioning);
             Line current_line=new Line(positioning.getRight(),positioning.getLeft());
             rotor.line_array.add(current_line);
         }
-        //3. check all char_set is included on rotor
+        if(rotor.line_array.size()!=allChars.length())
+        {
+            throw new IllegalArgumentException("not all charaters are included in the rotor");
+        }
         return rotor;
     }
+
+    private static void checkValidChar(Rotor rotor, String allChars, CTEPositioning xmlLine) {
+
+            if(!allChars.contains(xmlLine.getRight()))
+            {
+                throw new IllegalArgumentException("Invalid rotor, since"+xmlLine.getRight()+"on rotor but isn't on char collection");
+            }
+            if(!allChars.contains(xmlLine.getLeft()))
+            {
+                throw new IllegalArgumentException("Invalid rotor, since '" + xmlLine.getLeft() + "' on rotor but isn't on char collection");
+            }
+            for(Line line: rotor.line_array)
+            {
+             if(xmlLine.getRight().charAt(0)==line.getRightChar())
+                {
+                    throw new IllegalArgumentException(xmlLine.getRight().charAt(0)+" appears twice on rotor");
+                }
+             if(xmlLine.getLeft().charAt(0)==line.getLeftChar())
+                {
+                    throw new IllegalArgumentException(xmlLine.getLeft().charAt(0)+ " appears twice on rotor");
+                }
+            }
+    }
+
     public void set_starting_index(int starting_index)
     {
         this.rotator_index=starting_index;
@@ -92,7 +115,7 @@ public class Rotor {
         String res=new String();
         for (Line line:line_array)
         {
-            res+=line.getLeft_char()+" , "+line.getRight_char()+"\n";
+            res+=line.getLeftChar()+" , "+line.getRightChar()+"\n";
         }
         return res;
     }
