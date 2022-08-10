@@ -1,6 +1,3 @@
-import com.sun.javaws.exceptions.InvalidArgumentException;
-
-import java.io.IOException;
 import java.nio.file.InvalidPathException;
 import java.util.Scanner;
 
@@ -10,6 +7,7 @@ public class ConsoleInterface {
     public static final String PAPER_ENIGMA_XML_FILE_NAME = "test files/ex1-sanity-paper-enigma.xml";
 
     private MachineManager machineManager=new MachineManager();
+    private final Scanner scanner = new Scanner(System.in);
     public static void main(String[] args) {
         System.out.println("hey");
         ConsoleInterface game = new ConsoleInterface();
@@ -32,18 +30,12 @@ public class ConsoleInterface {
 
     }
     private void loadFromXML(){
-        System.out.println("Please enter full xml file path");
-        LoadingScreen loadingScreen = new LoadingScreen("Loading file");
-        System.out.println("Loading file..");
-        //Scanner scanner = new Scanner(System.in);
-        //String filePath = scanner.nextLine();
-        //System.out.println(filePath);
-
+        boolean loadedSuccsefully=false;
+        String filePath = getInput("Please enter full xml file path");
         System.out.println("Loading file ");
-        //loadingScreen.start();
-
         try {
-            machineManager.createMachineFromXML(PAPER_ENIGMA_XML_FILE_NAME);
+            machineManager.createMachineFromXML(SANITY_SMALL_XML_FILE_NAME);
+            loadedSuccsefully=true;
             System.out.println("\nFile loaded succesfully");
         }
         catch (InvalidPathException e) {
@@ -57,39 +49,59 @@ public class ConsoleInterface {
         {
             System.out.println(e.getMessage());
         }
-        finally {
-            //loadingScreen.stop();
-        }
 
-//        //this.paperEnigmaCheckLoadedFromXml();
+        if(!loadedSuccsefully)
+        {
+            if(tryAgain()) {
+                this.loadFromXML();
+            }
+        }
+        this.paperEnigmaCheckLoadedFromXml();
+    }
+    private void showMachineStructure()
+    {
 
     }
 
+
+
     //for testing purposes only
-    private static void sanity_check_loaded_from_xml() {
-        Machine Enigma =new Machine();
-        //Enigma.loadMachineFromFile(SANITY_SMALL_XML_FILE_NAME);
-        Enigma.add_switch_plug('A','F');
-        Enigma.setSelectedReflector(0);
-        Enigma.setSelected_rotors(0,1);
-        Enigma.setStartingIndex();
+    private  void sanity_check_loaded_from_xml() {
+
+        machineManager.getMachine().add_switch_plug('A','F');
+        machineManager.getMachine().setSelectedReflector(0);
+        machineManager.getMachine().setSelectedRotors(0,1);
+        machineManager.getMachine().setStartingIndex(new String[]{"C", "C"});
         String input_string="AABBCCDDEEFF";
         System.out.println("input char = "+input_string);
-        System.out.println("Machine output  "+Enigma.run_encrypt_on_string(input_string.toUpperCase()));
+        System.out.println("Machine output  "+machineManager.getMachine().run_encrypt_on_string(input_string.toUpperCase()));
         System.out.println("Expected output "+"CEEFBDFCDAAB");
     }
     //for testing purposes only
     private void paperEnigmaCheckLoadedFromXml() {
-        Machine Enigma =new Machine();
-        //Enigma.loadMachineFromFile(PAPER_ENIGMA_XML_FILE_NAME);
         machineManager.getMachine().setSelectedReflector(0);
-        machineManager.getMachine().setSelectedReflector(0);
-        machineManager.getMachine().setSelected_rotors(2,1,0);
-        machineManager.getMachine().setStartingIndex();
+        machineManager.getMachine().setSelectedRotors(2,1,0);
+        machineManager.getMachine().setStartingIndex(new String[]{"X", "D","O"});
         String input_string="WOWCANTBELIEVEITACTUALLYWORKS";
         System.out.println("input char = "+input_string);
         System.out.println("Machine output  "+machineManager.getMachine().run_encrypt_on_string(input_string.toUpperCase()));
         System.out.println("Expected output "+"CVRDIZWDAWQKUKBVHJILPKRNDXWIY");
+    }
+
+    //maybe with command pattern tryAgain will receive command to run
+    private boolean tryAgain()
+    {
+        String input = getInput("try again y/n ?");
+        while (input!="y" && input!="n")
+        {
+             input = getInput("input must be either 'y' or 'n' ");
+        }
+
+        return input=="y";
+    }
+    private String getInput(String inputRequest) {
+        System.out.println(inputRequest);
+        return  scanner.nextLine();
     }
 
 }

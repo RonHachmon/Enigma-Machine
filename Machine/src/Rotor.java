@@ -4,12 +4,12 @@ import jaxb_classes.CTERotor;
 import java.util.*;
 
 public class Rotor {
-    public final List<Line> line_array=new ArrayList<Line>() ;
+    public final List<Line> lineArray =new ArrayList<Line>() ;
     public int notch_index;
     public int rotator_index = 0;
 
     public void rotate(){
-        rotator_index=(rotator_index+1)%line_array.size();
+        rotator_index=(rotator_index+1)% lineArray.size();
 
     }
 
@@ -24,18 +24,18 @@ public class Rotor {
 
     public int get_exit_index_from_right(int index) {
 
-        int real_index=(index+rotator_index)%line_array.size();
-        char right_char=line_array.get(real_index).right_char;
+        int real_index=(index+rotator_index)% lineArray.size();
+        char right_char= lineArray.get(real_index).getRightChar();
         System.out.println("        Right char = "+right_char);
 
         int rotator_exit_index=0;
-        for (Line current_line:line_array) {
-            if(current_line.left_char==right_char)
+        for (Line current_line: lineArray) {
+            if(current_line.getLeftChar()==right_char)
             {
                 rotator_exit_index-=rotator_index;
                 if(rotator_exit_index<0)
                 {
-                    rotator_exit_index+= line_array.size();
+                    rotator_exit_index+= lineArray.size();
                 }
                 break;
             }
@@ -46,18 +46,18 @@ public class Rotor {
     }
     public int get_exit_index_from_left(int index) {
 
-        int real_index=(index+rotator_index)%line_array.size();
-        char left_char=line_array.get(real_index).left_char;
+        int real_index=(index+rotator_index)% lineArray.size();
+        char left_char= lineArray.get(real_index).getLeftChar();
         System.out.println("        Left char = "+left_char);
 
         int rotator_exit_index=0;
-        for (Line current_line:line_array) {
-            if(current_line.right_char==left_char)
+        for (Line current_line: lineArray) {
+            if(current_line.getRightChar() ==left_char)
             {
                 rotator_exit_index-=rotator_index;
                 if(rotator_exit_index<0)
                 {
-                    rotator_exit_index+= line_array.size();
+                    rotator_exit_index+= lineArray.size();
                 }
                 break;
             }
@@ -74,9 +74,9 @@ public class Rotor {
 
             checkValidChar(rotor,allChars, positioning);
             Line current_line=new Line(positioning.getRight(),positioning.getLeft());
-            rotor.line_array.add(current_line);
+            rotor.lineArray.add(current_line);
         }
-        if(rotor.line_array.size()!=allChars.length())
+        if(rotor.lineArray.size()!=allChars.length())
         {
             throw new IllegalArgumentException("not all charaters are included in the rotor");
         }
@@ -93,7 +93,7 @@ public class Rotor {
             {
                 throw new IllegalArgumentException("Invalid rotor, since '" + xmlLine.getLeft() + "' on rotor but isn't on char collection");
             }
-            for(Line line: rotor.line_array)
+            for(Line line: rotor.lineArray)
             {
              if(xmlLine.getRight().charAt(0)==line.getRightChar())
                 {
@@ -106,14 +106,26 @@ public class Rotor {
             }
     }
 
-    public void set_starting_index(int starting_index)
+    public void setStartingIndex(int startingIndex)
     {
-        this.rotator_index=starting_index;
+        this.rotator_index=startingIndex;
+    }
+    public void setStartingIndex(char characterToLook)
+    {
+        for (int i = 0; i <this.lineArray.size() ; i++) {
+            if(this.lineArray.get(i).getRightChar() == characterToLook)
+            {
+                this.setStartingIndex(i);
+                return;
+            }
+
+        }
+        throw new IllegalArgumentException("starting rotor char "+characterToLook+" not on rotor")an
     }
 
     public String toString() {
         String res=new String();
-        for (Line line:line_array)
+        for (Line line: lineArray)
         {
             res+=line.getLeftChar()+" , "+line.getRightChar()+"\n";
         }

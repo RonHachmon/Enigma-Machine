@@ -1,31 +1,31 @@
 public class Line {
-    public char left_char;
-    public char right_char;
+    private char leftChar;
+    private char rightChar;
     public Line(char right,char left)
     {
-        this.right_char=right;
-        this.left_char=left;
+        this.rightChar =right;
+        this.leftChar =left;
 
     }
 
     public Line(String right, String left) {
-        this.right_char=right.charAt(0);
-        this.left_char=left.charAt(0);
+        this.rightChar =right.charAt(0);
+        this.leftChar =left.charAt(0);
     }
 
-    public void setLeft_char(char left_char) {
-        this.left_char = left_char;
+    public void setLeftChar(char leftChar) {
+        this.leftChar = leftChar;
     }
 
-    public void setRight_char(char right_char) {
-        this.right_char = right_char;
+    public void setRightChar(char rightChar) {
+        this.rightChar = rightChar;
     }
 
     public char getLeftChar() {
-        return left_char;
+        return leftChar;
     }
 
     public char getRightChar() {
-        return right_char;
+        return rightChar;
     }
 }
