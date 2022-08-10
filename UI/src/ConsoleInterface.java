@@ -31,10 +31,10 @@ public class ConsoleInterface {
     }
     private void loadFromXML(){
         boolean loadedSuccsefully=false;
-        String filePath = getInput("Please enter full xml file path");
+        //String filePath = getInput("Please enter full xml file path");
         System.out.println("Loading file ");
         try {
-            machineManager.createMachineFromXML(SANITY_SMALL_XML_FILE_NAME);
+            machineManager.createMachineFromXML(PAPER_ENIGMA_XML_FILE_NAME);
             loadedSuccsefully=true;
             System.out.println("\nFile loaded succesfully");
         }

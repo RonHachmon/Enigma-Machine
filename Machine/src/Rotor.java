@@ -120,7 +120,7 @@ public class Rotor {
             }
 
         }
-        throw new IllegalArgumentException("starting rotor char "+characterToLook+" not on rotor")an
+        throw new IllegalArgumentException("starting rotor char "+characterToLook+" not on rotor");
     }
 
     public String toString() {
