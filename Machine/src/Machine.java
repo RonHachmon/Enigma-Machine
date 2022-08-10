@@ -8,7 +8,7 @@ public class Machine {
     private final  Map <Character, Integer> char_map =new HashMap<>();
     private final Map <Integer,Character> reverse_char_map =new HashMap<>() ;
     private final Map <Character, Character> switch_plug=new HashMap<>();
-    private List<Rotor> selected_rotors=new ArrayList<>();
+    private List<Rotor> selectedRotors =new ArrayList<>();
     private List<Rotor> allRotors =new ArrayList<>();
     public final List<Reflector> selectedRotorsArray=new ArrayList<>();
     public Reflector selected_reflector;
@@ -72,11 +72,11 @@ public class Machine {
             //throw reflector does not exist
         }
     }
-    public void setSelected_rotors(int ...rotors_id)
+    public void setSelectedRotors(int ...rotors_id)
     {
         //throw out of bound or does not exist
         for (int id:rotors_id) {
-            selected_rotors.add(allRotors.get(id));
+            selectedRotors.add(allRotors.get(id));
 
         }
     }
@@ -88,24 +88,24 @@ public class Machine {
         Character result;
 
         //run char thought right side of Rotors
-        for (int i =0; i <selected_rotors.size() ; i++) {
+        for (int i = 0; i < selectedRotors.size() ; i++) {
             System.out.println("    Rotor number: "+(i+1));
             if(toRotate)
             {
-                selected_rotors.get(i).rotate();
-                toRotate = selected_rotors.get(i).is_rotor_on_notch();
+                selectedRotors.get(i).rotate();
+                toRotate = selectedRotors.get(i).is_rotor_on_notch();
             }
 
-            running_index =  selected_rotors.get(i).get_exit_index_from_right(running_index);
+            running_index =  selectedRotors.get(i).get_exit_index_from_right(running_index);
         }
 
         System.out.println("    Reflector:");
         running_index= selected_reflector.get_exit_index(running_index);
 
         //run char thought left side of Rotors
-        for (int i = selected_rotors.size()-1; i >=0 ; i--) {
+        for (int i = selectedRotors.size()-1; i >=0 ; i--) {
             System.out.println("    Rotor number: "+(i+1));
-            running_index = selected_rotors.get(i).get_exit_index_from_left(running_index);
+            running_index = selectedRotors.get(i).get_exit_index_from_left(running_index);
 
         }
 
@@ -133,33 +133,6 @@ public class Machine {
     return res;
 
     }
-//    public void loadMachineFromFile(String file_name)  {
-//            //if (file_name.length() < 4 || !compare_file_type(file_name,".xml")) {
-//                //throw new GameLoadException("File is not an xml");
-//            }
-//
-//            CTEEnigma enigma_machine = null;
-//            try {
-//                enigma_machine = JAXBClassGenerator.unmarshall(file_name, CTEEnigma.class);
-//            } catch (JAXBException var5) {
-////                String msg;
-////                if (var5.getLinkedException() instanceof FileNotFoundException) {
-////                    msg = "File Not Found";
-////                } else {
-////                    msg = "JAXB exception";
-////                }
-////
-////                throw new GameLoadException(var5, msg);
-//            }
-//
-//            if (enigma_machine == null) {
-//                //throw new GameLoadException("Failed to load JAXB class");
-//            }
-//
-//            this.init_members_from_enigma_machine(enigma_machine);
-//            //this.m_GameStatus = GriddlerLogic.eGameStatus.LOADED;
-//    }
-
 
 
     public void loadRotators(CTEEnigma enigma_machine) {
@@ -232,12 +205,16 @@ public class Machine {
     //currently hard coded, should recive an array of char for each rotor and set rotor start position based on the char
     //Example {O , D ,X } O on most left array (last array), D middle , x most right array (first array) on selected rotors
     //should receive 10 index for X , 2 for D and 12 for O
-    public void setStartingIndex() {
-//        this.selected_rotors.get(0).set_starting_index(2);
-//        this.selected_rotors.get(1).set_starting_index(2);
-        this.selected_rotors.get(0).set_starting_index(10);
-        this.selected_rotors.get(1).set_starting_index(2);
-        this.selected_rotors.get(2).set_starting_index(12);
+    public void setStartingIndex(String [] startingCharArray) {
+        if(startingCharArray.length!=selectedRotors.size())
+        {
+            throw new IllegalArgumentException("please choose starting index for all "+selectedRotors.size()+" rotors");
+        }
+
+        for (int i = 0; i <startingCharArray.length; i++) {
+            this.selectedRotors.get(i).setStartingIndex(startingCharArray[i].charAt(0));
+        }
+
     }
 
 
