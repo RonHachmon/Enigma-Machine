@@ -5,46 +5,57 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Machine {
-    private final  Map <Character, Integer> char_map =new HashMap<>();
-    private final Map <Integer,Character> reverse_char_map =new HashMap<>() ;
-    private final Map <Character, Character> switch_plug=new HashMap<>();
+    private final  Map <Character, Integer> charMap =new HashMap<>();
+    private final Map <Integer,Character> reverseCharMap =new HashMap<>() ;
+    private final Map <Character, Character> switchPlug =new HashMap<>();
     private List<Rotor> selectedRotors =new ArrayList<>();
     private List<Rotor> allRotors =new ArrayList<>();
-    public final List<Reflector> selectedRotorsArray=new ArrayList<>();
-    public Reflector selected_reflector;
+    public final List<Reflector> allReflectors=new ArrayList<>();
+    public Reflector selectedReflector;
     private String allChars;
     private int amountOfRotorNeeded;
     public Machine()
     {
 
-        this.initilize_reflector();
+        this.initilizeReflector();
     }
-
-
-
-    public Machine(String char_set)
+    public int getamountOfRotorNeeded()
     {
-        setCharMap(char_set);
-        setReverseCharMap();
-        selected_reflector = new Reflector();
-        System.out.println("Char Set: "+ char_map);
-        System.out.println("Reflector:"+ selected_reflector);
+        return amountOfRotorNeeded;
     }
 
-    private void initilize_reflector() {
+
+
+    private void initilizeReflector() {
         for (int i = 0; i <5; i++) {
-            selectedRotorsArray.add(null);
+            allReflectors.add(null);
         }
+    }
+    public List<Rotor> getAllRotors()
+    {
+        return allRotors;
+    }
+    public int getAmountOfAvailableReflectrors()
+    {
+        int count =0;
+        for (Reflector reflector:this.allReflectors)
+        {
+            if(reflector!=null)
+            {
+                count++;
+            }
+        }
+        return count;
     }
 
 
     private void setReverseCharMap() {
-        char_map.forEach((key, value) -> reverse_char_map.put(value, key));
+        charMap.forEach((key, value) -> reverseCharMap.put(value, key));
     }
-    public void add_switch_plug(char first_letter,char second_letter)
+    public void addSwitchPlug(char firstLetter, char secondLetter)
     {
-        if(switch_plug.put(first_letter,second_letter)!=null
-            ||switch_plug.put(second_letter,first_letter)!=null)
+        if(switchPlug.put(firstLetter,secondLetter)!=null
+            || switchPlug.put(secondLetter,firstLetter)!=null)
         {
             //throw duplicate char
         }
@@ -56,7 +67,7 @@ public class Machine {
     private void setCharMap(String char_set) {
         //maybe change to lambda, not sure how to iterate with index
         for (int i = 0; i <char_set.length() ; i++) {
-            if(char_map.put(char_set.charAt(i),i)!=null)
+            if(charMap.put(char_set.charAt(i),i)!=null)
             {
                 //throw duplicate char
             }
@@ -66,16 +77,16 @@ public class Machine {
     public void setSelectedReflector(int reflector_id)
     {
 
-        this.selected_reflector=this.selectedRotorsArray.get(reflector_id);
-        if( this.selected_reflector==null)
+        this.selectedReflector =this.allReflectors.get(reflector_id);
+        if( this.selectedReflector ==null)
         {
             //throw reflector does not exist
         }
     }
-    public void setSelectedRotors(int ...rotors_id)
+    public void setSelectedRotors(List<Integer> rotorsID)
     {
         //throw out of bound or does not exist
-        for (int id:rotors_id) {
+        for (int id:rotorsID) {
             selectedRotors.add(allRotors.get(id));
 
         }
@@ -83,7 +94,7 @@ public class Machine {
     public Character run_encrypt_on_char(char input)
     {
         input = run_char_through_switch_plug(input);
-        int running_index = char_map.get(input);
+        int running_index = charMap.get(input);
         boolean toRotate=true;
         Character result;
 
@@ -100,7 +111,7 @@ public class Machine {
         }
 
         System.out.println("    Reflector:");
-        running_index= selected_reflector.get_exit_index(running_index);
+        running_index= selectedReflector.get_exit_index(running_index);
 
         //run char thought left side of Rotors
         for (int i = selectedRotors.size()-1; i >=0 ; i--) {
@@ -109,7 +120,7 @@ public class Machine {
 
         }
 
-        result = reverse_char_map.get(running_index);
+        result = reverseCharMap.get(running_index);
         result =run_char_through_switch_plug(result);
         System.out.println("output char: "+result);
         return result;
@@ -117,9 +128,9 @@ public class Machine {
 
 
     private char run_char_through_switch_plug(char input) {
-        if(switch_plug.get(input)!=null)
+        if(switchPlug.get(input)!=null)
         {
-            input =switch_plug.get(input);
+            input = switchPlug.get(input);
         }
         return input;
     }
@@ -135,22 +146,49 @@ public class Machine {
     }
 
 
+
+
+
+
+    //XML function
     public void loadRotators(CTEEnigma enigma_machine) {
         List<CTERotor> xmlRotorsArr = enigma_machine.getCTEMachine().getCTERotors().getCTERotor();
         amountOfRotorNeeded = enigma_machine.getCTEMachine().getRotorsCount();
+        if(amountOfRotorNeeded<2)
+        {
+            throw new IllegalArgumentException("amount of rotors on the machine must be at least 2");
+        }
+        xmlRotorsArr = sortXMLRotors(xmlRotorsArr);
+        loadarrayofrotators(xmlRotorsArr);
+        if(allRotors.size()<amountOfRotorNeeded)
+        {
+            throw new IllegalArgumentException("amount of rotors should be at least "+ amountOfRotorNeeded);
+        }
+
+    }
+
+    private void loadarrayofrotators(List<CTERotor> xmlRotorsArr) {
+        Rotor currentRotor=new Rotor();
+        for(int i = 0; i< xmlRotorsArr.size(); i++)
+        {
+            //check if the id are sequential and unique
+            if(xmlRotorsArr.get(i).getId()!=i+1)
+            {
+                throw new IllegalArgumentException("rotor id must be unique and in a sequential order," +
+                                                    "starting from 1");
+            }
+
+            currentRotor = Rotor.createRotorFromXML(xmlRotorsArr.get(i),this.allChars);
+            allRotors.add(currentRotor);
+        }
+        System.out.println(currentRotor);
+    }
+
+    private List<CTERotor> sortXMLRotors(List<CTERotor> xmlRotorsArr) {
         xmlRotorsArr = xmlRotorsArr.stream().
                                             sorted(Comparator.comparing(CTERotor::getId)).
                                             collect(Collectors.toList());
-        Rotor currentRotor;
-        for (CTERotor xmlRotor: xmlRotorsArr)
-        {
-            currentRotor = Rotor.createRotorFromXML(xmlRotor,this.allChars);
-            allRotors.add(currentRotor);
-            System.out.println("Rotor:");
-            System.out.println(currentRotor);
-            System.out.println( );
-        }
-
+        return xmlRotorsArr;
     }
 
     public void loadReflector(CTEEnigma enigma_machine) {
@@ -158,10 +196,10 @@ public class Machine {
         Reflector currentReflector;
         for (CTEReflector xmlReflector: xmlReflextorArr.getCTEReflector())
         {
-            currentReflector = Reflector.createReflectorFromXML(xmlReflector,char_map.size());
+            currentReflector = Reflector.createReflectorFromXML(xmlReflector, charMap.size());
             int position =  Machine.converteRomanToInt(xmlReflector.getId());
             System.out.println("Reflector:"+ currentReflector);
-            selectedRotorsArray.set(position,currentReflector);
+            allReflectors.set(position,currentReflector);
         }
 
     }
@@ -170,13 +208,43 @@ public class Machine {
     public void loadCharSet(CTEEnigma enigma_machine) {
         String charCollection=enigma_machine.getCTEMachine().getABC();
         charCollection=charCollection.replaceAll("[\\n\t]", "");
+        charCollection=replaceSpecialXMLchar(charCollection);
         if(charCollection.length()%2==1)
         {
             throw new IllegalArgumentException("amount of characters must be even");
         }
-        this.allChars=charCollection;
+        this.allChars=charCollection.toUpperCase(Locale.ROOT);
+        System.out.println("all char: "+this.allChars);
         this.setCharMap(charCollection);
         this.setReverseCharMap();
+    }
+    private String replaceSpecialXMLchar(String string)
+    {
+        String result =  string.replace("&amp;","&")
+                            .replace("&lt;","<")
+                            .replace("&gt;","<")
+                            .replace("&quot;","")
+                            .replace("&apos;","'");
+        return result;
+    }
+
+
+
+
+
+    //currently hard coded, should recive an array of char for each rotor and set rotor start position based on the char
+    //Example {O , D ,X } O on most left array (last array), D middle , x most right array (first array) on selected rotors
+    //should receive 10 index for X , 2 for D and 12 for O
+    public void setStartingIndex(String startingCharArray) {
+        if(startingCharArray.length() !=selectedRotors.size())
+        {
+            throw new IllegalArgumentException("please choose starting index for all "+selectedRotors.size()+" rotors");
+        }
+
+        for (int i = 0; i <startingCharArray.length(); i++) {
+            this.selectedRotors.get(i).setStartingIndex(startingCharArray.charAt(i));
+        }
+
     }
 
     private static int converteRomanToInt(String romanNumber)
@@ -199,23 +267,6 @@ public class Machine {
         }
     }
 
-
-
-
-    //currently hard coded, should recive an array of char for each rotor and set rotor start position based on the char
-    //Example {O , D ,X } O on most left array (last array), D middle , x most right array (first array) on selected rotors
-    //should receive 10 index for X , 2 for D and 12 for O
-    public void setStartingIndex(String [] startingCharArray) {
-        if(startingCharArray.length!=selectedRotors.size())
-        {
-            throw new IllegalArgumentException("please choose starting index for all "+selectedRotors.size()+" rotors");
-        }
-
-        for (int i = 0; i <startingCharArray.length; i++) {
-            this.selectedRotors.get(i).setStartingIndex(startingCharArray[i].charAt(0));
-        }
-
-    }
 
 
 }
