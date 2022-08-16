@@ -2,12 +2,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Statistic {
-
-
     private final List<String> codeFormats = new ArrayList<>();
     private final List<StatisticInput> processedInput = new ArrayList<>();
     private int intCurrentCodeFormatIndex = -1;
-
 
     public String historyAndStatistic() {
         StringBuilder stringBuilder = new StringBuilder();
@@ -18,7 +15,6 @@ public class Statistic {
                     stringBuilder.append('\t' + processedInput.get(j).getProcessedInput() + '\n');
                 }
             }
-
         }
         return stringBuilder.toString();
     }

@@ -65,7 +65,7 @@ public class MachineManager {
         timeAndStatistic.append('<' + sentence + '>');
         timeAndStatistic.append("-->");
         timeAndStatistic.append('<' + output + '>');
-        timeAndStatistic.append('(' + duration.getNano() + " nano-seconds)");
+        timeAndStatistic.append("(" + duration.getNano() + " nano-seconds)");
     }
 
     //might need to be modified , depends on if rotor comes left to right

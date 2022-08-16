@@ -133,8 +133,7 @@ public class ConsoleInterface {
         System.out.println("input: " + input);
 
         try {
-            System.out.println("Output");
-            System.out.println(this.machineManager.encryptSentence(input));
+            System.out.println("Output: " + this.machineManager.encryptSentence(input));
             validInput = true;
 //            System.out.println("Expected Output");
 //            System.out.println("CVRDIZWDAWQKUKBVHJILPKRNDXWIY");
