@@ -4,13 +4,16 @@ import jaxb_classes.CTERotor;
 import java.util.*;
 
 public class Rotor {
-    private final List<Line> lineArray =new ArrayList<>() ;
+
+    private final List<Line> lineArray = new ArrayList<Line>();
+
     private int notchIndex;
     private int rotatorIndex = 0;
 
     public int getRotatorIndex() {
         return rotatorIndex;
     }
+
     public int distanceFromNotch() {
         int temp =notchIndex-rotatorIndex;
         if(temp<0)
@@ -20,14 +23,14 @@ public class Rotor {
         return temp;
     }
 
-    public void rotate(){
-        rotatorIndex =(rotatorIndex +1)% lineArray.size();
-
+    public void rotate() {
+        rotatorIndex = (rotatorIndex + 1) % lineArray.size();
     }
     public Character currentStartingChar()
     {
         return lineArray.get(rotatorIndex).getRightChar();
     }
+
 
     public boolean is_rotor_on_notch(){
         if(notchIndex == rotatorIndex)
@@ -37,8 +40,8 @@ public class Rotor {
         return notchIndex == rotatorIndex;
     }
 
-
     public int get_exit_index_from_right(int index) {
+
 
         int real_index=(index+ rotatorIndex)% lineArray.size();
         char right_char= lineArray.get(real_index).getRightChar();
@@ -58,9 +61,10 @@ public class Rotor {
             rotator_exit_index++;
         }
         return rotator_exit_index;
-
     }
+
     public int get_exit_index_from_left(int index) {
+
 
         int real_index=(index+ rotatorIndex)% lineArray.size();
         char left_char= lineArray.get(real_index).getLeftChar();
@@ -80,25 +84,26 @@ public class Rotor {
             rotator_exit_index++;
         }
         return rotator_exit_index;
-
     }
 
     public static Rotor createRotorFromXML(CTERotor xml_rotor, String allChars) {
+
         Rotor rotor =new Rotor();
         if(xml_rotor.getNotch()>allChars.length()||xml_rotor.getNotch()<=0)
         {
             throw new IllegalArgumentException("notch position out of bound, notch range is 1 - "+allChars.length()
             + ", while one notch set on "+xml_rotor.getNotch());
         }
-        rotor.notchIndex =xml_rotor.getNotch()-1;
+        rotor.notchIndex = xml_rotor.getNotch() - 1;
         for (CTEPositioning positioning : xml_rotor.getCTEPositioning()) {
+
             upperCaseInput(positioning);
             checkValidChar(rotor,allChars, positioning);
             Line current_line=new Line(positioning.getRight(),positioning.getLeft());
+
             rotor.lineArray.add(current_line);
         }
-        if(rotor.lineArray.size()!=allChars.length())
-        {
+        if (rotor.lineArray.size() != allChars.length()) {
             throw new IllegalArgumentException("not all characters are included in the rotor");
         }
         return rotor;
@@ -120,46 +125,32 @@ public class Rotor {
             {
                 throw new IllegalArgumentException("Invalid rotor, since '" + xmlLine.getLeft() + "' on rotor but isn't on char collection");
             }
-            for(Line line: rotor.lineArray)
-            {
-             if(xmlLine.getRight().charAt(0)==line.getRightChar())
-                {
-                    throw new IllegalArgumentException(xmlLine.getRight().charAt(0)+" appears twice on rotor");
-                }
-             if(xmlLine.getLeft().charAt(0)==line.getLeftChar())
-                {
-                    throw new IllegalArgumentException(xmlLine.getLeft().charAt(0)+ " appears twice on rotor");
-                }
+            if (xmlLine.getLeft().charAt(0) == line.getLeftChar()) {
+                throw new IllegalArgumentException(xmlLine.getLeft().charAt(0) + " appears twice on rotor");
             }
+        }
     }
 
-    public void setStartingIndex(int startingIndex)
-    {
-        this.rotatorIndex =startingIndex;
+    public void setStartingIndex(int startingIndex) {
+        this.rotatorIndex = startingIndex;
     }
-    public void setStartingIndex(char characterToLook)
 
-    {
-        for (int i = 0; i <this.lineArray.size() ; i++) {
-            if(this.lineArray.get(i).getRightChar() == characterToLook)
-            {
+    public void setStartingIndex(char characterToLook) {
+        for (int i = 0; i < this.lineArray.size(); i++) {
+            if (this.lineArray.get(i).getRightChar() == characterToLook) {
                 this.setStartingIndex(i);
                 return;
             }
 
         }
-        throw new IllegalArgumentException("starting rotor index "+characterToLook+" not on rotor");
+        throw new IllegalArgumentException("starting rotor index " + characterToLook + " not on rotor");
     }
 
     public String toString() {
-        String res=new String();
-        for (Line line: lineArray)
-        {
-            res+=line.getLeftChar()+" , "+line.getRightChar()+"\n";
+        String res = new String();
+        for (Line line : lineArray) {
+            res += line.getLeftChar() + " , " + line.getRightChar() + "\n";
         }
         return res;
     }
-
-
-
 }

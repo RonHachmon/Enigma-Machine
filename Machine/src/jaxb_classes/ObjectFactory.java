@@ -4,12 +4,8 @@
 // Any modifications to this file will be lost upon recompilation of the source schema. 
 // Generated on: 2022.08.01 at 06:33:57 PM IDT 
 //
-
-
 package jaxb_classes;
-
 import javax.xml.bind.annotation.XmlRegistry;
-
 
 /**
  * This object contains factory methods for each 
@@ -27,18 +23,14 @@ import javax.xml.bind.annotation.XmlRegistry;
  */
 @XmlRegistry
 public class ObjectFactory {
-
-
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: jaxb_classes
-     * 
      */
     public ObjectFactory() {
     }
 
     /**
      * Create an instance of {@link CTEEnigma }
-     * 
      */
     public CTEEnigma createCTEEnigma() {
         return new CTEEnigma();
@@ -46,7 +38,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link CTEMachine }
-     * 
      */
     public CTEMachine createCTEMachine() {
         return new CTEMachine();
@@ -54,7 +45,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link CTERotors }
-     * 
      */
     public CTERotors createCTERotors() {
         return new CTERotors();
@@ -62,7 +52,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link CTERotor }
-     * 
      */
     public CTERotor createCTERotor() {
         return new CTERotor();
@@ -70,7 +59,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link CTEPositioning }
-     * 
      */
     public CTEPositioning createCTEPositioning() {
         return new CTEPositioning();
@@ -78,7 +66,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link CTEReflectors }
-     * 
      */
     public CTEReflectors createCTEReflectors() {
         return new CTEReflectors();
@@ -86,7 +73,6 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link CTEReflector }
-     * 
      */
     public CTEReflector createCTEReflector() {
         return new CTEReflector();
@@ -94,10 +80,8 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link CTEReflect }
-     * 
      */
     public CTEReflect createCTEReflect() {
         return new CTEReflect();
     }
-
 }

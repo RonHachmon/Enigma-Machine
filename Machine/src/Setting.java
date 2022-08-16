@@ -1,3 +1,4 @@
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -20,9 +21,6 @@ public class Setting {
                          "<"+chosenReflector+">"+
                             getAddPlugs();
 
-
-
-
         return code;
     }
     public String getInitialFullMachineCode()
@@ -31,6 +29,7 @@ public class Setting {
                          "<"+initialRotorIndexes+">"+
                          "<"+chosenReflector+">"+
                             getAddPlugs();
+
 
 
 
@@ -66,7 +65,10 @@ public class Setting {
     {
         this.chosenReflector=Setting.convertIntToRoman(selectedReflector);
 
+    public void setSettingReflector(int selectedReflector) {
+        currentCodeSettings[2] = Setting.convertIntToRoman(selectedReflector);
     }
+
     public void addPlug(Character firstChar,Character secondChar)
     {
         if(this.setOfPlugs.isEmpty())
@@ -110,10 +112,10 @@ public class Setting {
         }
         return "<"+setOfPlugs+">";
     }
-    private static String convertIntToRoman(int number)
-    {
-        switch (number)
-        {
+
+
+    private static String convertIntToRoman(int number) {
+        switch (number) {
             case 1:
                 return "I";
             case 2:
@@ -126,8 +128,6 @@ public class Setting {
                 return "V";
             default:
                 throw new IllegalArgumentException("Invalid Reflector,id must between 1-5 ");
-
         }
     }
-
 }

@@ -10,7 +10,6 @@ public enum RomanNumbers {
     //public static final int PIVOT = 2;
     private String message;
 
-
     RomanNumbers(String message) {
         this.message = message;
     }

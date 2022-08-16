@@ -2,18 +2,19 @@ import java.io.File;
 import java.util.*;
 
 public class ConsoleInterface {
-    //for testing puposes only
+    //for testing purposes only
     public static final String SANITY_SMALL_XML_FILE_NAME = "test files/ex1-sanity-small.xml";
     public static final String PAPER_ENIGMA_XML_FILE_NAME = "test files/ex1-sanity-paper-enigma.xml";
 
-    private MachineManager machineManager=new MachineManager();
+    private MachineManager machineManager = new MachineManager();
     private final Scanner scanner = new Scanner(System.in);
-    boolean runMachine=true;
+
+
     public static void main(String[] args) {
-        // Creates an array in which we will store the names of files and directories
-        String[] fileNames;
-        MachineManager machineManager1=new MachineManager();
-        // Creates a new File instance by converting the given pathname string
+//        String temp = "x&amp;";
+//        String replace = temp.replace("&amp;", "Q");
+//        System.out.println(replace);
+
 
         String folderPath="C:\\Temp\\Error Files\\" ;//replace with your own folder path
 
@@ -55,15 +56,42 @@ public class ConsoleInterface {
     }
 
     private void runMachine() {
-            this.loadFromXML();
-            while (runMachine) {
-                this.printMainMenu();
+
+        int userChoice = 0;
+
+        do {
+            printMainMenu();
+            userChoice = getValidInput();
+            handleUserChoice(userChoice);
+
+        }while (userChoice != 8);
+
+        System.out.println("Bye Bye :)");
+    }
+
+    private void handleUserChoice(int userChoice) {
+
+    }
+
+    private int getValidInput() {
+        int input = 0;
+
+        while (input < 1 || input > 8) {
+            try {
+                input = Integer.parseInt(this.getInput("Enter a number between 1-8"));
+            }
+            catch(Exception e){
+                System.out.println(e.getMessage());
+
             }
         }
 
+        return input;
+    }
     private void printMainMenu() {
         System.out.println("Please choose an option from the menu:");
         eMainMenuOption[] menuOptions = eMainMenuOption.values();
+
         int var2 = menuOptions.length;
         for(int i=0; i<menuOptions.length;i++)
         {
@@ -71,7 +99,8 @@ public class ConsoleInterface {
         }
         String input=getInput("");
         int index = Integer.parseInt(input);
-        doMenuOption(menuOptions[index-1]);
+        
+        (menuOptions[index-1]);
 
     }
     private void doMenuOption(eMainMenuOption menuSelection) {
@@ -102,34 +131,39 @@ public class ConsoleInterface {
         }
 
         System.out.println();
+
+        for (int i = 0; i < menuOptions.length; i++) {
+            System.out.println(i+1 + " " + menuOptions[i]);
+        }
+
     }
-    private void loadFromXML(){
-        boolean loadedSuccsefully=false;
+
+    private void loadFromXML() {
+        boolean loadedSuccessfully = false;
         //String filePath = getInput("Please enter full xml file path");
         System.out.println("Loading file ");
         try {
             machineManager.createMachineFromXML(PAPER_ENIGMA_XML_FILE_NAME);
-            loadedSuccsefully=true;
-            System.out.println("\nFile loaded succesfully");
-        }
-        catch(Exception e)
-        {
+            loadedSuccessfully = true;
+            System.out.println("\nFile loaded successfully");
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
-        if(!loadedSuccsefully)
-        {
-            if(tryAgain()) {
+        if (!loadedSuccessfully) {
+            if (tryAgain()) {
                 this.loadFromXML();
             }
         }
         //this.showMachineStructure();
         //this.paperEnigmaCheckLoadedFromXml();
     }
+
     private void showMachineStructure()
     {
         System.out.println("Total amount of rotors: "+this.machineManager.amountOfRotors() );
         System.out.println("Required amount of rotors: "+this.machineManager.amountOfRotorsRequired() );
+
 
         System.out.println("Amount of available reflectors:");
         System.out.println(this.machineManager.availableReflectors());
@@ -141,20 +175,21 @@ public class ConsoleInterface {
         System.out.println(this.machineManager.getInitialFullMachineCode());
 
         System.out.println("Current Code configuration");
+
         System.out.println(this.machineManager.getCurrentCodeSetting());
 
         getInput("To continue press enter");
 
+
     }
 
-
-    private void getMachineInput()
-    {
+    private void getMachineInput() {
         this.getRotors();
         this.getStartingIndexes();
         this.getReflector();
         this.getSwitchPlug();
     }
+
 
     private void processInput()
     {
@@ -186,15 +221,16 @@ public class ConsoleInterface {
     {
         this.machineManager.resetMachine();
     }
+
+
     private boolean getRotors() {
-        boolean validInput=false;
-        int amountOfIndexesNeeded=this.machineManager.amountOfRotors();
+        boolean validInput = false;
+        int amountOfIndexesNeeded = this.machineManager.amountOfRotors();
         int index = 0;
-        String input=getInput("Please enter set of " + amountOfIndexesNeeded +
-                                        " rotors index separated by a ','.\n");
+        String input = getInput("Please enter set of " + amountOfIndexesNeeded +
+                " rotors index separated by a ','.\n");
         List<Integer> indexes = new ArrayList<>();
-        try
-        {
+        try {
             for (String rotorIndex : input.split(",")) {
                 //remove trailing whitespace just in case
                 rotorIndex = rotorIndex.trim();
@@ -204,180 +240,141 @@ public class ConsoleInterface {
 
             Collections.reverse(indexes);
             this.machineManager.setSelectedRotors(indexes);
-             validInput=true;
-        }
-        catch (NumberFormatException e)
-        {
+            validInput = true;
+        } catch (NumberFormatException e) {
             System.out.println(e.getMessage());
-        }
-        catch (IllegalArgumentException e)
-        {
+        } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
-        if(!validInput)
-        {
-            if(tryAgain()) {
+        if (!validInput) {
+            if (tryAgain()) {
                 this.getRotors();
-            }
-            else
-            {
-                validInput= false;
+            } else {
+                validInput = false;
             }
         }
-
 
         return validInput;
-
     }
 
-
-
-
-
     private boolean getStartingIndexes() {
+
         boolean validInput=false;
         int amountOfIndexesNeeded=this.machineManager.amountOfRotorsRequired();
         StringBuilder input= new StringBuilder(getInput("Please enter set of " + amountOfIndexesNeeded +
+
                 " starting index .\n"));
         try {
             input.reverse();
             this.machineManager.setStartingIndex(input.toString().toUpperCase(Locale.ROOT));
-             validInput=true;
-        }
-        catch ( IllegalArgumentException e)
-        {
+            validInput = true;
+        } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
 
-        if(!validInput)
-        {
-            if(tryAgain()) {
+        if (!validInput) {
+            if (tryAgain()) {
                 this.getStartingIndexes();
-            }
-            else
-            {
-                validInput= false;
+            } else {
+                validInput = false;
             }
         }
 
-
         return validInput;
     }
+
     private boolean getReflector() {
+
         boolean validInput=false;
         int amountOfAvailableReflectors=this.machineManager.availableReflectors();
         printAvailableReflectors();
         String input=getInput("");
         try {
             int index = Integer.parseInt(input);
-            if(index<1||index>amountOfAvailableReflectors)
-            {
-                System.out.println("index must be between 1 - "+amountOfAvailableReflectors);
-            }
-            else {
+            if (index < 1 || index > amountOfAvailableReflectors) {
+                System.out.println("index must be between 1 - " + amountOfAvailableReflectors);
+            } else {
                 this.machineManager.setSelectedReflector(index - 1);
-                validInput=true;
+                validInput = true;
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
-        if(!validInput)
-        {
-            if(tryAgain()) {
+        if (!validInput) {
+            if (tryAgain()) {
                 this.getReflector();
-            }
-            else
-            {
-                validInput= false;
+            } else {
+                validInput = false;
             }
         }
 
-
         return validInput;
     }
-
 
 
     private boolean getSwitchPlug() {
-        boolean validInput=false;
-        String input=getInput("Please enter a pair of switch plugs without any separator between them\n," +
+        boolean validInput = false;
+        String input = getInput("Please enter a pair of switch plugs without any separator between them\n," +
                 "or enter to skip ");
 
-        if(input.length()%2!=0)
-        {
+        if (input.length() % 2 != 0) {
             System.out.println("invalid plugs, each character should be paired ");
         }
 
-        input=input.toUpperCase();
+        input = input.toUpperCase();
         try {
             //send plugs by pair
-            for (int i=0;i<input.length();i+=2)
-            {
-                this.machineManager.addSwitchPlug(input.charAt(i),input.charAt(i+1));
-
+            for (int i = 0; i < input.length(); i += 2) {
+                this.machineManager.addSwitchPlug(input.charAt(i), input.charAt(i + 1));
             }
-            validInput=true;
-
-        }
-        catch (Exception e)
-        {
+            validInput = true;
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
-        if(!validInput)
-        {
-            if(tryAgain()) {
+        if (!validInput) {
+            if (tryAgain()) {
                 this.getSwitchPlug();
-            }
-            else
-            {
-                validInput= false;
+            } else {
+                validInput = false;
             }
         }
-
 
         return validInput;
     }
 
 
-
-
-
-
     //maybe with command pattern tryAgain will receive command to run
-    private boolean tryAgain()
-    {
+    private boolean tryAgain() {
         String input = getInput("try again Y/N ?");
+
         input = input.toUpperCase(Locale.ENGLISH);
         while (!input.equals("Y") && !input.equals("N"))
         {
             System.out.println(input);
-             input = getInput("input must be either 'Y' or 'N' ");
+            input = getInput("input must be either 'Y' or 'N' ");
         }
 
         return input.equals("Y");
     }
+
     private String getInput(String inputRequest) {
         System.out.println(inputRequest);
-        return  scanner.nextLine();
+        return scanner.nextLine();
     }
 
     private void printAvailableReflectors() {
         RomanNumbers[] romanValues = RomanNumbers.values();
         int amountOfAvailableReflectors=this.machineManager.availableReflectors();
         for (int i = 0; i < amountOfAvailableReflectors; i++) {
-            System.out.println("for reflector "+ romanValues[i].name()+" "+ romanValues[i]);
-
+            System.out.println("for reflector " + romanValues[i].name() + " " + romanValues[i]);
         }
     }
+
 
     private void exit()
     {
