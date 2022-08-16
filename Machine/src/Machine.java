@@ -77,7 +77,7 @@ public class Machine {
     }
 
     public Character run_encrypt_on_char(char input) {
-        input = run_char_through_switch_plug(input);
+        input = runCharThroughSwitchPlug(input);
         int running_index = charMap.get(input);
         boolean toRotate = true;
         Character result;
@@ -85,7 +85,7 @@ public class Machine {
         //run char thought right side of Rotors
 
         for (int i = 0; i < selectedRotors.size(); i++) {
-            System.out.println("    Rotor number: " + (i + 1));
+            //System.out.println("    Rotor number: " + (i + 1));
             if (toRotate) {
                 selectedRotors.get(i).rotate();
                 toRotate = selectedRotors.get(i).is_rotor_on_notch();
@@ -106,12 +106,12 @@ public class Machine {
 
         result = reverseCharMap.get(running_index);
 
-        result =run_char_through_switch_plug(result);
+        result = runCharThroughSwitchPlug(result);
         //System.out.println("output char: "+result);
         return result;
     }
 
-    private char run_char_through_switch_plug(char input) {
+    private char runCharThroughSwitchPlug(char input) {
         if (switchPlug.get(input) != null) {
             input = switchPlug.get(input);
         }
@@ -177,7 +177,7 @@ public class Machine {
         for (CTEReflector xmlReflector : xmlReflextorArr.getCTEReflector()) {
             currentReflector = Reflector.createReflectorFromXML(xmlReflector, charMap.size());
 
-            int position =  Machine.converteRomanToInt(xmlReflector.getId());
+            int position =  Machine.convertRomanToInt(xmlReflector.getId());
             //System.out.println("Reflector:"+ currentReflector);
             allReflectors.set(position,currentReflector);
         }

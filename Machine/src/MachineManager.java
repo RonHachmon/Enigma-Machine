@@ -39,7 +39,7 @@ public class MachineManager {
 
     //need to be implemented
     public String getAmountOfProccesedInputs() {
-        this.satistic.getAmountOfProccessedInputs();
+        //this.satistic.getAmountOfProccessedInputs();
         return null;
     }
 
@@ -51,16 +51,15 @@ public class MachineManager {
 
     //might need to be modified , depends on if rotor comes left to right
     // or right to left. currently from right to left
-    public void setSelectedRotors(List<Integer> rotorsID) {
-        if (rotorsID.size() != this.amountOfRotors()) {
-            throw new IllegalArgumentException("amount of indexes must be " + this.amountOfRotors());
+    public void setSelectedRotors(List<Integer> rotorsID)
+    {
+        if(rotorsID.size()!=this.amountOfRotors())
+        {
+            throw new IllegalArgumentException("amount of indexes must be "+this.amountOfRotors() );
         }
         this.machine.setSelectedRotors(rotorsID);
         this.setting.setSettingRotators(rotorsID);
 
-        for (int i = rotorsID.size() - 1; i >= 0; i--) {
-            this.setting.addSettingRotators(rotorsID.get(i) + 1);
-        }
 
     }
 
@@ -101,7 +100,7 @@ public class MachineManager {
 
     public int amountOfRotorsRequired()
     {
-        return this.machine.getamountOfRotorNeeded();
+        return this.machine.getAmountOfRotorNeeded();
     }
 
     public int amountOfRotors()

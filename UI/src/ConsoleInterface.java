@@ -8,77 +8,39 @@ public class ConsoleInterface {
 
     private MachineManager machineManager = new MachineManager();
     private final Scanner scanner = new Scanner(System.in);
+    private boolean runMachine=true;
 
 
     public static void main(String[] args) {
-//        String temp = "x&amp;";
-//        String replace = temp.replace("&amp;", "Q");
-//        System.out.println(replace);
-
-
-        String folderPath="C:\\Temp\\Error Files\\" ;//replace with your own folder path
-
-        File f = new File(folderPath);
-        // Populates the array with names of files and directories
-        fileNames=f.list();
-        assert fileNames != null;
-        Arrays.sort(fileNames);
-
-        int i=0;
-        // For each pathname in the pathnames array
-        for (String fileName : fileNames) {
-            try{
-                System.out.println((++i) +" # "+fileName+":");
-
-
-                machineManager1.createMachineFromXML(folderPath+fileName);//enter your implement
-            }
-            catch (Exception e)
-            {
-                System.out.println(e.getMessage());
-            }
-
-        }
-
-
-
-
-
-
-
-
-//        String temp ="x&amp;";
-//        String replace = temp.replace("&amp;","Q");
-//        System.out.println(replace);
-//
-//        ConsoleInterface game = new ConsoleInterface();
-//        game.runMachine();
+        ConsoleInterface game = new ConsoleInterface();
+        game.runMachine();
     }
 
     private void runMachine() {
 
         int userChoice = 0;
-
+        eMainMenuOption[] menuOptions = eMainMenuOption.values();
         do {
-            printMainMenu();
-            userChoice = getValidInput();
-            handleUserChoice(userChoice);
 
-        }while (userChoice != 8);
+            userChoice = getValidInput();
+            doMenuOption(menuOptions[userChoice-1]);
+
+        }while (userChoice != 8||this.runMachine);
 
         System.out.println("Bye Bye :)");
     }
 
-    private void handleUserChoice(int userChoice) {
 
-    }
 
     private int getValidInput() {
         int input = 0;
 
         while (input < 1 || input > 8) {
             try {
-                input = Integer.parseInt(this.getInput("Enter a number between 1-8"));
+                printMainMenu();
+
+                input = Integer.parseInt(getInput(""));
+                //input = Integer.parseInt(this.getInput("Enter a number between 1-8"));
             }
             catch(Exception e){
                 System.out.println(e.getMessage());
@@ -91,17 +53,10 @@ public class ConsoleInterface {
     private void printMainMenu() {
         System.out.println("Please choose an option from the menu:");
         eMainMenuOption[] menuOptions = eMainMenuOption.values();
-
-        int var2 = menuOptions.length;
         for(int i=0; i<menuOptions.length;i++)
         {
             System.out.println(menuOptions[i]+ " press "+(i+1));
         }
-        String input=getInput("");
-        int index = Integer.parseInt(input);
-        
-        (menuOptions[index-1]);
-
     }
     private void doMenuOption(eMainMenuOption menuSelection) {
         switch (menuSelection) {
@@ -129,13 +84,6 @@ public class ConsoleInterface {
             case ENDPROGRAM:
                 this.exit();
         }
-
-        System.out.println();
-
-        for (int i = 0; i < menuOptions.length; i++) {
-            System.out.println(i+1 + " " + menuOptions[i]);
-        }
-
     }
 
     private void loadFromXML() {
@@ -155,8 +103,6 @@ public class ConsoleInterface {
                 this.loadFromXML();
             }
         }
-        //this.showMachineStructure();
-        //this.paperEnigmaCheckLoadedFromXml();
     }
 
     private void showMachineStructure()
@@ -194,13 +140,17 @@ public class ConsoleInterface {
     private void processInput()
     {
         boolean validInput =false;
+        //String input="WOWCANTBELIEVEITACTUALLYWORKS";
         String input =this.getInput("Please enter a sentence for encryption");
         input=input.toUpperCase();
-        System.out.println("intput: "+input);
+        System.out.println("input: "+input);
 
         try {
-            System.out.println("output: "+this.machineManager.encryptSentence(input));
+            System.out.println("Output");
+            System.out.println(this.machineManager.encryptSentence(input));
             validInput= true;
+//            System.out.println("Expected Output");
+//            System.out.println("CVRDIZWDAWQKUKBVHJILPKRNDXWIY");
         }
         catch (Exception e)
         {
