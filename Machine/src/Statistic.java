@@ -1,7 +1,14 @@
 public class Statistic {
 
+    private String [] proccesedInput;
+    private String [] codeFormats;
+
+
+
     //need to be implemented
-    public String getAmountOfProccessedInputs() {
+    public String getAmountOfProccesedInputs()
+    {
+
         return null;
     }
 }

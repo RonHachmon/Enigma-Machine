@@ -7,8 +7,10 @@ import java.nio.file.Paths;
 import java.util.List;
 
 public class MachineManager {
+
     private Machine machine = new Machine();
     private Statistic satistic = new Statistic();
+
     private Setting setting = new Setting();
 
     public Machine getMachine() {
@@ -41,6 +43,12 @@ public class MachineManager {
         return null;
     }
 
+
+    public String encryptSentence(String sentence)
+    {
+     return this.machine.runEncryptOnString(sentence)  ;
+    }
+
     //might need to be modified , depends on if rotor comes left to right
     // or right to left. currently from right to left
     public void setSelectedRotors(List<Integer> rotorsID) {
@@ -48,10 +56,12 @@ public class MachineManager {
             throw new IllegalArgumentException("amount of indexes must be " + this.amountOfRotors());
         }
         this.machine.setSelectedRotors(rotorsID);
+        this.setting.setSettingRotators(rotorsID);
 
         for (int i = rotorsID.size() - 1; i >= 0; i--) {
             this.setting.addSettingRotators(rotorsID.get(i) + 1);
         }
+
     }
 
     public void setSelectedReflector(int reflectorId) {
@@ -61,7 +71,10 @@ public class MachineManager {
 
     public void setStartingIndex(String startingCharArray) {
         this.machine.setStartingIndex(startingCharArray);
-        this.setting.setSettingStartingChars(startingCharArray);
+
+        this.setting.setSettingStartingChar(startingCharArray);
+        this.setting.setInitialRotorsAndDistanceFromNotch(machine);
+
     }
 
     public void addSwitchPlug(char firstLetter, char secondLetter) {
@@ -69,30 +82,33 @@ public class MachineManager {
         this.setting.addPlug(firstLetter, secondLetter);
     }
 
-    public String fullCodeSetting() {
-        return this.setting.getFullMachineCode();
+    public String getInitialFullMachineCode()
+    {
+        return this.setting.getInitialFullMachineCode();
+    }
+    public String getCurrentCodeSetting()
+    {
+        return this.setting.getCurrentMachineCode(this.machine);
+    }
+    public void resetMachine()
+    {
+        this.setStartingIndex(this.setting.getInitialRotorIndexes());
     }
 
     public int availableReflectors() {
         return this.machine.getAmountOfAvailableReflectrors();
     }
 
-    public int amountOfRotors() {
-        return this.machine.getAmountOfRotorNeeded();
+    public int amountOfRotorsRequired()
+    {
+        return this.machine.getamountOfRotorNeeded();
     }
 
-    public String getNotchPosition() {
-        StringBuilder output = new StringBuilder();
-        int rotorIDCounter = 1;
-        for (Rotor rotor : this.getMachine().getAllRotors()) {
-            output.append("Rotor #" + rotorIDCounter + " " + "notch ");
-            output.append((rotor.notchIndex()));
-            output.append(" ");
-            rotorIDCounter++;
-        }
-        //output.deleteCharAt(output.length());
-        return output.toString();
+    public int amountOfRotors()
+    {
+        return this.machine.getAllRotors().size();
     }
+
 
     //copied from gridler
     public void createMachineFromXML(String filePath) {
@@ -129,9 +145,11 @@ public class MachineManager {
         return file_ending.compareTo(fileType) == 0;
     }
 
-    private void loadEnigmaPartFromXMLEnigma(CTEEnigma enigma) {
-        machine.loadCharSet(enigma);
-        machine.loadRotators(enigma);
-        machine.loadReflector(enigma);
+    private void loadEnigmaPartFromXMLEnigma(CTEEnigma enigma){
+        Machine tempMachine=new Machine();
+        tempMachine.loadCharSet(enigma);
+        tempMachine.loadRotators(enigma);
+        tempMachine.loadReflector(enigma);
+        machine=tempMachine;
     }
 }
