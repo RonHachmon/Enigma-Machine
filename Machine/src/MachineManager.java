@@ -4,12 +4,14 @@ import javax.xml.bind.JAXBException;
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
 
 public class MachineManager {
 
     private Machine machine = new Machine();
-    private Statistic satistic = new Statistic();
+    private Statistic statistic = new Statistic();
 
     private Setting setting = new Setting();
 
@@ -21,12 +23,12 @@ public class MachineManager {
         this.machine = machine;
     }
 
-    public Statistic getSatistic() {
-        return satistic;
+    public String getStatistic() {
+        return statistic.historyAndStatistic();
     }
 
-    public void setSatistic(Statistic satistic) {
-        this.satistic = satistic;
+    public void setStatistic(Statistic statistic) {
+        this.statistic = statistic;
     }
 
     public Setting getSetting() {
@@ -36,17 +38,35 @@ public class MachineManager {
     public void setSetting(Setting setting) {
         this.setting = setting;
     }
+    public void addCodeToStatistic()
+    {
+        this.statistic.addCodeFormats(this.setting.getInitialFullMachineCode());
+    }
 
     //need to be implemented
-    public String getAmountOfProccesedInputs() {
-        //this.satistic.getAmountOfProccessedInputs();
-        return null;
+    public int getAmountOfProccesedInputs() {
+        return this.statistic.getAmountOfProccesedInputs();
     }
 
 
     public String encryptSentence(String sentence)
     {
-     return this.machine.runEncryptOnString(sentence)  ;
+        StringBuilder timeAndStatistic= new StringBuilder("#.");
+        Instant timeStart= Instant.now();
+        String output=this.machine.runEncryptOnString(sentence);
+        Duration duration= Duration.between(timeStart, Instant.now());
+
+        buildHistoryAndStatistic(sentence, timeAndStatistic, output, duration);
+        this.statistic.addProcessedInput(timeAndStatistic.toString());
+
+        return  output;
+    }
+
+    private void buildHistoryAndStatistic(String sentence, StringBuilder timeAndStatistic, String output, Duration duration) {
+        timeAndStatistic.append('<'+ sentence +'>');
+        timeAndStatistic.append("-->");
+        timeAndStatistic.append('<'+ output +'>');
+        timeAndStatistic.append('('+duration.getNano()+" nano-seconds)");
     }
 
     //might need to be modified , depends on if rotor comes left to right

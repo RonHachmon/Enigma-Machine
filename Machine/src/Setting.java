@@ -6,11 +6,11 @@ public class Setting {
 
 
     public static final String EMPTY = "";
-    private String setOfPlugs = "";
+    private String setOfPlugs = EMPTY;
     private List<Integer> selectedRotorsIndexes = new ArrayList<>();
     private String chosenReflector;
-    private String initialRotorIndexes = "";
-    private String initialRotorDistanceFromNotch = "";
+    private String initialRotorIndexes = EMPTY;
+    private String initialRotorDistanceFromNotch = EMPTY;
 
 
     public String getCurrentMachineCode(Machine machine) {

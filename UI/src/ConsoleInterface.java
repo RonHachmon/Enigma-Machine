@@ -79,7 +79,7 @@ public class ConsoleInterface {
                 this.resetRotor();
                 break;
             case HISTORYANDSTATS:
-                //this.printStats();
+                this.showHistoryAndStatistic();
                 break;
             case ENDPROGRAM:
                 this.exit();
@@ -134,6 +134,7 @@ public class ConsoleInterface {
         this.getStartingIndexes();
         this.getReflector();
         this.getSwitchPlug();
+        this.machineManager.addCodeToStatistic();
     }
 
 
@@ -170,6 +171,11 @@ public class ConsoleInterface {
     private void resetRotor()
     {
         this.machineManager.resetMachine();
+    }
+
+    private void showHistoryAndStatistic()
+    {
+        System.out.println(this.machineManager.getStatistic());
     }
 
 
@@ -219,7 +225,7 @@ public class ConsoleInterface {
                 " starting index .\n"));
         try {
             input.reverse();
-            this.machineManager.setStartingIndex(input.toString().toUpperCase(Locale.ROOT));
+            this.machineManager.setStartingIndex(input.toString().toUpperCase());
             validInput = true;
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
@@ -340,7 +346,7 @@ public class ConsoleInterface {
         machineManager.setStartingIndex("CC");
         String input_string="AABBCCDDEEFF";
         System.out.println("input char = "+input_string);
-        System.out.println("Machine output  "+machineManager.getMachine().runEncryptOnString(input_string.toUpperCase()));
+        //System.out.println("Machine output  "+machineManager.getMachine().runEncryptOnString(input_string.toUpperCase()));
         System.out.println("Expected output "+"CEEFBDFCDAAB");
     }
     //for testing purposes only
