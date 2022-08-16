@@ -117,16 +117,23 @@ public class Rotor {
 
     private static void checkValidChar(Rotor rotor, String allChars, CTEPositioning xmlLine) {
 
-            if(!allChars.contains(xmlLine.getRight().toUpperCase()))
+        if(!allChars.contains(xmlLine.getRight().toUpperCase()))
+        {
+            throw new IllegalArgumentException("Invalid rotor, since '"+xmlLine.getRight()+"' on rotor but isn't on char collection");
+        }
+        if(!allChars.contains(xmlLine.getLeft()))
+        {
+            throw new IllegalArgumentException("Invalid rotor, since '" + xmlLine.getLeft() + "' on rotor but isn't on char collection");
+        }
+        for(Line line: rotor.lineArray)
+        {
+            if(xmlLine.getRight().charAt(0)==line.getRightChar())
             {
-                throw new IllegalArgumentException("Invalid rotor, since '"+xmlLine.getRight()+"' on rotor but isn't on char collection");
+                throw new IllegalArgumentException(xmlLine.getRight().charAt(0)+" appears twice on rotor");
             }
-            if(!allChars.contains(xmlLine.getLeft()))
+            if(xmlLine.getLeft().charAt(0)==line.getLeftChar())
             {
-                throw new IllegalArgumentException("Invalid rotor, since '" + xmlLine.getLeft() + "' on rotor but isn't on char collection");
-            }
-            if (xmlLine.getLeft().charAt(0) == line.getLeftChar()) {
-                throw new IllegalArgumentException(xmlLine.getLeft().charAt(0) + " appears twice on rotor");
+                throw new IllegalArgumentException(xmlLine.getLeft().charAt(0)+ " appears twice on rotor");
             }
         }
     }
