@@ -1,4 +1,3 @@
-import java.io.File;
 import java.util.*;
 
 public class ConsoleInterface {
@@ -8,8 +7,7 @@ public class ConsoleInterface {
 
     private MachineManager machineManager = new MachineManager();
     private final Scanner scanner = new Scanner(System.in);
-    private boolean runMachine=true;
-
+    private boolean runMachine = true;
 
     public static void main(String[] args) {
         ConsoleInterface game = new ConsoleInterface();
@@ -17,20 +15,16 @@ public class ConsoleInterface {
     }
 
     private void runMachine() {
-
         int userChoice = 0;
         eMainMenuOption[] menuOptions = eMainMenuOption.values();
+
         do {
-
             userChoice = getValidInput();
-            doMenuOption(menuOptions[userChoice-1]);
-
-        }while (userChoice != 8||this.runMachine);
+            doMenuOption(menuOptions[userChoice - 1]);
+        } while (userChoice != 8);
 
         System.out.println("Bye Bye :)");
     }
-
-
 
     private int getValidInput() {
         int input = 0;
@@ -41,23 +35,22 @@ public class ConsoleInterface {
 
                 input = Integer.parseInt(getInput(""));
                 //input = Integer.parseInt(this.getInput("Enter a number between 1-8"));
-            }
-            catch(Exception e){
+            } catch (Exception e) {
                 System.out.println(e.getMessage());
-
             }
         }
 
         return input;
     }
+
     private void printMainMenu() {
-        System.out.println("Please choose an option from the menu:");
+        System.out.println("Please choose an option (1-8) from the menu:");
         eMainMenuOption[] menuOptions = eMainMenuOption.values();
-        for(int i=0; i<menuOptions.length;i++)
-        {
-            System.out.println(menuOptions[i]+ " press "+(i+1));
+        for (int i = 0; i < menuOptions.length; i++) {
+            System.out.println((i + 1) + " " + menuOptions[i]);
         }
     }
+
     private void doMenuOption(eMainMenuOption menuSelection) {
         switch (menuSelection) {
             case READFILE:
@@ -70,7 +63,7 @@ public class ConsoleInterface {
                 this.getMachineInput();
                 break;
             case AUTOZERO:
-                //this.playMoveFromUser();
+                this.autoZeroMachine();
                 break;
             case INPUTPROCESSING:
                 this.processInput();
@@ -105,28 +98,23 @@ public class ConsoleInterface {
         }
     }
 
-    private void showMachineStructure()
-    {
-        System.out.println("Total amount of rotors: "+this.machineManager.amountOfRotors() );
-        System.out.println("Required amount of rotors: "+this.machineManager.amountOfRotorsRequired() );
-
-
-        System.out.println("Amount of available reflectors:");
-        System.out.println(this.machineManager.availableReflectors());
-
-        System.out.println("Amount of message processed:");
-        this.machineManager.getAmountOfProccesedInputs();
+    private void showMachineStructure() {
+        System.out.println("Amount of total rotors: " + this.machineManager.amountOfRotors());
+        System.out.println("Amount of required rotors: " + this.machineManager.amountOfRotorsRequired());
+        System.out.println("Amount of available reflectors: " + this.machineManager.availableReflectors());
+        System.out.println("Amount of message processed: " + this.machineManager.getAmountOfProcessedInputs());
 
         System.out.println("Initial Code configuration");
         System.out.println(this.machineManager.getInitialFullMachineCode());
-
         System.out.println("Current Code configuration");
-
         System.out.println(this.machineManager.getCurrentCodeSetting());
 
         getInput("To continue press enter");
+    }
 
-
+    private void autoZeroMachine() {
+        this.machineManager.autoZeroMachine();
+        showMachineStructure();
     }
 
     private void getMachineInput() {
@@ -137,47 +125,37 @@ public class ConsoleInterface {
         this.machineManager.addCodeToStatistic();
     }
 
-
-    private void processInput()
-    {
-        boolean validInput =false;
+    private void processInput() {
+        boolean validInput = false;
         //String input="WOWCANTBELIEVEITACTUALLYWORKS";
-        String input =this.getInput("Please enter a sentence for encryption");
-        input=input.toUpperCase();
-        System.out.println("input: "+input);
+        String input = this.getInput("Please enter a sentence for encryption");
+        input = input.toUpperCase();
+        System.out.println("input: " + input);
 
         try {
             System.out.println("Output");
             System.out.println(this.machineManager.encryptSentence(input));
-            validInput= true;
+            validInput = true;
 //            System.out.println("Expected Output");
 //            System.out.println("CVRDIZWDAWQKUKBVHJILPKRNDXWIY");
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
-        if(!validInput)
-        {
-            if(tryAgain()) {
+        if (!validInput) {
+            if (tryAgain()) {
                 this.processInput();
             }
         }
-
-
     }
 
-    private void resetRotor()
-    {
+    private void resetRotor() {
         this.machineManager.resetMachine();
     }
 
-    private void showHistoryAndStatistic()
-    {
+    private void showHistoryAndStatistic() {
         System.out.println(this.machineManager.getStatistic());
     }
-
 
     private boolean getRotors() {
         boolean validInput = false;
@@ -218,9 +196,9 @@ public class ConsoleInterface {
 
     private boolean getStartingIndexes() {
 
-        boolean validInput=false;
-        int amountOfIndexesNeeded=this.machineManager.amountOfRotorsRequired();
-        StringBuilder input= new StringBuilder(getInput("Please enter set of " + amountOfIndexesNeeded +
+        boolean validInput = false;
+        int amountOfIndexesNeeded = this.machineManager.amountOfRotorsRequired();
+        StringBuilder input = new StringBuilder(getInput("Please enter set of " + amountOfIndexesNeeded +
 
                 " starting index .\n"));
         try {
@@ -244,10 +222,10 @@ public class ConsoleInterface {
 
     private boolean getReflector() {
 
-        boolean validInput=false;
-        int amountOfAvailableReflectors=this.machineManager.availableReflectors();
+        boolean validInput = false;
+        int amountOfAvailableReflectors = this.machineManager.availableReflectors();
         printAvailableReflectors();
-        String input=getInput("");
+        String input = getInput("");
         try {
             int index = Integer.parseInt(input);
             if (index < 1 || index > amountOfAvailableReflectors) {
@@ -270,7 +248,6 @@ public class ConsoleInterface {
 
         return validInput;
     }
-
 
     private boolean getSwitchPlug() {
         boolean validInput = false;
@@ -309,8 +286,7 @@ public class ConsoleInterface {
         String input = getInput("try again Y/N ?");
 
         input = input.toUpperCase(Locale.ENGLISH);
-        while (!input.equals("Y") && !input.equals("N"))
-        {
+        while (!input.equals("Y") && !input.equals("N")) {
             System.out.println(input);
             input = getInput("input must be either 'Y' or 'N' ");
         }
@@ -325,44 +301,45 @@ public class ConsoleInterface {
 
     private void printAvailableReflectors() {
         RomanNumbers[] romanValues = RomanNumbers.values();
-        int amountOfAvailableReflectors=this.machineManager.availableReflectors();
+        int amountOfAvailableReflectors = this.machineManager.availableReflectors();
         for (int i = 0; i < amountOfAvailableReflectors; i++) {
             System.out.println("for reflector " + romanValues[i].name() + " " + romanValues[i]);
         }
     }
 
-
-    private void exit()
-    {
-        this.runMachine=false;
+    private void exit() {
+        this.runMachine = false;
     }
 
     //for testing purposes only
-    private  void sanity_check_loaded_from_xml() {
+    private void sanity_check_loaded_from_xml() {
 
-        machineManager.addSwitchPlug('A','F');
+        machineManager.addSwitchPlug('A', 'F');
         machineManager.setSelectedReflector(0);
-        machineManager.setSelectedRotors(new ArrayList<Integer>(){{add(0);add(1);}});
+        machineManager.setSelectedRotors(new ArrayList<Integer>() {{
+            add(0);
+            add(1);
+        }});
         machineManager.setStartingIndex("CC");
-        String input_string="AABBCCDDEEFF";
-        System.out.println("input char = "+input_string);
+        String input_string = "AABBCCDDEEFF";
+        System.out.println("input char = " + input_string);
         //System.out.println("Machine output  "+machineManager.getMachine().runEncryptOnString(input_string.toUpperCase()));
-        System.out.println("Expected output "+"CEEFBDFCDAAB");
+        System.out.println("Expected output " + "CEEFBDFCDAAB");
     }
-    //for testing purposes only
-    private void paperEnigmaCheckLoadedFromXml() {
-        //machineManager.setSelectedReflector(0);
+
+    // for testing purposes only
+    /*private void paperEnigmaCheckLoadedFromXml() {
+        machineManager.setSelectedReflector(0);
         this.getRotors();
         this.getReflector();
-        //machineManager.setSelectedRotors(new ArrayList<Integer>(){{add(2);add(1);add(0);}});
+        machineManager.setSelectedRotors(new ArrayList<Integer>(){{add(2);add(1);add(0);}});
         this.getStartingIndexes();
         this.getSwitchPlug();
         this.showMachineStructure();
-        //machineManager.getMachine().setStartingIndex("ODX");
-//        String input_string="WOWCANTBELIEVEITACTUALLYWORKS";
-//        System.out.println("input char = "+input_string);
-//        System.out.println("Machine output  "+machineManager.getMachine().run_encrypt_on_string(input_string.toUpperCase()));
-//        System.out.println("Expected output "+"CVRDIZWDAWQKUKBVHJILPKRNDXWIY");
-    }
-
+        machineManager.getMachine().setStartingIndex("ODX");
+        String input_string="WOWCANTBELIEVEITACTUALLYWORKS";
+        System.out.println("input char = "+input_string);
+        System.out.println("Machine output  "+machineManager.getMachine().run_encrypt_on_string(input_string.toUpperCase()));
+        System.out.println("Expected output "+"CVRDIZWDAWQKUKBVHJILPKRNDXWIY");
+    }*/
 }

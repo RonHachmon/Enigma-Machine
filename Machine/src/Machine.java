@@ -11,7 +11,7 @@ public class Machine {
     private List<Rotor> allRotors = new ArrayList<>();
     public final List<Reflector> allReflectors = new ArrayList<>();
     public Reflector selectedReflector;
-    private String allChars;
+    public String allChars;
     private int amountOfRotorNeeded;
 
     public Machine() {
@@ -32,6 +32,7 @@ public class Machine {
         return allRotors;
     }
 
+    //todo: why not just list.size ?
     public int getAmountOfAvailableReflectrors() {
         int count = 0;
         for (Reflector reflector : this.allReflectors) {
@@ -83,7 +84,6 @@ public class Machine {
         Character result;
 
         //run char thought right side of Rotors
-
         for (int i = 0; i < selectedRotors.size(); i++) {
             //System.out.println("    Rotor number: " + (i + 1));
             if (toRotate) {
@@ -93,21 +93,19 @@ public class Machine {
             running_index = selectedRotors.get(i).get_exit_index_from_right(running_index);
         }
 
-
         //System.out.println("    Reflector:");
-        running_index= selectedReflector.get_exit_index(running_index);
+        running_index = selectedReflector.get_exit_index(running_index);
 
         //run char thought left side of Rotors
-        for (int i = selectedRotors.size()-1; i >=0 ; i--) {
+        for (int i = selectedRotors.size() - 1; i >= 0; i--) {
             //System.out.println("    Rotor number: "+(i+1));
-
             running_index = selectedRotors.get(i).get_exit_index_from_left(running_index);
         }
 
         result = reverseCharMap.get(running_index);
-
         result = runCharThroughSwitchPlug(result);
         //System.out.println("output char: "+result);
+
         return result;
     }
 
@@ -118,12 +116,11 @@ public class Machine {
         return input;
     }
 
-
     public String runEncryptOnString(String input) {
         this.isAllCharsExistInCharSet(input);
-        String res=new String();
-        for (int i = 0; i <input.length() ; i++) {
-            res+=this.run_encrypt_on_char(input.charAt(i));
+        String res = new String();
+        for (int i = 0; i < input.length(); i++) {
+            res += this.run_encrypt_on_char(input.charAt(i));
 
         }
         return res;
@@ -138,18 +135,14 @@ public class Machine {
         }
         xmlRotorsArr = sortXMLRotors(xmlRotorsArr);
         loadArrayOfRotators(xmlRotorsArr);
-        if(allRotors.size()<amountOfRotorNeeded)
-        {
-            throw new IllegalArgumentException("amount of rotors should be at least "+ amountOfRotorNeeded);
-
+        if (allRotors.size() < amountOfRotorNeeded) {
+            throw new IllegalArgumentException("amount of rotors should be at least " + amountOfRotorNeeded);
         }
     }
 
-
     private void loadArrayOfRotators(List<CTERotor> xmlRotorsArr) {
-        Rotor currentRotor=new Rotor();
-        for(int i = 0; i< xmlRotorsArr.size(); i++)
-        {
+        Rotor currentRotor = new Rotor();
+        for (int i = 0; i < xmlRotorsArr.size(); i++) {
             //check if the id are sequential and unique
             if (xmlRotorsArr.get(i).getId() != i + 1) {
                 throw new IllegalArgumentException("rotor id must be unique and in a sequential order," +
@@ -177,9 +170,9 @@ public class Machine {
         for (CTEReflector xmlReflector : xmlReflextorArr.getCTEReflector()) {
             currentReflector = Reflector.createReflectorFromXML(xmlReflector, charMap.size());
 
-            int position =  Machine.convertRomanToInt(xmlReflector.getId());
+            int position = Machine.convertRomanToInt(xmlReflector.getId());
             //System.out.println("Reflector:"+ currentReflector);
-            allReflectors.set(position,currentReflector);
+            allReflectors.set(position, currentReflector);
         }
     }
 
@@ -191,7 +184,7 @@ public class Machine {
             throw new IllegalArgumentException("amount of characters must be even");
         }
 
-        this.allChars=charCollection.toUpperCase(Locale.ROOT);
+        this.allChars = charCollection.toUpperCase(Locale.ROOT);
         //System.out.println("all char: "+this.allChars);
         this.setCharMap(charCollection);
         this.setReverseCharMap();
@@ -205,7 +198,6 @@ public class Machine {
                 .replace("&apos;", "'");
         return result;
     }
-
 
     public void setStartingIndex(String startingCharArray) {
         if (startingCharArray.length() != selectedRotors.size()) {
@@ -234,32 +226,24 @@ public class Machine {
         }
     }
 
-    private void isAllCharsExistInCharSet(String inputString)
-    {
-        Set <Character> allChar =new HashSet<>();
-        Set <Character> notFoundChars =new HashSet<>();
-        StringBuilder nonExistingChar=new StringBuilder();
+    private void isAllCharsExistInCharSet(String inputString) {
+        Set<Character> allChar = new HashSet<>();
+        Set<Character> notFoundChars = new HashSet<>();
+        StringBuilder nonExistingChar = new StringBuilder();
 
-        allChars.chars().forEach(character->allChar.add((char)character));
+        allChars.chars().forEach(character -> allChar.add((char) character));
 
-        inputString.chars().forEach(c->
+        inputString.chars().forEach(c ->
         {
             //for new char in set add return true
-            if(allChar.add((char)c))
-            {
+            if (allChar.add((char) c)) {
                 notFoundChars.add((char) c);
             }
         });
 
-
-        if(!notFoundChars.isEmpty())
-        {
-            notFoundChars.forEach(character ->nonExistingChar.append(character+" , ") );
-            throw new IllegalArgumentException("machine does not contain letter: "+notFoundChars);
-
+        if (!notFoundChars.isEmpty()) {
+            notFoundChars.forEach(character -> nonExistingChar.append(character + " , "));
+            throw new IllegalArgumentException("machine does not contain letter: " + notFoundChars);
         }
-
-
-
     }
 }

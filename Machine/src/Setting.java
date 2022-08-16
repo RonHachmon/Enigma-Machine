@@ -3,8 +3,6 @@ import java.util.Collections;
 import java.util.List;
 
 public class Setting {
-
-
     public static final String EMPTY = "";
     private String setOfPlugs = EMPTY;
     private List<Integer> selectedRotorsIndexes = new ArrayList<>();
@@ -12,13 +10,11 @@ public class Setting {
     private String initialRotorIndexes = EMPTY;
     private String initialRotorDistanceFromNotch = EMPTY;
 
-
     public String getCurrentMachineCode(Machine machine) {
         String code = "<" + RotorsAndDistanceFromNotch(machine) + ">" +
                 "<" + currentRotorsIndexes(machine) + ">" +
                 "<" + chosenReflector + ">" +
                 getAddPlugs();
-
 
         return code;
     }
@@ -28,7 +24,6 @@ public class Setting {
                 "<" + initialRotorIndexes + ">" +
                 "<" + chosenReflector + ">" +
                 getAddPlugs();
-
 
         return code;
     }
@@ -43,8 +38,6 @@ public class Setting {
 
     public void setSettingRotators(List<Integer> RotorsID) {
         selectedRotorsIndexes = RotorsID;
-
-
     }
 
     //gets full set of characters for example "AO!"
@@ -52,7 +45,6 @@ public class Setting {
         StringBuilder string = new StringBuilder(startingCharArray);
         initialRotorIndexes = string.reverse().toString();
     }
-
 
     public void setSettingReflector(int selectedReflector) {
         this.chosenReflector = Setting.convertIntToRoman(selectedReflector);
@@ -65,7 +57,6 @@ public class Setting {
         } else {
             this.setOfPlugs += ',' + firstChar.toString() + '|' + secondChar.toString();
         }
-
     }
 
     private String currentRotorsIndexes(Machine machine) {
@@ -83,12 +74,9 @@ public class Setting {
             int currentRotorIndex = selectedRotorsIndexes.get(i);
             result += (currentRotorIndex + 1) +
                     "(" + machine.getAllRotors().get(currentRotorIndex).distanceFromNotch() + ")";
-
-
         }
         return result;
     }
-
 
     private String getAddPlugs() {
         if (setOfPlugs.isEmpty()) {
@@ -114,5 +102,4 @@ public class Setting {
 
         }
     }
-
 }

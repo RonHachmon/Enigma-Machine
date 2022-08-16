@@ -6,13 +6,14 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class MachineManager {
 
     private Machine machine = new Machine();
     private Statistic statistic = new Statistic();
-
     private Setting setting = new Setting();
 
     public Machine getMachine() {
@@ -38,49 +39,43 @@ public class MachineManager {
     public void setSetting(Setting setting) {
         this.setting = setting;
     }
-    public void addCodeToStatistic()
-    {
+
+    public void addCodeToStatistic() {
         this.statistic.addCodeFormats(this.setting.getInitialFullMachineCode());
     }
 
     //need to be implemented
-    public int getAmountOfProccesedInputs() {
-        return this.statistic.getAmountOfProccesedInputs();
+    public int getAmountOfProcessedInputs() {
+        return this.statistic.getAmountOfProcessedInputs();
     }
 
-
-    public String encryptSentence(String sentence)
-    {
-        StringBuilder timeAndStatistic= new StringBuilder("#.");
-        Instant timeStart= Instant.now();
-        String output=this.machine.runEncryptOnString(sentence);
-        Duration duration= Duration.between(timeStart, Instant.now());
+    public String encryptSentence(String sentence) {
+        StringBuilder timeAndStatistic = new StringBuilder("#.");
+        Instant timeStart = Instant.now();
+        String output = this.machine.runEncryptOnString(sentence);
+        Duration duration = Duration.between(timeStart, Instant.now());
 
         buildHistoryAndStatistic(sentence, timeAndStatistic, output, duration);
         this.statistic.addProcessedInput(timeAndStatistic.toString());
 
-        return  output;
+        return output;
     }
 
     private void buildHistoryAndStatistic(String sentence, StringBuilder timeAndStatistic, String output, Duration duration) {
-        timeAndStatistic.append('<'+ sentence +'>');
+        timeAndStatistic.append('<' + sentence + '>');
         timeAndStatistic.append("-->");
-        timeAndStatistic.append('<'+ output +'>');
-        timeAndStatistic.append('('+duration.getNano()+" nano-seconds)");
+        timeAndStatistic.append('<' + output + '>');
+        timeAndStatistic.append('(' + duration.getNano() + " nano-seconds)");
     }
 
     //might need to be modified , depends on if rotor comes left to right
     // or right to left. currently from right to left
-    public void setSelectedRotors(List<Integer> rotorsID)
-    {
-        if(rotorsID.size()!=this.amountOfRotors())
-        {
-            throw new IllegalArgumentException("amount of indexes must be "+this.amountOfRotors() );
+    public void setSelectedRotors(List<Integer> rotorsID) {
+        if (rotorsID.size() != this.amountOfRotors()) {
+            throw new IllegalArgumentException("amount of indexes must be " + this.amountOfRotors());
         }
         this.machine.setSelectedRotors(rotorsID);
         this.setting.setSettingRotators(rotorsID);
-
-
     }
 
     public void setSelectedReflector(int reflectorId) {
@@ -90,7 +85,6 @@ public class MachineManager {
 
     public void setStartingIndex(String startingCharArray) {
         this.machine.setStartingIndex(startingCharArray);
-
         this.setting.setSettingStartingChar(startingCharArray);
         this.setting.setInitialRotorsAndDistanceFromNotch(machine);
 
@@ -101,16 +95,15 @@ public class MachineManager {
         this.setting.addPlug(firstLetter, secondLetter);
     }
 
-    public String getInitialFullMachineCode()
-    {
+    public String getInitialFullMachineCode() {
         return this.setting.getInitialFullMachineCode();
     }
-    public String getCurrentCodeSetting()
-    {
+
+    public String getCurrentCodeSetting() {
         return this.setting.getCurrentMachineCode(this.machine);
     }
-    public void resetMachine()
-    {
+
+    public void resetMachine() {
         this.setStartingIndex(this.setting.getInitialRotorIndexes());
     }
 
@@ -118,16 +111,13 @@ public class MachineManager {
         return this.machine.getAmountOfAvailableReflectrors();
     }
 
-    public int amountOfRotorsRequired()
-    {
+    public int amountOfRotorsRequired() {
         return this.machine.getAmountOfRotorNeeded();
     }
 
-    public int amountOfRotors()
-    {
+    public int amountOfRotors() {
         return this.machine.getAllRotors().size();
     }
-
 
     //copied from gridler
     public void createMachineFromXML(String filePath) {
@@ -164,11 +154,30 @@ public class MachineManager {
         return file_ending.compareTo(fileType) == 0;
     }
 
-    private void loadEnigmaPartFromXMLEnigma(CTEEnigma enigma){
-        Machine tempMachine=new Machine();
+    private void loadEnigmaPartFromXMLEnigma(CTEEnigma enigma) {
+        Machine tempMachine = new Machine();
         tempMachine.loadCharSet(enigma);
         tempMachine.loadRotators(enigma);
         tempMachine.loadReflector(enigma);
-        machine=tempMachine;
+        machine = tempMachine;
+    }
+
+    public void autoZeroMachine() {
+        Random rand = new Random();
+        List<Integer> indexes = new ArrayList<>();
+        String startingCharArray = new String();
+
+        // Set rotors & starting indexes
+        for (int i = 0; i < amountOfRotorsRequired(); i++) {
+            indexes.add(machine.getAllRotors().
+                    get(rand.nextInt(machine.getAllRotors().size())).getRotatorIndex());
+            int randomInt = rand.nextInt(machine.allChars.length());
+            char randomChar = machine.allChars.charAt(randomInt);
+            startingCharArray += randomChar;
+        }
+
+        setSelectedRotors(indexes);
+        setStartingIndex(startingCharArray);
+        setSelectedReflector(rand.nextInt(availableReflectors()));
     }
 }
