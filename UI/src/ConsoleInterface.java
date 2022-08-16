@@ -1,4 +1,4 @@
-import java.nio.file.InvalidPathException;
+import java.io.File;
 import java.util.*;
 
 public class ConsoleInterface {
@@ -8,29 +8,100 @@ public class ConsoleInterface {
 
     private MachineManager machineManager=new MachineManager();
     private final Scanner scanner = new Scanner(System.in);
+    boolean runMachine=true;
     public static void main(String[] args) {
-        String temp ="x&amp;";
-        String replace = temp.replace("&amp;","Q");
-        System.out.println(replace);
+        // Creates an array in which we will store the names of files and directories
+        String[] fileNames;
+        MachineManager machineManager1=new MachineManager();
+        // Creates a new File instance by converting the given pathname string
 
-        ConsoleInterface game = new ConsoleInterface();
-        game.runMachine();
+        String folderPath="C:\\Temp\\Error Files\\" ;//replace with your own folder path
+
+        File f = new File(folderPath);
+        // Populates the array with names of files and directories
+        fileNames=f.list();
+        assert fileNames != null;
+        Arrays.sort(fileNames);
+
+        int i=0;
+        // For each pathname in the pathnames array
+        for (String fileName : fileNames) {
+            try{
+                System.out.println((++i) +" # "+fileName+":");
+
+
+                machineManager1.createMachineFromXML(folderPath+fileName);//enter your implement
+            }
+            catch (Exception e)
+            {
+                System.out.println(e.getMessage());
+            }
+
+        }
+
+
+
+
+
+
+
+
+//        String temp ="x&amp;";
+//        String replace = temp.replace("&amp;","Q");
+//        System.out.println(replace);
+//
+//        ConsoleInterface game = new ConsoleInterface();
+//        game.runMachine();
     }
 
     private void runMachine() {
             this.loadFromXML();
-            //this.printMainMenu();
+            while (runMachine) {
+                this.printMainMenu();
+            }
         }
 
     private void printMainMenu() {
         System.out.println("Please choose an option from the menu:");
-        eMainMenuOption[] var1 = eMainMenuOption.values();
-        int var2 = var1.length;
-        for(int i=0; i<var1.length;i++)
+        eMainMenuOption[] menuOptions = eMainMenuOption.values();
+        int var2 = menuOptions.length;
+        for(int i=0; i<menuOptions.length;i++)
         {
-            System.out.println(var1[i]);
+            System.out.println(menuOptions[i]+ " press "+(i+1));
+        }
+        String input=getInput("");
+        int index = Integer.parseInt(input);
+        doMenuOption(menuOptions[index-1]);
+
+    }
+    private void doMenuOption(eMainMenuOption menuSelection) {
+        switch (menuSelection) {
+            case READFILE:
+                this.loadFromXML();
+                break;
+            case MACHINESTRUCTURE:
+                this.showMachineStructure();
+                break;
+            case ZEROINGMACHINE:
+                this.getMachineInput();
+                break;
+            case AUTOZERO:
+                //this.playMoveFromUser();
+                break;
+            case INPUTPROCESSING:
+                this.processInput();
+                break;
+            case RESET:
+                this.resetRotor();
+                break;
+            case HISTORYANDSTATS:
+                //this.printStats();
+                break;
+            case ENDPROGRAM:
+                this.exit();
         }
 
+        System.out.println();
     }
     private void loadFromXML(){
         boolean loadedSuccsefully=false;
@@ -53,19 +124,12 @@ public class ConsoleInterface {
             }
         }
         //this.showMachineStructure();
-        this.paperEnigmaCheckLoadedFromXml();
+        //this.paperEnigmaCheckLoadedFromXml();
     }
     private void showMachineStructure()
     {
-        System.out.println("Amount of used Rotor:");
-
-        System.out.println("Current Notch position on each rotor from right to left:");
-//        machineManager.addSwitchPlug('A','F');
-//        machineManager.setSelectedReflector(0);
-//        machineManager.setSelectedRotors(new ArrayList<Integer>(){{add(0);add(1);}});
-//        machineManager.setStartingIndex("CC");
-        String notchPosition=machineManager.getNotchPosition();
-        System.out.println(notchPosition);
+        System.out.println("Total amount of rotors: "+this.machineManager.amountOfRotors() );
+        System.out.println("Required amount of rotors: "+this.machineManager.amountOfRotorsRequired() );
 
         System.out.println("Amount of available reflectors:");
         System.out.println(this.machineManager.availableReflectors());
@@ -73,8 +137,13 @@ public class ConsoleInterface {
         System.out.println("Amount of message processed:");
         this.machineManager.getAmountOfProccesedInputs();
 
+        System.out.println("Initial Code configuration");
+        System.out.println(this.machineManager.getInitialFullMachineCode());
+
         System.out.println("Current Code configuration");
-        System.out.println(this.machineManager.fullCodeSetting());
+        System.out.println(this.machineManager.getCurrentCodeSetting());
+
+        getInput("To continue press enter");
 
     }
 
@@ -85,6 +154,37 @@ public class ConsoleInterface {
         this.getStartingIndexes();
         this.getReflector();
         this.getSwitchPlug();
+    }
+
+    private void processInput()
+    {
+        boolean validInput =false;
+        String input =this.getInput("Please enter a sentence for encryption");
+        input=input.toUpperCase();
+        System.out.println("intput: "+input);
+
+        try {
+            System.out.println("output: "+this.machineManager.encryptSentence(input));
+            validInput= true;
+        }
+        catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
+
+        if(!validInput)
+        {
+            if(tryAgain()) {
+                this.processInput();
+            }
+        }
+
+
+    }
+
+    private void resetRotor()
+    {
+        this.machineManager.resetMachine();
     }
     private boolean getRotors() {
         boolean validInput=false;
@@ -141,7 +241,7 @@ public class ConsoleInterface {
 
     private boolean getStartingIndexes() {
         boolean validInput=false;
-        int amountOfIndexesNeeded=this.machineManager.amountOfRotors();
+        int amountOfIndexesNeeded=this.machineManager.amountOfRotorsRequired();
         StringBuilder input= new StringBuilder(getInput("Please enter set of " + amountOfIndexesNeeded +
                 " starting index .\n"));
         try {
@@ -171,7 +271,7 @@ public class ConsoleInterface {
     private boolean getReflector() {
         boolean validInput=false;
         int amountOfAvailableReflectors=this.machineManager.availableReflectors();
-        printAvailableReflectors(amountOfAvailableReflectors);
+        printAvailableReflectors();
         String input=getInput("");
         try {
             int index = Integer.parseInt(input);
@@ -250,39 +350,13 @@ public class ConsoleInterface {
 
 
 
-    //for testing purposes only
-    private  void sanity_check_loaded_from_xml() {
 
-        machineManager.addSwitchPlug('A','F');
-        machineManager.setSelectedReflector(0);
-        machineManager.setSelectedRotors(new ArrayList<Integer>(){{add(0);add(1);}});
-        machineManager.setStartingIndex("CC");
-        String input_string="AABBCCDDEEFF";
-        System.out.println("input char = "+input_string);
-        System.out.println("Machine output  "+machineManager.getMachine().run_encrypt_on_string(input_string.toUpperCase()));
-        System.out.println("Expected output "+"CEEFBDFCDAAB");
-    }
-    //for testing purposes only
-    private void paperEnigmaCheckLoadedFromXml() {
-        //machineManager.setSelectedReflector(0);
-        this.getRotors();
-        this.getReflector();
-        //machineManager.setSelectedRotors(new ArrayList<Integer>(){{add(2);add(1);add(0);}});
-        this.getStartingIndexes();
-        this.getSwitchPlug();
-        this.showMachineStructure();
-        //machineManager.getMachine().setStartingIndex("ODX");
-        String input_string="WOWCANTBELIEVEITACTUALLYWORKS";
-        System.out.println("input char = "+input_string);
-        System.out.println("Machine output  "+machineManager.getMachine().run_encrypt_on_string(input_string.toUpperCase()));
-        System.out.println("Expected output "+"CVRDIZWDAWQKUKBVHJILPKRNDXWIY");
-    }
 
     //maybe with command pattern tryAgain will receive command to run
     private boolean tryAgain()
     {
         String input = getInput("try again Y/N ?");
-        input = input.toUpperCase(Locale.ROOT);
+        input = input.toUpperCase(Locale.ENGLISH);
         while (!input.equals("Y") && !input.equals("N"))
         {
             System.out.println(input);
@@ -296,12 +370,46 @@ public class ConsoleInterface {
         return  scanner.nextLine();
     }
 
-    private void printAvailableReflectors(int amountOfAvailableReflectors) {
+    private void printAvailableReflectors() {
         RomanNumbers[] romanValues = RomanNumbers.values();
+        int amountOfAvailableReflectors=this.machineManager.availableReflectors();
         for (int i = 0; i < amountOfAvailableReflectors; i++) {
             System.out.println("for reflector "+ romanValues[i].name()+" "+ romanValues[i]);
 
         }
+    }
+
+    private void exit()
+    {
+        this.runMachine=false;
+    }
+
+    //for testing purposes only
+    private  void sanity_check_loaded_from_xml() {
+
+        machineManager.addSwitchPlug('A','F');
+        machineManager.setSelectedReflector(0);
+        machineManager.setSelectedRotors(new ArrayList<Integer>(){{add(0);add(1);}});
+        machineManager.setStartingIndex("CC");
+        String input_string="AABBCCDDEEFF";
+        System.out.println("input char = "+input_string);
+        System.out.println("Machine output  "+machineManager.getMachine().runEncryptOnString(input_string.toUpperCase()));
+        System.out.println("Expected output "+"CEEFBDFCDAAB");
+    }
+    //for testing purposes only
+    private void paperEnigmaCheckLoadedFromXml() {
+        //machineManager.setSelectedReflector(0);
+        this.getRotors();
+        this.getReflector();
+        //machineManager.setSelectedRotors(new ArrayList<Integer>(){{add(2);add(1);add(0);}});
+        this.getStartingIndexes();
+        this.getSwitchPlug();
+        this.showMachineStructure();
+        //machineManager.getMachine().setStartingIndex("ODX");
+//        String input_string="WOWCANTBELIEVEITACTUALLYWORKS";
+//        System.out.println("input char = "+input_string);
+//        System.out.println("Machine output  "+machineManager.getMachine().run_encrypt_on_string(input_string.toUpperCase()));
+//        System.out.println("Expected output "+"CVRDIZWDAWQKUKBVHJILPKRNDXWIY");
     }
 
 }

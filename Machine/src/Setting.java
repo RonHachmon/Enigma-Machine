@@ -1,94 +1,116 @@
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class Setting {
 
-    // sperated by index
-    // 0 - rotors
-    // 1 - starting index for rotor
-    // 2 - reflector
-    // 3 plug
-    //EXAMPLE :    0      1    2      3
-    //        <45,27,94><AO!><III><A|Z,D|E>
-    private String [] currentCodeSettings = new String [4] ;
+
+    public static final String EMPTY = "";
+    private String setOfPlugs="";
+    private List <Integer> selectedRotorsIndexes=new ArrayList<>();
+    private String chosenReflector;
+    private String  initialRotorIndexes="";
+    private String  initialRotorDistanceFromNotch="";
 
 
-    public String getFullMachineCode()
+    public String getCurrentMachineCode(Machine machine)
     {
-        String code="";
-        for(String string:currentCodeSettings)
-        {
-            if(string!=null) {
-                if (string.charAt(string.length() - 1) == ',') {
-                    string = string.substring(0, string.length() - 1);
-                }
-                code += '<' + string + '>';
-            }
+        String code=     "<"+RotorsAndDistanceFromNotch(machine)+">"+
+                         "<"+currentRotorsIndexes(machine)+">"+
+                         "<"+chosenReflector+">"+
+                            getAddPlugs();
 
-        }
+
+
+
+        return code;
+    }
+    public String getInitialFullMachineCode()
+    {
+        String code=     "<"+initialRotorDistanceFromNotch+">"+
+                         "<"+initialRotorIndexes+">"+
+                         "<"+chosenReflector+">"+
+                            getAddPlugs();
+
+
+
+
         return code;
     }
 
-
-    public void setSettingRotators(Integer [] selectedRotators)
+    public String getInitialRotorIndexes()
     {
-        int i=0;
-        //reset
-        currentCodeSettings[0]="";
-        for ( i = 0; i <selectedRotators.length-1 ; i++) {
-
-            currentCodeSettings[0]+=selectedRotators[i].toString();
-            currentCodeSettings[0]+=',';
-
-        }
-        //last one without ','
-        currentCodeSettings[0]+=selectedRotators[i].toString();
+        return this.initialRotorIndexes;
     }
-    public void addSettingRotators(Integer oneRotor)
+    public void setInitialRotorsAndDistanceFromNotch(Machine machine)
     {
-        initializeStringIfNull(0);
+        initialRotorDistanceFromNotch=this.RotorsAndDistanceFromNotch(machine);
+    }
 
-        currentCodeSettings[0]+=oneRotor.toString()+',';
+    public void setSettingRotators(List<Integer> RotorsID)
+    {
+        selectedRotorsIndexes = RotorsID;
+
 
     }
+
     //gets full set of characters for example "AO!"
-    public void setSettingStartingChars(String startingCharArray)
+    public void setSettingStartingChar(String startingCharArray)
     {
-        initializeStringIfNull(1);
-        StringBuilder array = new StringBuilder(startingCharArray);
-        array.reverse();
-        currentCodeSettings[1]=array.toString();
+        StringBuilder string = new StringBuilder(startingCharArray);
+        initialRotorIndexes=string.reverse().toString();
     }
 
-    //gets chars one by one
-    public void addSettingStartingChars(String oneCharacter)
-    {
-        initializeStringIfNull(1);
 
-        currentCodeSettings[1]+=oneCharacter;
-
-    }
     public void setSettingReflector(int selectedReflector)
     {
-
-        currentCodeSettings[2]=Setting.converteIntToRoman(selectedReflector);
+        this.chosenReflector=Setting.convertIntToRoman(selectedReflector);
 
     }
     public void addPlug(Character firstChar,Character secondChar)
     {
-        initializeStringIfNull(3);
-
-        currentCodeSettings[3]+=firstChar.toString()+'|'+secondChar.toString()+',';
-
-    }
-
-    private void initializeStringIfNull(int index) {
-        if(currentCodeSettings[index]==null)
+        if(this.setOfPlugs.isEmpty())
         {
-            currentCodeSettings[index]="";
+            this.setOfPlugs+=firstChar.toString()+'|'+secondChar.toString();
         }
+        else
+        {
+            this.setOfPlugs+=','+firstChar.toString()+'|'+secondChar.toString();
+        }
+
+    }
+    private String currentRotorsIndexes(Machine machine)
+    {
+        String result=EMPTY;
+        for (int i =selectedRotorsIndexes.size()-1 ; i >= 0; i--) {
+            int currentRotorIndex=selectedRotorsIndexes.get(i);
+            result+=machine.getAllRotors().get(currentRotorIndex).currentStartingChar();
+        }
+        return result;
     }
 
-    private static String converteIntToRoman(int number)
+    private String RotorsAndDistanceFromNotch(Machine machine)
+    {
+        String result=EMPTY;
+        for (int i =selectedRotorsIndexes.size()-1 ; i >= 0; i--) {
+            int currentRotorIndex=selectedRotorsIndexes.get(i);
+            result+=(currentRotorIndex+1)+
+                    "("+machine.getAllRotors().get(currentRotorIndex).distanceFromNotch()+")";
+
+
+        }
+        return result;
+    }
+
+
+    private String getAddPlugs() {
+        if(setOfPlugs.isEmpty())
+        {
+            return EMPTY;
+        }
+        return "<"+setOfPlugs+">";
+    }
+    private static String convertIntToRoman(int number)
     {
         switch (number)
         {

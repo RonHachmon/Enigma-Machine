@@ -100,7 +100,7 @@ public class Machine {
 
         //run char thought right side of Rotors
         for (int i = 0; i < selectedRotors.size() ; i++) {
-            System.out.println("    Rotor number: "+(i+1));
+            //System.out.println("    Rotor number: "+(i+1));
             if(toRotate)
             {
                 selectedRotors.get(i).rotate();
@@ -110,19 +110,19 @@ public class Machine {
             running_index =  selectedRotors.get(i).get_exit_index_from_right(running_index);
         }
 
-        System.out.println("    Reflector:");
+        //System.out.println("    Reflector:");
         running_index= selectedReflector.get_exit_index(running_index);
 
         //run char thought left side of Rotors
         for (int i = selectedRotors.size()-1; i >=0 ; i--) {
-            System.out.println("    Rotor number: "+(i+1));
+            //System.out.println("    Rotor number: "+(i+1));
             running_index = selectedRotors.get(i).get_exit_index_from_left(running_index);
 
         }
 
         result = reverseCharMap.get(running_index);
         result =run_char_through_switch_plug(result);
-        System.out.println("output char: "+result);
+        //System.out.println("output char: "+result);
         return result;
     }
 
@@ -136,7 +136,8 @@ public class Machine {
     }
 
 
-    public String run_encrypt_on_string(String input) {
+    public String runEncryptOnString(String input) {
+        this.isAllCharsExistInCharSet(input);
         String res=new String();
         for (int i = 0; i <input.length() ; i++) {
             res+=this.run_encrypt_on_char(input.charAt(i));
@@ -159,7 +160,7 @@ public class Machine {
             throw new IllegalArgumentException("amount of rotors on the machine must be at least 2");
         }
         xmlRotorsArr = sortXMLRotors(xmlRotorsArr);
-        loadarrayofrotators(xmlRotorsArr);
+        loadArrayOfRotators(xmlRotorsArr);
         if(allRotors.size()<amountOfRotorNeeded)
         {
             throw new IllegalArgumentException("amount of rotors should be at least "+ amountOfRotorNeeded);
@@ -167,7 +168,7 @@ public class Machine {
 
     }
 
-    private void loadarrayofrotators(List<CTERotor> xmlRotorsArr) {
+    private void loadArrayOfRotators(List<CTERotor> xmlRotorsArr) {
         Rotor currentRotor=new Rotor();
         for(int i = 0; i< xmlRotorsArr.size(); i++)
         {
@@ -181,7 +182,7 @@ public class Machine {
             currentRotor = Rotor.createRotorFromXML(xmlRotorsArr.get(i),this.allChars);
             allRotors.add(currentRotor);
         }
-        System.out.println(currentRotor);
+        //System.out.println(currentRotor);
     }
 
     private List<CTERotor> sortXMLRotors(List<CTERotor> xmlRotorsArr) {
@@ -198,7 +199,7 @@ public class Machine {
         {
             currentReflector = Reflector.createReflectorFromXML(xmlReflector, charMap.size());
             int position =  Machine.converteRomanToInt(xmlReflector.getId());
-            System.out.println("Reflector:"+ currentReflector);
+            //System.out.println("Reflector:"+ currentReflector);
             allReflectors.set(position,currentReflector);
         }
 
@@ -214,7 +215,7 @@ public class Machine {
             throw new IllegalArgumentException("amount of characters must be even");
         }
         this.allChars=charCollection.toUpperCase(Locale.ROOT);
-        System.out.println("all char: "+this.allChars);
+        //System.out.println("all char: "+this.allChars);
         this.setCharMap(charCollection);
         this.setReverseCharMap();
     }
@@ -231,10 +232,6 @@ public class Machine {
 
 
 
-
-    //currently hard coded, should recive an array of char for each rotor and set rotor start position based on the char
-    //Example {O , D ,X } O on most left array (last array), D middle , x most right array (first array) on selected rotors
-    //should receive 10 index for X , 2 for D and 12 for O
     public void setStartingIndex(String startingCharArray) {
         if(startingCharArray.length() !=selectedRotors.size())
         {
@@ -267,6 +264,33 @@ public class Machine {
         }
     }
 
+    private void isAllCharsExistInCharSet(String inputString)
+    {
+        Set <Character> allChar =new HashSet<>();
+        Set <Character> notFoundChars =new HashSet<>();
+        StringBuilder nonExistingChar=new StringBuilder();
 
+        allChars.chars().forEach(character->allChar.add((char)character));
+
+        inputString.chars().forEach(c->
+        {
+            //for new char in set add return true
+            if(allChar.add((char)c))
+            {
+                notFoundChars.add((char) c);
+            }
+        });
+
+
+        if(!notFoundChars.isEmpty())
+        {
+            notFoundChars.forEach(character ->nonExistingChar.append(character+" , ") );
+            throw new IllegalArgumentException("machine does not contain letter: "+notFoundChars);
+
+        }
+
+
+
+    }
 
 }

@@ -1,2 +1,4 @@
-package PACKAGE_NAME;public class SatisicInput {
+public class StatisticInput {
+    private int codeIndex;
+    private String processedInput;
 }

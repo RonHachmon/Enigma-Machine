@@ -29,14 +29,14 @@ public class Reflector {
     public int get_exit_index(int index)
     {
         int value= integerList.get(index);
-        System.out.println("        Reflector value: "+value);
+        //System.out.println("        Reflector value: "+value);
         for (int i = 0; i < integerList.size() ; i++) {
 
             if(i!=index)
             {
                 if(value== integerList.get(i))
                 {
-                    System.out.println("        Reflector exit index: "+i);
+                    //System.out.println("        Reflector exit index: "+i);
                     return i;
                 }
             }

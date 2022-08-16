@@ -4,16 +4,16 @@ import jaxb_classes.CTERotor;
 import java.util.*;
 
 public class Rotor {
-    private final List<Line> lineArray =new ArrayList<Line>() ;
+    private final List<Line> lineArray =new ArrayList<>() ;
     private int notchIndex;
     private int rotatorIndex = 0;
 
     public int getRotatorIndex() {
         return rotatorIndex;
     }
-    public int notchIndex() {
+    public int distanceFromNotch() {
         int temp =notchIndex-rotatorIndex;
-        if(temp<=0)
+        if(temp<0)
         {
             temp+=lineArray.size();
         }
@@ -24,11 +24,15 @@ public class Rotor {
         rotatorIndex =(rotatorIndex +1)% lineArray.size();
 
     }
+    public Character currentStartingChar()
+    {
+        return lineArray.get(rotatorIndex).getRightChar();
+    }
 
     public boolean is_rotor_on_notch(){
         if(notchIndex == rotatorIndex)
         {
-            System.out.println("        notch");
+            //System.out.println("        notch");
         }
         return notchIndex == rotatorIndex;
     }
@@ -38,7 +42,7 @@ public class Rotor {
 
         int real_index=(index+ rotatorIndex)% lineArray.size();
         char right_char= lineArray.get(real_index).getRightChar();
-        System.out.println("        Right char = "+right_char);
+        //System.out.println("        Right char = "+right_char);
 
         int rotator_exit_index=0;
         for (Line current_line: lineArray) {
@@ -60,7 +64,7 @@ public class Rotor {
 
         int real_index=(index+ rotatorIndex)% lineArray.size();
         char left_char= lineArray.get(real_index).getLeftChar();
-        System.out.println("        Left char = "+left_char);
+        //System.out.println("        Left char = "+left_char);
 
         int rotator_exit_index=0;
         for (Line current_line: lineArray) {
@@ -81,14 +85,14 @@ public class Rotor {
 
     public static Rotor createRotorFromXML(CTERotor xml_rotor, String allChars) {
         Rotor rotor =new Rotor();
-        if(xml_rotor.getNotch()>allChars.length())
+        if(xml_rotor.getNotch()>allChars.length()||xml_rotor.getNotch()<=0)
         {
-            throw new IllegalArgumentException("notch position out could me a maximum of "+allChars.length()
-            + ", while one notch is on "+xml_rotor.getNotch());
+            throw new IllegalArgumentException("notch position out of bound, notch range is 1 - "+allChars.length()
+            + ", while one notch set on "+xml_rotor.getNotch());
         }
         rotor.notchIndex =xml_rotor.getNotch()-1;
         for (CTEPositioning positioning : xml_rotor.getCTEPositioning()) {
-
+            upperCaseInput(positioning);
             checkValidChar(rotor,allChars, positioning);
             Line current_line=new Line(positioning.getRight(),positioning.getLeft());
             rotor.lineArray.add(current_line);
@@ -100,11 +104,17 @@ public class Rotor {
         return rotor;
     }
 
+
+    private static void upperCaseInput(CTEPositioning positioning) {
+        positioning.setLeft(positioning.getLeft().toUpperCase());
+        positioning.setRight(positioning.getRight().toUpperCase());
+    }
+
     private static void checkValidChar(Rotor rotor, String allChars, CTEPositioning xmlLine) {
 
-            if(!allChars.contains(xmlLine.getRight()))
+            if(!allChars.contains(xmlLine.getRight().toUpperCase()))
             {
-                throw new IllegalArgumentException("Invalid rotor, since"+xmlLine.getRight()+"on rotor but isn't on char collection");
+                throw new IllegalArgumentException("Invalid rotor, since '"+xmlLine.getRight()+"' on rotor but isn't on char collection");
             }
             if(!allChars.contains(xmlLine.getLeft()))
             {

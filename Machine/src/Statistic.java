@@ -1,4 +1,6 @@
-public class Satistic {
+public class Statistic {
+    private String [] proccesedInput;
+    private String [] codeFormats;
 
 
 
