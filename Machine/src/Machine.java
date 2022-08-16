@@ -71,6 +71,7 @@ public class Machine {
     }
 
     public void setSelectedRotors(List<Integer> rotorsID) {
+        this.selectedRotors.clear();
         //throw out of bound or does not exist
         for (int id : rotorsID) {
             selectedRotors.add(allRotors.get(id));

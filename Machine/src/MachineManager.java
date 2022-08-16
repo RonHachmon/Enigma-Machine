@@ -13,41 +13,26 @@ import java.util.Random;
 public class MachineManager {
 
     private Machine machine = new Machine();
+    private Machine temporaryMachine = new Machine();
     private Statistic statistic = new Statistic();
     private Setting setting = new Setting();
 
-    public Machine getMachine() {
-        return machine;
-    }
-
-    public void setMachine(Machine machine) {
-        this.machine = machine;
-    }
 
     public String getStatistic() {
         return statistic.historyAndStatistic();
-    }
-
-    public void setStatistic(Statistic statistic) {
-        this.statistic = statistic;
-    }
-
-    public Setting getSetting() {
-        return setting;
-    }
-
-    public void setSetting(Setting setting) {
-        this.setting = setting;
     }
 
     public void addCodeToStatistic() {
         this.statistic.addCodeFormats(this.setting.getInitialFullMachineCode());
     }
 
+
     //need to be implemented
     public int getAmountOfProcessedInputs() {
         return this.statistic.getAmountOfProcessedInputs();
     }
+
+
 
     public String encryptSentence(String sentence) {
         StringBuilder timeAndStatistic = new StringBuilder("#.");
@@ -61,12 +46,14 @@ public class MachineManager {
         return output;
     }
 
-    private void buildHistoryAndStatistic(String sentence, StringBuilder timeAndStatistic, String output, Duration duration) {
-        timeAndStatistic.append('<' + sentence + '>');
-        timeAndStatistic.append("-->");
-        timeAndStatistic.append('<' + output + '>');
-        timeAndStatistic.append("(" + duration.getNano() + " nano-seconds)");
+
+    public void commitChangesToMachine()
+    {
+        this.machine=temporaryMachine;
+        this.addCodeToStatistic();
     }
+
+
 
     //might need to be modified , depends on if rotor comes left to right
     // or right to left. currently from right to left
@@ -74,24 +61,26 @@ public class MachineManager {
         if (rotorsID.size() != this.amountOfRotors()) {
             throw new IllegalArgumentException("amount of indexes must be " + this.amountOfRotors());
         }
-        this.machine.setSelectedRotors(rotorsID);
+        this.temporaryMachine.setSelectedRotors(rotorsID);
         this.setting.setSettingRotators(rotorsID);
     }
 
     public void setSelectedReflector(int reflectorId) {
-        this.machine.setSelectedReflector(reflectorId);
+        this.temporaryMachine.setSelectedReflector(reflectorId);
         this.setting.setSettingReflector(reflectorId + 1);
     }
 
     public void setStartingIndex(String startingCharArray) {
-        this.machine.setStartingIndex(startingCharArray);
+
+        this.temporaryMachine.setStartingIndex(startingCharArray);
+
         this.setting.setSettingStartingChar(startingCharArray);
-        this.setting.setInitialRotorsAndDistanceFromNotch(machine);
+        this.setting.setInitialRotorsAndDistanceFromNotch(temporaryMachine);
 
     }
 
     public void addSwitchPlug(char firstLetter, char secondLetter) {
-        this.machine.addSwitchPlug(firstLetter, secondLetter);
+        this.temporaryMachine.addSwitchPlug(firstLetter, secondLetter);
         this.setting.addPlug(firstLetter, secondLetter);
     }
 
@@ -104,7 +93,10 @@ public class MachineManager {
     }
 
     public void resetMachine() {
-        this.setStartingIndex(this.setting.getInitialRotorIndexes());
+        StringBuilder stringBuilder= new StringBuilder(this.setting.getInitialRotorIndexes());
+        stringBuilder.reverse();
+        this.setStartingIndex(stringBuilder.toString());
+
     }
 
     public int availableReflectors() {
@@ -155,11 +147,11 @@ public class MachineManager {
     }
 
     private void loadEnigmaPartFromXMLEnigma(CTEEnigma enigma) {
-        Machine tempMachine = new Machine();
-        tempMachine.loadCharSet(enigma);
-        tempMachine.loadRotators(enigma);
-        tempMachine.loadReflector(enigma);
-        machine = tempMachine;
+
+        temporaryMachine.loadCharSet(enigma);
+        temporaryMachine.loadRotators(enigma);
+        temporaryMachine.loadReflector(enigma);
+        machine = temporaryMachine;
     }
 
     public void autoZeroMachine() {
@@ -179,5 +171,14 @@ public class MachineManager {
         setSelectedRotors(indexes);
         setStartingIndex(startingCharArray);
         setSelectedReflector(rand.nextInt(availableReflectors()));
+
+    }
+
+    private void buildHistoryAndStatistic(String sentence, StringBuilder timeAndStatistic, String output, Duration duration) {
+        timeAndStatistic.append('<' + sentence + '>');
+        timeAndStatistic.append("-->");
+        timeAndStatistic.append('<' + output + '>');
+        timeAndStatistic.append('(' + duration.getNano() + " nano-seconds)");
+
     }
 }

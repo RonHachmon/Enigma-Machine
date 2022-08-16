@@ -9,10 +9,12 @@ public class ConsoleInterface {
     private final Scanner scanner = new Scanner(System.in);
     private boolean runMachine = true;
 
+
     public static void main(String[] args) {
         ConsoleInterface game = new ConsoleInterface();
         game.runMachine();
     }
+
 
     private void runMachine() {
         int userChoice = 0;
@@ -25,6 +27,10 @@ public class ConsoleInterface {
 
         System.out.println("Bye Bye :)");
     }
+
+
+
+
 
     private int getValidInput() {
         int input = 0;
@@ -118,12 +124,26 @@ public class ConsoleInterface {
     }
 
     private void getMachineInput() {
-        this.getRotors();
-        this.getStartingIndexes();
-        this.getReflector();
-        this.getSwitchPlug();
-        this.machineManager.addCodeToStatistic();
+        boolean validInput;
+
+        validInput = this.getRotors();
+        if (validInput) {
+            validInput = this.getStartingIndexes();
+            if (validInput) {
+                validInput = this.getReflector();
+                if (validInput) {
+                    validInput = this.getSwitchPlug();
+
+                }
+            }
+        }
+        if (validInput) {
+            this.machineManager.commitChangesToMachine();
+        }
     }
+
+
+
 
     private void processInput() {
         boolean validInput = false;
@@ -326,9 +346,15 @@ public class ConsoleInterface {
         System.out.println("Expected output " + "CEEFBDFCDAAB");
     }
 
+
     // for testing purposes only
     /*private void paperEnigmaCheckLoadedFromXml() {
         machineManager.setSelectedReflector(0);
+=======
+    //for testing purposes only
+    private void paperEnigmaCheckLoadedFromXml() {
+        //machineManager.setSelectedReflector(0);
+>>>>>>> 314fe36 (changes to get input)
         this.getRotors();
         this.getReflector();
         machineManager.setSelectedRotors(new ArrayList<Integer>(){{add(2);add(1);add(0);}});
