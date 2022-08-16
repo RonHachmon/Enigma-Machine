@@ -1,13 +1,13 @@
 public class LoadingScreen implements Runnable {
-    private  boolean exit = false;
+    private boolean exit = false;
     private String message;
     private Thread thread;
-    public LoadingScreen(String message)
-    {
-        this.message=message;
-        thread = new Thread(this, "loading screen");
 
+    public LoadingScreen(String message) {
+        this.message = message;
+        thread = new Thread(this, "loading screen");
     }
+
     @Override
     public void run() {
         System.out.print(message);
@@ -21,12 +21,12 @@ public class LoadingScreen implements Runnable {
             }
         }
     }
-    public void stop()
-    {
+
+    public void stop() {
         exit = true;
     }
-    public void start()
-    {
+
+    public void start() {
         thread.start();
     }
 }

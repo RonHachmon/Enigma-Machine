@@ -9,14 +9,16 @@ import java.io.StringReader;
 public class JAXBClassGenerator {
     public JAXBClassGenerator() {
     }
+
     public static CTEEnigma fromXmlFileToObject(String fileName) throws JAXBException {
         CTEEnigma enigma_machine = null;
         File file = new File(fileName);
         JAXBContext jaxbContext = JAXBContext.newInstance(new Class[]{CTEEnigma.class});
         Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-        enigma_machine = (CTEEnigma)jaxbUnmarshaller.unmarshal(file);
+        enigma_machine = (CTEEnigma) jaxbUnmarshaller.unmarshal(file);
         return enigma_machine;
     }
+
     protected static <T> T unmarshall(String xml, Class<T> clazz)
             throws JAXBException {
         File file = new File(xml);
