@@ -32,6 +32,6 @@ public class Statistic {
 
     public void addCodeFormats(String codeFormat) {
         intCurrentCodeFormatIndex++;
-        codeFormats.add(codeFormat);
+        codeFormats.add("Machine settings: " + codeFormat);
     }
 }
