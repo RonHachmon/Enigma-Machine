@@ -13,7 +13,6 @@ import java.util.Random;
 public class MachineManager {
 
     private Machine machine = new Machine();
-    private Machine temporaryMachine = new Machine();
     private Statistic statistic = new Statistic();
     private Setting setting = new Setting();
 
@@ -49,7 +48,6 @@ public class MachineManager {
 
     public void commitChangesToMachine()
     {
-        this.machine=temporaryMachine;
         this.addCodeToStatistic();
     }
 
@@ -61,28 +59,28 @@ public class MachineManager {
         if (rotorsID.size() != this.amountOfRotors()) {
             throw new IllegalArgumentException("amount of indexes must be " + this.amountOfRotors());
         }
-        this.temporaryMachine.setSelectedRotors(rotorsID);
+        this.machine.setSelectedRotors(rotorsID);
         this.setting.setSettingRotators(rotorsID);
     }
 
     public void setSelectedReflector(int reflectorId) {
-        this.temporaryMachine.setSelectedReflector(reflectorId);
+        this.machine.setSelectedReflector(reflectorId);
         this.setting.setSettingReflector(reflectorId + 1);
     }
 
     public void setStartingIndex(String startingCharArray) {
 
-        this.temporaryMachine.setStartingIndex(startingCharArray);
+        this.machine.setStartingIndex(startingCharArray);
 
         this.setting.setSettingStartingChar(startingCharArray);
-        this.setting.setInitialRotorsAndDistanceFromNotch(temporaryMachine);
+        this.setting.setInitialRotorsAndDistanceFromNotch(machine);
 
     }
     public void setSwitchPlug(String plugs) {
         if (plugs.length() % 2 != 0) {
             throw new IllegalArgumentException("invalid plugs, each character should be paired ");
         }
-        this.temporaryMachine.resetSwitchPlug();
+        this.machine.resetSwitchPlug();
 
         for (int i = 0; i < plugs.length(); i += 2) {
             this.addSwitchPlug(plugs.charAt(i), plugs.charAt(i + 1));
@@ -91,7 +89,7 @@ public class MachineManager {
     }
 
     public void addSwitchPlug(char firstLetter, char secondLetter) {
-        this.temporaryMachine.addSwitchPlug(firstLetter, secondLetter);
+        this.machine.addSwitchPlug(firstLetter, secondLetter);
         this.setting.addPlug(firstLetter, secondLetter);
     }
 
@@ -159,11 +157,13 @@ public class MachineManager {
 
     private void loadEnigmaPartFromXMLEnigma(CTEEnigma enigma) {
 
-        temporaryMachine.loadCharSet(enigma);
-        temporaryMachine.loadRotators(enigma);
-        temporaryMachine.loadReflector(enigma);
-        machine = temporaryMachine;
+        Machine tempMachine = new Machine();
+        tempMachine.loadCharSet(enigma);
+        tempMachine.loadRotators(enigma);
+        tempMachine.loadReflector(enigma);
+        machine = tempMachine;
     }
+
 
     public void autoZeroMachine() {
         Random rand = new Random();
@@ -182,8 +182,6 @@ public class MachineManager {
         setSelectedRotors(indexes);
         setStartingIndex(startingCharArray);
         setSelectedReflector(rand.nextInt(availableReflectors()));
-        //commitChangesToMachine();
-
     }
 
     private void buildHistoryAndStatistic(String sentence, StringBuilder timeAndStatistic, String output, Duration duration) {
