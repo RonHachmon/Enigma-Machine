@@ -43,6 +43,10 @@ public class Machine {
         }
         return count;
     }
+    public String getAllChars()
+    {
+        return this.allChars;
+    }
     public void resetSwitchPlug()
     {
         this.switchPlug.clear();
@@ -198,12 +202,27 @@ public class Machine {
         CTEReflectors xmlReflextorArr = enigma_machine.getCTEMachine().getCTEReflectors();
         Reflector currentReflector;
 
+        if(xmlReflextorArr.getCTEReflector().isEmpty())
+        {
+            throw new IllegalArgumentException("xml must hold at least one reflector");
+        }
+
         for (CTEReflector xmlReflector : xmlReflextorArr.getCTEReflector()) {
             currentReflector = Reflector.createReflectorFromXML(xmlReflector, charMap.size());
 
             int position = Machine.convertRomanToInt(xmlReflector.getId());
             //System.out.println("Reflector:"+ currentReflector);
-            allReflectors.set(position, currentReflector);
+            if(allReflectors.set(position, currentReflector)!=null)
+            {
+                throw new IllegalArgumentException("Each reflectors must have a different ID");
+            }
+        }
+        for (int i = 0; i <this.getAmountOfAvailableReflectrors() ; i++) {
+            if (allReflectors.get(i)==null)
+            {
+                throw new IllegalArgumentException("Reflectors cannot have gaps between id's");
+            }
+
         }
     }
 

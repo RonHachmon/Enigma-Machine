@@ -28,6 +28,11 @@ public class Setting {
         return code;
     }
 
+    public void resetPlugs()
+    {
+        setOfPlugs=EMPTY;
+    }
+
     public String getInitialRotorIndexes() {
         return this.initialRotorIndexes;
     }
