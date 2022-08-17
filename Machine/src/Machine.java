@@ -153,7 +153,6 @@ public class Machine {
         String res = new String();
         for (int i = 0; i < input.length(); i++) {
             res += this.run_encrypt_on_char(input.charAt(i));
-
         }
         return res;
     }

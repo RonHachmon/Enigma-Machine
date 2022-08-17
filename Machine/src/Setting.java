@@ -48,7 +48,6 @@ public class Setting {
 
     public void setSettingReflector(int selectedReflector) {
         this.chosenReflector = Setting.convertIntToRoman(selectedReflector);
-
     }
 
     public void addPlug(Character firstChar, Character secondChar) {
@@ -99,7 +98,6 @@ public class Setting {
                 return "V";
             default:
                 throw new IllegalArgumentException("Invalid Reflector,id must between 1-5 ");
-
         }
     }
 }

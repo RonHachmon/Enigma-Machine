@@ -11,11 +11,10 @@ import java.util.List;
 import java.util.Random;
 
 public class MachineManager {
-
     private Machine machine = new Machine();
     private Statistic statistic = new Statistic();
     private Setting setting = new Setting();
-
+    private int processedInputCounter = 0;
 
     public String getStatistic() {
         return statistic.historyAndStatistic();
@@ -25,18 +24,15 @@ public class MachineManager {
         this.statistic.addCodeFormats(this.setting.getInitialFullMachineCode());
     }
 
-
     //need to be implemented
     public int getAmountOfProcessedInputs() {
         return this.statistic.getAmountOfProcessedInputs();
     }
 
-
-
     public String encryptSentence(String sentence) {
-        StringBuilder timeAndStatistic = new StringBuilder("#.");
         Instant timeStart = Instant.now();
         String output = this.machine.runEncryptOnString(sentence);
+        StringBuilder timeAndStatistic = new StringBuilder(++processedInputCounter + ". ");
         Duration duration = Duration.between(timeStart, Instant.now());
 
         buildHistoryAndStatistic(sentence, timeAndStatistic, output, duration);
@@ -45,13 +41,11 @@ public class MachineManager {
         return output;
     }
 
-
     public void commitChangesToMachine()
     {
+        processedInputCounter = 0;
         this.addCodeToStatistic();
     }
-
-
 
     //might need to be modified , depends on if rotor comes left to right
     // or right to left. currently from right to left
@@ -69,12 +63,9 @@ public class MachineManager {
     }
 
     public void setStartingIndex(String startingCharArray) {
-
         this.machine.setStartingIndex(startingCharArray);
-
         this.setting.setSettingStartingChar(startingCharArray);
         this.setting.setInitialRotorsAndDistanceFromNotch(machine);
-
     }
     public void setSwitchPlug(String plugs) {
         if (plugs.length() % 2 != 0) {
@@ -85,7 +76,6 @@ public class MachineManager {
         for (int i = 0; i < plugs.length(); i += 2) {
             this.addSwitchPlug(plugs.charAt(i), plugs.charAt(i + 1));
         }
-
     }
 
     public void addSwitchPlug(char firstLetter, char secondLetter) {
@@ -105,7 +95,6 @@ public class MachineManager {
         StringBuilder stringBuilder= new StringBuilder(this.setting.getInitialRotorIndexes());
         stringBuilder.reverse();
         this.setStartingIndex(stringBuilder.toString());
-
     }
 
     public int availableReflectors() {
@@ -156,14 +145,12 @@ public class MachineManager {
     }
 
     private void loadEnigmaPartFromXMLEnigma(CTEEnigma enigma) {
-
         Machine tempMachine = new Machine();
         tempMachine.loadCharSet(enigma);
         tempMachine.loadRotators(enigma);
         tempMachine.loadReflector(enigma);
         machine = tempMachine;
     }
-
 
     public void autoZeroMachine() {
         Random rand = new Random();
@@ -172,23 +159,27 @@ public class MachineManager {
 
         // Set rotors & starting indexes
         for (int i = 0; i < amountOfRotorsRequired(); i++) {
-            indexes.add(machine.getAllRotors().
-                    get(rand.nextInt(machine.getAllRotors().size())).getRotatorIndex());
+            int rotorIndex = rand.nextInt(machine.getAllRotors().size());
+            while (indexes.contains(rotorIndex)){
+                rotorIndex = rand.nextInt(machine.getAllRotors().size());
+            }
             int randomInt = rand.nextInt(machine.allChars.length());
             char randomChar = machine.allChars.charAt(randomInt);
+
+            indexes.add(rotorIndex);
             startingCharArray += randomChar;
         }
 
         setSelectedRotors(indexes);
         setStartingIndex(startingCharArray);
         setSelectedReflector(rand.nextInt(availableReflectors()));
+        commitChangesToMachine();
     }
 
     private void buildHistoryAndStatistic(String sentence, StringBuilder timeAndStatistic, String output, Duration duration) {
         timeAndStatistic.append('<' + sentence + '>');
         timeAndStatistic.append("-->");
         timeAndStatistic.append('<' + output + '>');
-        timeAndStatistic.append('(' + duration.getNano() + " nano-seconds)");
-
+        timeAndStatistic.append("(" + duration.getNano() + " nano-seconds)");
     }
 }

@@ -39,8 +39,6 @@ public class Rotor {
     }
 
     public int get_exit_index_from_right(int index) {
-
-
         int real_index = (index + rotatorIndex) % lineArray.size();
         char right_char = lineArray.get(real_index).getRightChar();
         //System.out.println("        Right char = "+right_char);
@@ -105,7 +103,6 @@ public class Rotor {
     }
 
     private static void checkValidChar(Rotor rotor, String allChars, CTEPositioning xmlLine) {
-
         if (!allChars.contains(xmlLine.getRight().toUpperCase())) {
             throw new IllegalArgumentException("Invalid rotor, since '" + xmlLine.getRight() + "' on rotor but isn't on char collection");
         }
