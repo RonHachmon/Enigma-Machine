@@ -204,7 +204,7 @@ public class ConsoleInterface {
 
         if (!validInput) {
             if (tryAgain()) {
-                this.getRotors();
+                validInput = this.getRotors();
             } else {
                 validInput = false;
             }
@@ -230,7 +230,7 @@ public class ConsoleInterface {
 
         if (!validInput) {
             if (tryAgain()) {
-                this.getStartingIndexes();
+                validInput = this.getStartingIndexes();
             } else {
                 validInput = false;
             }
@@ -259,7 +259,7 @@ public class ConsoleInterface {
 
         if (!validInput) {
             if (tryAgain()) {
-                this.getReflector();
+                validInput=this.getReflector();
             } else {
                 validInput = false;
             }
@@ -279,10 +279,7 @@ public class ConsoleInterface {
 
         input = input.toUpperCase();
         try {
-            //send plugs by pair
-            for (int i = 0; i < input.length(); i += 2) {
-                this.machineManager.addSwitchPlug(input.charAt(i), input.charAt(i + 1));
-            }
+            this.machineManager.setSwitchPlug(input);
             validInput = true;
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -290,7 +287,7 @@ public class ConsoleInterface {
 
         if (!validInput) {
             if (tryAgain()) {
-                this.getSwitchPlug();
+                validInput = this.getSwitchPlug();
             } else {
                 validInput = false;
             }

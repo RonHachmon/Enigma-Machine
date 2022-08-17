@@ -33,6 +33,7 @@ public class Machine {
     }
 
     //todo: why not just list.size ?
+    //not sure yet if reflector can be with gaps for 1,3,5 (I,III,V);
     public int getAmountOfAvailableReflectrors() {
         int count = 0;
         for (Reflector reflector : this.allReflectors) {
@@ -42,16 +43,35 @@ public class Machine {
         }
         return count;
     }
+    public void resetSwitchPlug()
+    {
+        this.switchPlug.clear();
+    }
 
     private void setReverseCharMap() {
         charMap.forEach((key, value) -> reverseCharMap.put(value, key));
     }
 
     public void addSwitchPlug(char firstLetter, char secondLetter) {
-        if (switchPlug.put(firstLetter, secondLetter) != null
-                || switchPlug.put(secondLetter, firstLetter) != null) {
-            //throw duplicate char
+
+        if(!allChars.contains(String.valueOf(firstLetter)))
+        {
+            throw new IllegalArgumentException("'"+firstLetter +"' not included in machine character Collection");
         }
+        if(!allChars.contains(String.valueOf(secondLetter)))
+        {
+            throw new IllegalArgumentException("'"+secondLetter +"' not included in machine character Collection");
+        }
+        if (switchPlug.put(firstLetter, secondLetter) != null)
+        {
+            throw new IllegalArgumentException("Cannot assign letter '"+firstLetter +"' twice");
+        }
+        if (switchPlug.put(secondLetter, firstLetter) != null)
+        {
+            throw new IllegalArgumentException("Cannot assign letter '"+secondLetter +"' twice ");
+        }
+
+
     }
 
     private void setCharMap(String char_set) {
@@ -63,17 +83,28 @@ public class Machine {
         }
     }
 
-    public void setSelectedReflector(int reflector_id) {
-        this.selectedReflector = this.allReflectors.get(reflector_id);
+    public void setSelectedReflector(int reflectorId) {
+
+        if (reflectorId < 0 || reflectorId > this.getAmountOfAvailableReflectrors()) {
+            throw new IllegalArgumentException("Reflector ID must be between 1 - " + getAmountOfAvailableReflectrors());
+        }
+
+            this.selectedReflector = this.allReflectors.get(reflectorId);
+
         if (this.selectedReflector == null) {
-            //throw reflector does not exist
+            throw new IllegalArgumentException("Reflector does not exist");
         }
     }
 
     public void setSelectedRotors(List<Integer> rotorsID) {
         this.selectedRotors.clear();
+        checkArrayIsUnique(rotorsID);
         //throw out of bound or does not exist
         for (int id : rotorsID) {
+            if(id<0||id>allRotors.size()-1)
+            {
+                throw new IllegalArgumentException("Rotor ID must be in range of 1-"+allRotors.size());
+            }
             selectedRotors.add(allRotors.get(id));
         }
     }
@@ -246,5 +277,14 @@ public class Machine {
             notFoundChars.forEach(character -> nonExistingChar.append(character + " , "));
             throw new IllegalArgumentException("machine does not contain letter: " + notFoundChars);
         }
+    }
+
+    private void checkArrayIsUnique(List<Integer> rotorsID)
+    {
+        if(rotorsID.stream().distinct().count()!=rotorsID.size())
+        {
+            throw new IllegalArgumentException("rotors id must be unique");
+        }
+
     }
 }

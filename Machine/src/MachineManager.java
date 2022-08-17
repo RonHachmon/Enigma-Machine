@@ -78,6 +78,17 @@ public class MachineManager {
         this.setting.setInitialRotorsAndDistanceFromNotch(temporaryMachine);
 
     }
+    public void setSwitchPlug(String plugs) {
+        if (plugs.length() % 2 != 0) {
+            throw new IllegalArgumentException("invalid plugs, each character should be paired ");
+        }
+        this.temporaryMachine.resetSwitchPlug();
+
+        for (int i = 0; i < plugs.length(); i += 2) {
+            this.addSwitchPlug(plugs.charAt(i), plugs.charAt(i + 1));
+        }
+
+    }
 
     public void addSwitchPlug(char firstLetter, char secondLetter) {
         this.temporaryMachine.addSwitchPlug(firstLetter, secondLetter);
@@ -171,6 +182,7 @@ public class MachineManager {
         setSelectedRotors(indexes);
         setStartingIndex(startingCharArray);
         setSelectedReflector(rand.nextInt(availableReflectors()));
+        //commitChangesToMachine();
 
     }
 
