@@ -11,6 +11,8 @@ public class ConsoleInterface {
     private final Scanner scanner = new Scanner(System.in);
     private boolean runMachine = true;
 
+    private MachineInformation machineInformation;
+
     public static void main(String[] args) {
         ConsoleInterface game = new ConsoleInterface();
         game.runMachine();
@@ -97,13 +99,16 @@ public class ConsoleInterface {
                 this.loadFromXML();
             }
         }
+        machineInformation=machineManager.getMachineInformation();
     }
 
     private void showMachineStructure() {
-        out.println("Amount of total rotors: " + this.machineManager.amountOfRotors());
-        out.println("Amount of required rotors: " + this.machineManager.amountOfRotorsRequired());
-        out.println("Amount of available reflectors: " + this.machineManager.availableReflectors());
+
+        out.println("Amount of total rotors: " + this.machineInformation.getAmountOfRotors());
+        out.println("Amount of required rotors: " + this.machineInformation.getAmountOfRotorsRequired());
+        out.println("Amount of available reflectors: " + this.machineInformation.getAvailableReflectors());
         out.println("Amount of message processed: " + this.machineManager.getAmountOfProcessedInputs());
+
 
         out.println("Initial Code configuration");
         out.println(this.machineManager.getInitialFullMachineCode());
@@ -141,6 +146,7 @@ public class ConsoleInterface {
     private void processInput() {
         boolean validInput = false;
         //String input="WOWCANTBELIEVEITACTUALLYWORKS";
+        System.out.println("Machine known characters: "+ machineInformation.getAvailableChars());
         String input = this.getInput("Please enter a sentence for encryption");
         input = input.toUpperCase();
         out.println("Input: " + input);
@@ -173,10 +179,11 @@ public class ConsoleInterface {
 
     private boolean getRotors() {
         boolean validInput = false;
-        int amountOfIndexesNeeded = this.machineManager.amountOfRotors();
+        int amountOfIndexesNeeded = this.machineInformation.getAmountOfRotorsRequired();
         int index = 0;
+        out.println("Available rotors 1-"+machineInformation.getAmountOfRotors());
         String input = getInput("Please enter set of " + amountOfIndexesNeeded +
-                " rotors index separated by a ','.\n");
+                " unique rotors index separated by a ','.\n");
         List<Integer> indexes = new ArrayList<>();
         try {
             for (String rotorIndex : input.split(",")) {
@@ -211,9 +218,12 @@ public class ConsoleInterface {
     private boolean getStartingIndexes() {
 
         boolean validInput = false;
-        int amountOfIndexesNeeded = this.machineManager.amountOfRotorsRequired();
-        StringBuilder input = new StringBuilder(getInput("Please enter set of "
-                + amountOfIndexesNeeded + " starting index.\n"));
+
+        int amountOfIndexesNeeded = this.machineInformation.getAmountOfRotorsRequired();
+        StringBuilder input = new StringBuilder(getInput("Please enter set of " + amountOfIndexesNeeded +
+
+                " starting index .\n"));
+
         try {
             input.reverse();
             this.machineManager.setStartingIndex(input.toString().toUpperCase());
@@ -236,7 +246,7 @@ public class ConsoleInterface {
     private boolean getReflector() {
 
         boolean validInput = false;
-        int amountOfAvailableReflectors = this.machineManager.availableReflectors();
+        int amountOfAvailableReflectors = this.machineInformation.getAvailableReflectors();
         printAvailableReflectors();
         String input = getInput("");
         try {
@@ -295,7 +305,7 @@ public class ConsoleInterface {
     private boolean tryAgain() {
         String input = getInput("try again Y/N ?");
 
-        input = input.toUpperCase(Locale.ENGLISH);
+        input = input.toUpperCase();
         while (!input.equals("Y") && !input.equals("N")) {
             out.println(input);
             input = getInput("input must be either 'Y' or 'N' ");
@@ -311,7 +321,7 @@ public class ConsoleInterface {
 
     private void printAvailableReflectors() {
         RomanNumbers[] romanValues = RomanNumbers.values();
-        int amountOfAvailableReflectors = this.machineManager.availableReflectors();
+        int amountOfAvailableReflectors = this.machineInformation.getAvailableReflectors();
         for (int i = 0; i < amountOfAvailableReflectors; i++) {
             out.println("for reflector " + romanValues[i].name() + " " + romanValues[i]);
         }
@@ -324,7 +334,7 @@ public class ConsoleInterface {
     //for testing purposes only
     private void sanity_check_loaded_from_xml() {
 
-        machineManager.addSwitchPlug('A', 'F');
+        //machineManager.addSwitchPlug('A', 'F');
         machineManager.setSelectedReflector(0);
         machineManager.setSelectedRotors(new ArrayList<Integer>() {{
             add(0);

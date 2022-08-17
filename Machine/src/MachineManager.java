@@ -14,7 +14,12 @@ public class MachineManager {
     private Machine machine = new Machine();
     private Statistic statistic = new Statistic();
     private Setting setting = new Setting();
+
     private int processedInputCounter = 0;
+
+    private MachineInformation machineInformation=null;
+
+
 
     public String getStatistic() {
         return statistic.historyAndStatistic();
@@ -24,7 +29,8 @@ public class MachineManager {
         this.statistic.addCodeFormats(this.setting.getInitialFullMachineCode());
     }
 
-    //need to be implemented
+
+
     public int getAmountOfProcessedInputs() {
         return this.statistic.getAmountOfProcessedInputs();
     }
@@ -50,8 +56,8 @@ public class MachineManager {
     //might need to be modified , depends on if rotor comes left to right
     // or right to left. currently from right to left
     public void setSelectedRotors(List<Integer> rotorsID) {
-        if (rotorsID.size() != this.amountOfRotors()) {
-            throw new IllegalArgumentException("amount of indexes must be " + this.amountOfRotors());
+        if (rotorsID.size() != machineInformation.getAmountOfRotorsRequired()) {
+            throw new IllegalArgumentException("amount of indexes must be " + machineInformation.getAmountOfRotorsRequired());
         }
         this.machine.setSelectedRotors(rotorsID);
         this.setting.setSettingRotators(rotorsID);
@@ -72,13 +78,14 @@ public class MachineManager {
             throw new IllegalArgumentException("invalid plugs, each character should be paired ");
         }
         this.machine.resetSwitchPlug();
+        this.setting.resetPlugs();
 
         for (int i = 0; i < plugs.length(); i += 2) {
             this.addSwitchPlug(plugs.charAt(i), plugs.charAt(i + 1));
         }
     }
 
-    public void addSwitchPlug(char firstLetter, char secondLetter) {
+    private void addSwitchPlug(char firstLetter, char secondLetter) {
         this.machine.addSwitchPlug(firstLetter, secondLetter);
         this.setting.addPlug(firstLetter, secondLetter);
     }
@@ -97,16 +104,10 @@ public class MachineManager {
         this.setStartingIndex(stringBuilder.toString());
     }
 
-    public int availableReflectors() {
-        return this.machine.getAmountOfAvailableReflectrors();
-    }
 
-    public int amountOfRotorsRequired() {
-        return this.machine.getAmountOfRotorNeeded();
-    }
-
-    public int amountOfRotors() {
-        return this.machine.getAllRotors().size();
+    public MachineInformation getMachineInformation()
+    {
+        return machineInformation;
     }
 
     //copied from gridler
@@ -150,6 +151,7 @@ public class MachineManager {
         tempMachine.loadRotators(enigma);
         tempMachine.loadReflector(enigma);
         machine = tempMachine;
+        this.machineInformation=new MachineInformation(machine);
     }
 
     public void autoZeroMachine() {
@@ -158,13 +160,13 @@ public class MachineManager {
         String startingCharArray = new String();
 
         // Set rotors & starting indexes
-        for (int i = 0; i < amountOfRotorsRequired(); i++) {
-            int rotorIndex = rand.nextInt(machine.getAllRotors().size());
+        for (int i = 0; i < machineInformation.getAmountOfRotorsRequired(); i++) {
+            int rotorIndex = rand.nextInt(machineInformation.getAmountOfRotors());
             while (indexes.contains(rotorIndex)){
-                rotorIndex = rand.nextInt(machine.getAllRotors().size());
+                rotorIndex = rand.nextInt(machineInformation.getAmountOfRotors());
             }
-            int randomInt = rand.nextInt(machine.allChars.length());
-            char randomChar = machine.allChars.charAt(randomInt);
+            int randomInt = rand.nextInt(machineInformation.getAvailableChars().length());
+            char randomChar = machineInformation.getAvailableChars().charAt(randomInt);
 
             indexes.add(rotorIndex);
             startingCharArray += randomChar;
@@ -172,7 +174,7 @@ public class MachineManager {
 
         setSelectedRotors(indexes);
         setStartingIndex(startingCharArray);
-        setSelectedReflector(rand.nextInt(availableReflectors()));
+        setSelectedReflector(rand.nextInt(machineInformation.getAvailableReflectors()));
         commitChangesToMachine();
     }
 
