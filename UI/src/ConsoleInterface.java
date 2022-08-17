@@ -276,13 +276,15 @@ public class ConsoleInterface {
         if (input.length() % 2 != 0) {
             System.out.println("invalid plugs, each character should be paired ");
         }
+        else {
 
-        input = input.toUpperCase();
-        try {
-            this.machineManager.setSwitchPlug(input);
-            validInput = true;
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+            input = input.toUpperCase();
+            try {
+                this.machineManager.setSwitchPlug(input);
+                validInput = true;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
         }
 
         if (!validInput) {
