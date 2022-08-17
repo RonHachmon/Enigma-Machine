@@ -16,38 +16,22 @@ public class MachineManager {
     private Statistic statistic = new Statistic();
     private Setting setting = new Setting();
 
-    public Machine getMachine() {
-        return machine;
-    }
-
-    public void setMachine(Machine machine) {
-        this.machine = machine;
-    }
 
     public String getStatistic() {
         return statistic.historyAndStatistic();
-    }
-
-    public void setStatistic(Statistic statistic) {
-        this.statistic = statistic;
-    }
-
-    public Setting getSetting() {
-        return setting;
-    }
-
-    public void setSetting(Setting setting) {
-        this.setting = setting;
     }
 
     public void addCodeToStatistic() {
         this.statistic.addCodeFormats(this.setting.getInitialFullMachineCode());
     }
 
+
     //need to be implemented
     public int getAmountOfProcessedInputs() {
         return this.statistic.getAmountOfProcessedInputs();
     }
+
+
 
     public String encryptSentence(String sentence) {
         StringBuilder timeAndStatistic = new StringBuilder("#.");
@@ -61,12 +45,13 @@ public class MachineManager {
         return output;
     }
 
-    private void buildHistoryAndStatistic(String sentence, StringBuilder timeAndStatistic, String output, Duration duration) {
-        timeAndStatistic.append('<' + sentence + '>');
-        timeAndStatistic.append("-->");
-        timeAndStatistic.append('<' + output + '>');
-        timeAndStatistic.append("(" + duration.getNano() + " nano-seconds)");
+
+    public void commitChangesToMachine()
+    {
+        this.addCodeToStatistic();
     }
+
+
 
     //might need to be modified , depends on if rotor comes left to right
     // or right to left. currently from right to left
@@ -84,9 +69,22 @@ public class MachineManager {
     }
 
     public void setStartingIndex(String startingCharArray) {
+
         this.machine.setStartingIndex(startingCharArray);
+
         this.setting.setSettingStartingChar(startingCharArray);
         this.setting.setInitialRotorsAndDistanceFromNotch(machine);
+
+    }
+    public void setSwitchPlug(String plugs) {
+        if (plugs.length() % 2 != 0) {
+            throw new IllegalArgumentException("invalid plugs, each character should be paired ");
+        }
+        this.machine.resetSwitchPlug();
+
+        for (int i = 0; i < plugs.length(); i += 2) {
+            this.addSwitchPlug(plugs.charAt(i), plugs.charAt(i + 1));
+        }
 
     }
 
@@ -104,7 +102,10 @@ public class MachineManager {
     }
 
     public void resetMachine() {
-        this.setStartingIndex(this.setting.getInitialRotorIndexes());
+        StringBuilder stringBuilder= new StringBuilder(this.setting.getInitialRotorIndexes());
+        stringBuilder.reverse();
+        this.setStartingIndex(stringBuilder.toString());
+
     }
 
     public int availableReflectors() {
@@ -155,12 +156,14 @@ public class MachineManager {
     }
 
     private void loadEnigmaPartFromXMLEnigma(CTEEnigma enigma) {
+
         Machine tempMachine = new Machine();
         tempMachine.loadCharSet(enigma);
         tempMachine.loadRotators(enigma);
         tempMachine.loadReflector(enigma);
         machine = tempMachine;
     }
+
 
     public void autoZeroMachine() {
         Random rand = new Random();
@@ -179,5 +182,13 @@ public class MachineManager {
         setSelectedRotors(indexes);
         setStartingIndex(startingCharArray);
         setSelectedReflector(rand.nextInt(availableReflectors()));
+    }
+
+    private void buildHistoryAndStatistic(String sentence, StringBuilder timeAndStatistic, String output, Duration duration) {
+        timeAndStatistic.append('<' + sentence + '>');
+        timeAndStatistic.append("-->");
+        timeAndStatistic.append('<' + output + '>');
+        timeAndStatistic.append('(' + duration.getNano() + " nano-seconds)");
+
     }
 }

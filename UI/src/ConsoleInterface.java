@@ -9,10 +9,12 @@ public class ConsoleInterface {
     private final Scanner scanner = new Scanner(System.in);
     private boolean runMachine = true;
 
+
     public static void main(String[] args) {
         ConsoleInterface game = new ConsoleInterface();
         game.runMachine();
     }
+
 
     private void runMachine() {
         int userChoice = 0;
@@ -25,6 +27,10 @@ public class ConsoleInterface {
 
         System.out.println("Bye Bye :)");
     }
+
+
+
+
 
     private int getValidInput() {
         int input = 0;
@@ -118,12 +124,26 @@ public class ConsoleInterface {
     }
 
     private void getMachineInput() {
-        this.getRotors();
-        this.getStartingIndexes();
-        this.getReflector();
-        this.getSwitchPlug();
-        this.machineManager.addCodeToStatistic();
+        boolean validInput;
+
+        validInput = this.getRotors();
+        if (validInput) {
+            validInput = this.getStartingIndexes();
+            if (validInput) {
+                validInput = this.getReflector();
+                if (validInput) {
+                    validInput = this.getSwitchPlug();
+
+                }
+            }
+        }
+        if (validInput) {
+            this.machineManager.commitChangesToMachine();
+        }
     }
+
+
+
 
     private void processInput() {
         boolean validInput = false;
@@ -184,7 +204,7 @@ public class ConsoleInterface {
 
         if (!validInput) {
             if (tryAgain()) {
-                this.getRotors();
+                validInput = this.getRotors();
             } else {
                 validInput = false;
             }
@@ -210,7 +230,7 @@ public class ConsoleInterface {
 
         if (!validInput) {
             if (tryAgain()) {
-                this.getStartingIndexes();
+                validInput = this.getStartingIndexes();
             } else {
                 validInput = false;
             }
@@ -239,7 +259,7 @@ public class ConsoleInterface {
 
         if (!validInput) {
             if (tryAgain()) {
-                this.getReflector();
+                validInput=this.getReflector();
             } else {
                 validInput = false;
             }
@@ -256,21 +276,20 @@ public class ConsoleInterface {
         if (input.length() % 2 != 0) {
             System.out.println("invalid plugs, each character should be paired ");
         }
+        else {
 
-        input = input.toUpperCase();
-        try {
-            //send plugs by pair
-            for (int i = 0; i < input.length(); i += 2) {
-                this.machineManager.addSwitchPlug(input.charAt(i), input.charAt(i + 1));
+            input = input.toUpperCase();
+            try {
+                this.machineManager.setSwitchPlug(input);
+                validInput = true;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
-            validInput = true;
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
         }
 
         if (!validInput) {
             if (tryAgain()) {
-                this.getSwitchPlug();
+                validInput = this.getSwitchPlug();
             } else {
                 validInput = false;
             }
@@ -326,9 +345,15 @@ public class ConsoleInterface {
         System.out.println("Expected output " + "CEEFBDFCDAAB");
     }
 
+
     // for testing purposes only
     /*private void paperEnigmaCheckLoadedFromXml() {
         machineManager.setSelectedReflector(0);
+=======
+    //for testing purposes only
+    private void paperEnigmaCheckLoadedFromXml() {
+        //machineManager.setSelectedReflector(0);
+>>>>>>> 314fe36 (changes to get input)
         this.getRotors();
         this.getReflector();
         machineManager.setSelectedRotors(new ArrayList<Integer>(){{add(2);add(1);add(0);}});
