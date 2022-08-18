@@ -17,8 +17,7 @@ public class MachineManager {
 
     private int processedInputCounter = 0;
 
-    private MachineInformation machineInformation=null;
-
+    private MachineInformation machineInformation = null;
 
 
     public String getStatistic() {
@@ -28,7 +27,6 @@ public class MachineManager {
     public void addCodeToStatistic() {
         this.statistic.addCodeFormats(this.setting.getInitialFullMachineCode());
     }
-
 
 
     public int getAmountOfProcessedInputs() {
@@ -47,8 +45,7 @@ public class MachineManager {
         return output;
     }
 
-    public void commitChangesToMachine()
-    {
+    public void commitChangesToMachine() {
         processedInputCounter = 0;
         this.addCodeToStatistic();
     }
@@ -73,6 +70,7 @@ public class MachineManager {
         this.setting.setSettingStartingChar(startingCharArray);
         this.setting.setInitialRotorsAndDistanceFromNotch(machine);
     }
+
     public void setSwitchPlug(String plugs) {
         if (plugs.length() % 2 != 0) {
             throw new IllegalArgumentException("invalid plugs, each character should be paired ");
@@ -99,14 +97,13 @@ public class MachineManager {
     }
 
     public void resetMachine() {
-        StringBuilder stringBuilder= new StringBuilder(this.setting.getInitialRotorIndexes());
+        StringBuilder stringBuilder = new StringBuilder(this.setting.getInitialRotorIndexes());
         stringBuilder.reverse();
         this.setStartingIndex(stringBuilder.toString());
     }
 
 
-    public MachineInformation getMachineInformation()
-    {
+    public MachineInformation getMachineInformation() {
         return machineInformation;
     }
 
@@ -151,7 +148,7 @@ public class MachineManager {
         tempMachine.loadRotators(enigma);
         tempMachine.loadReflector(enigma);
         machine = tempMachine;
-        this.machineInformation=new MachineInformation(machine);
+        this.machineInformation = new MachineInformation(machine);
     }
 
     public void autoZeroMachine() {
@@ -162,7 +159,7 @@ public class MachineManager {
         // Set rotors & starting indexes
         for (int i = 0; i < machineInformation.getAmountOfRotorsRequired(); i++) {
             int rotorIndex = rand.nextInt(machineInformation.getAmountOfRotors());
-            while (indexes.contains(rotorIndex)){
+            while (indexes.contains(rotorIndex)) {
                 rotorIndex = rand.nextInt(machineInformation.getAmountOfRotors());
             }
             int randomInt = rand.nextInt(machineInformation.getAvailableChars().length());

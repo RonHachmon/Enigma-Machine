@@ -43,12 +43,12 @@ public class Machine {
         }
         return count;
     }
-    public String getAllChars()
-    {
+
+    public String getAllChars() {
         return this.allChars;
     }
-    public void resetSwitchPlug()
-    {
+
+    public void resetSwitchPlug() {
         this.switchPlug.clear();
     }
 
@@ -58,21 +58,17 @@ public class Machine {
 
     public void addSwitchPlug(char firstLetter, char secondLetter) {
 
-        if(!allChars.contains(String.valueOf(firstLetter)))
-        {
-            throw new IllegalArgumentException("'"+firstLetter +"' not included in machine character Collection");
+        if (!allChars.contains(String.valueOf(firstLetter))) {
+            throw new IllegalArgumentException("'" + firstLetter + "' not included in machine character Collection");
         }
-        if(!allChars.contains(String.valueOf(secondLetter)))
-        {
-            throw new IllegalArgumentException("'"+secondLetter +"' not included in machine character Collection");
+        if (!allChars.contains(String.valueOf(secondLetter))) {
+            throw new IllegalArgumentException("'" + secondLetter + "' not included in machine character Collection");
         }
-        if (switchPlug.put(firstLetter, secondLetter) != null)
-        {
-            throw new IllegalArgumentException("Cannot assign letter '"+firstLetter +"' twice");
+        if (switchPlug.put(firstLetter, secondLetter) != null) {
+            throw new IllegalArgumentException("Cannot assign letter '" + firstLetter + "' twice");
         }
-        if (switchPlug.put(secondLetter, firstLetter) != null)
-        {
-            throw new IllegalArgumentException("Cannot assign letter '"+secondLetter +"' twice ");
+        if (switchPlug.put(secondLetter, firstLetter) != null) {
+            throw new IllegalArgumentException("Cannot assign letter '" + secondLetter + "' twice ");
         }
 
 
@@ -93,7 +89,7 @@ public class Machine {
             throw new IllegalArgumentException("Reflector ID must be between 1 - " + getAmountOfAvailableReflectrors());
         }
 
-            this.selectedReflector = this.allReflectors.get(reflectorId);
+        this.selectedReflector = this.allReflectors.get(reflectorId);
 
         if (this.selectedReflector == null) {
             throw new IllegalArgumentException("Reflector does not exist");
@@ -105,15 +101,14 @@ public class Machine {
         checkArrayIsUnique(rotorsID);
         //throw out of bound or does not exist
         for (int id : rotorsID) {
-            if(id<0||id>allRotors.size()-1)
-            {
-                throw new IllegalArgumentException("Rotor ID must be in range of 1-"+allRotors.size());
+            if (id < 0 || id > allRotors.size() - 1) {
+                throw new IllegalArgumentException("Rotor ID must be in range of 1-" + allRotors.size());
             }
             selectedRotors.add(allRotors.get(id));
         }
     }
 
-    public Character run_encrypt_on_char(char input) {
+    public Character runEncryptOnChar(char input) {
         input = runCharThroughSwitchPlug(input);
         int running_index = charMap.get(input);
         boolean toRotate = true;
@@ -124,18 +119,18 @@ public class Machine {
             //System.out.println("    Rotor number: " + (i + 1));
             if (toRotate) {
                 selectedRotors.get(i).rotate();
-                toRotate = selectedRotors.get(i).is_rotor_on_notch();
+                toRotate = selectedRotors.get(i).isRotorOnNotch();
             }
-            running_index = selectedRotors.get(i).get_exit_index_from_right(running_index);
+            running_index = selectedRotors.get(i).getExitIndexFromRight(running_index);
         }
 
         //System.out.println("    Reflector:");
-        running_index = selectedReflector.get_exit_index(running_index);
+        running_index = selectedReflector.getExitIndex(running_index);
 
         //run char thought left side of Rotors
         for (int i = selectedRotors.size() - 1; i >= 0; i--) {
             //System.out.println("    Rotor number: "+(i+1));
-            running_index = selectedRotors.get(i).get_exit_index_from_left(running_index);
+            running_index = selectedRotors.get(i).getExitIndexFromLeft(running_index);
         }
 
         result = reverseCharMap.get(running_index);
@@ -156,7 +151,7 @@ public class Machine {
         this.isAllCharsExistInCharSet(input);
         String res = new String();
         for (int i = 0; i < input.length(); i++) {
-            res += this.run_encrypt_on_char(input.charAt(i));
+            res += this.runEncryptOnChar(input.charAt(i));
         }
         return res;
     }
@@ -199,27 +194,24 @@ public class Machine {
     }
 
     public void loadReflector(CTEEnigma enigma_machine) {
-        CTEReflectors xmlReflextorArr = enigma_machine.getCTEMachine().getCTEReflectors();
+        CTEReflectors xmlReflectorArr = enigma_machine.getCTEMachine().getCTEReflectors();
         Reflector currentReflector;
 
-        if(xmlReflextorArr.getCTEReflector().isEmpty())
-        {
+        if (xmlReflectorArr.getCTEReflector().isEmpty()) {
             throw new IllegalArgumentException("xml must hold at least one reflector");
         }
 
-        for (CTEReflector xmlReflector : xmlReflextorArr.getCTEReflector()) {
+        for (CTEReflector xmlReflector : xmlReflectorArr.getCTEReflector()) {
             currentReflector = Reflector.createReflectorFromXML(xmlReflector, charMap.size());
 
             int position = Machine.convertRomanToInt(xmlReflector.getId());
             //System.out.println("Reflector:"+ currentReflector);
-            if(allReflectors.set(position, currentReflector)!=null)
-            {
+            if (allReflectors.set(position, currentReflector) != null) {
                 throw new IllegalArgumentException("Each reflectors must have a different ID");
             }
         }
-        for (int i = 0; i <this.getAmountOfAvailableReflectrors() ; i++) {
-            if (allReflectors.get(i)==null)
-            {
+        for (int i = 0; i < this.getAmountOfAvailableReflectrors(); i++) {
+            if (allReflectors.get(i) == null) {
                 throw new IllegalArgumentException("Reflectors cannot have gaps between id's");
             }
 
@@ -297,10 +289,8 @@ public class Machine {
         }
     }
 
-    private void checkArrayIsUnique(List<Integer> rotorsID)
-    {
-        if(rotorsID.stream().distinct().count()!=rotorsID.size())
-        {
+    private void checkArrayIsUnique(List<Integer> rotorsID) {
+        if (rotorsID.stream().distinct().count() != rotorsID.size()) {
             throw new IllegalArgumentException("rotors id must be unique");
         }
 

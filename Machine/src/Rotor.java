@@ -31,14 +31,14 @@ public class Rotor {
     }
 
 
-    public boolean is_rotor_on_notch() {
+    public boolean isRotorOnNotch() {
         if (notchIndex == rotatorIndex) {
             //System.out.println("        notch");
         }
         return notchIndex == rotatorIndex;
     }
 
-    public int get_exit_index_from_right(int index) {
+    public int getExitIndexFromRight(int index) {
         int real_index = (index + rotatorIndex) % lineArray.size();
         char right_char = lineArray.get(real_index).getRightChar();
         //System.out.println("        Right char = "+right_char);
@@ -57,7 +57,7 @@ public class Rotor {
         return rotator_exit_index;
     }
 
-    public int get_exit_index_from_left(int index) {
+    public int getExitIndexFromLeft(int index) {
         int real_index = (index + rotatorIndex) % lineArray.size();
         char left_char = lineArray.get(real_index).getLeftChar();
         //System.out.println("        Left char = "+left_char);

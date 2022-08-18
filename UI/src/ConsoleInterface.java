@@ -28,6 +28,8 @@ public class ConsoleInterface {
             try {
                 userChoice = getValidInput();
                 doMenuOption(menuOptions[userChoice - 1]);
+            } catch (NumberFormatException e) {
+                out.println("input is not a number , please try again");
             } catch (Exception e) {
                 out.println(e.getMessage());
             }
@@ -181,6 +183,7 @@ public class ConsoleInterface {
         boolean validInput = false;
         int amountOfIndexesNeeded = this.machineInformation.getAmountOfRotorsRequired();
         int index = 0;
+        String currentRotorIndex="";
         out.println("Available rotors 1-"+machineInformation.getAmountOfRotors());
         String input = getInput("Please enter set of " + amountOfIndexesNeeded +
                 " unique rotors index separated by a ','.\n");
@@ -189,6 +192,7 @@ public class ConsoleInterface {
             for (String rotorIndex : input.split(",")) {
                 //remove trailing whitespace just in case
                 rotorIndex = rotorIndex.trim();
+                currentRotorIndex=rotorIndex;
                 index = Integer.parseInt(rotorIndex);
                 indexes.add(index - 1);
             }
@@ -197,9 +201,7 @@ public class ConsoleInterface {
             this.machineManager.setSelectedRotors(indexes);
             validInput = true;
         } catch (NumberFormatException e) {
-            out.println(e.getMessage());
-        } catch (IllegalArgumentException e) {
-            out.println(e.getMessage());
+            out.println(currentRotorIndex+", is not a number");
         } catch (Exception e) {
             out.println(e.getMessage());
         }
@@ -246,20 +248,24 @@ public class ConsoleInterface {
     private boolean getReflector() {
 
         boolean validInput = false;
+        int index=0;
         int amountOfAvailableReflectors = this.machineInformation.getAvailableReflectors();
         printAvailableReflectors();
         String input = getInput("");
         try {
-            int index = Integer.parseInt(input);
+             index = Integer.parseInt(input);
             if (index < 1 || index > amountOfAvailableReflectors) {
                 out.println("index must be between 1 - " + amountOfAvailableReflectors);
             } else {
                 this.machineManager.setSelectedReflector(index - 1);
                 validInput = true;
             }
+        } catch (NumberFormatException e) {
+            out.println(index+", is not a number");
         } catch (Exception e) {
             out.println(e.getMessage());
         }
+
 
         if (!validInput) {
             if (tryAgain()) {

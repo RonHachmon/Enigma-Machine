@@ -2,7 +2,6 @@ import jaxb_classes.CTEReflector;
 
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class Reflector {
@@ -24,7 +23,7 @@ public class Reflector {
         }
     }
 
-    public int get_exit_index(int index) {
+    public int getExitIndex(int index) {
         int value = integerList.get(index);
         //System.out.println("        Reflector value: "+value);
         for (int i = 0; i < integerList.size(); i++) {
