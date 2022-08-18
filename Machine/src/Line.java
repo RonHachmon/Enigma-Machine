@@ -14,14 +14,6 @@ public class Line {
         this.leftChar = replaceSpecialXMLchar(left).charAt(0);
     }
 
-    public void setLeftChar(char leftChar) {
-        this.leftChar = leftChar;
-    }
-
-    public void setRightChar(char rightChar) {
-        this.rightChar = rightChar;
-    }
-
     public char getLeftChar() {
         return leftChar;
     }
