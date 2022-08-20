@@ -89,7 +89,7 @@ public class ConsoleInterface {
 
     private void loadFromXML() {
         boolean loadedSuccessfully = false;
-        //String filePath = getInput("Please enter full xml file path");
+        String filePath = getInput("Please enter full xml file path");
         out.println("Loading file...");
         try {
             machineManager.createMachineFromXML(PAPER_ENIGMA_XML_FILE_NAME);
@@ -132,6 +132,7 @@ public class ConsoleInterface {
         boolean validInput = this.getRotors();
 
         if (validInput) {
+            System.out.println("Machine known characters: "+ machineInformation.getAvailableChars());
             validInput = this.getStartingIndexes();
             if (validInput) {
                 validInput = this.getReflector();
@@ -280,7 +281,6 @@ public class ConsoleInterface {
 
     private boolean getSwitchPlug() {
         boolean validInput = false;
-        System.out.println("Machine known characters: "+ machineInformation.getAvailableChars());
         String input = getInput("Enter a pair of switch plugs without any separator between them\n" +
                 "Press enter to skip");
 
@@ -314,7 +314,7 @@ public class ConsoleInterface {
         input = input.toUpperCase();
         while (!input.equals("Y") && !input.equals("N")) {
             out.println(input);
-            input = getInput("input must be either 'Y' or 'N' ");
+            input = getInput("input must be either 'Y' or 'N' ").toUpperCase();
         }
 
         return input.equals("Y");
