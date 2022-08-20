@@ -7,14 +7,16 @@ public class Machine {
     private final Map<Character, Integer> charMap = new HashMap<>();
     private final Map<Integer, Character> reverseCharMap = new HashMap<>();
     private final Map<Character, Character> switchPlug = new HashMap<>();
+    private final List<Reflector> allReflectors = new ArrayList<>();
     private List<Rotor> selectedRotors = new ArrayList<>();
     private List<Rotor> allRotors = new ArrayList<>();
-    public final List<Reflector> allReflectors = new ArrayList<>();
-    public Reflector selectedReflector;
-    public String allChars;
+    private Reflector selectedReflector;
+    private String allChars;
     private int amountOfRotorNeeded;
+    private boolean isTheInitialCodeDefined;
 
     public Machine() {
+        isTheInitialCodeDefined = false;
         this.initializeReflector();
     }
 
@@ -34,7 +36,7 @@ public class Machine {
 
     //todo: why not just list.size ?
     //not sure yet if reflector can be with gaps for 1,3,5 (I,III,V);
-    public int getAmountOfAvailableReflectrors() {
+    public int getAmountOfAvailableReflectors() {
         int count = 0;
         for (Reflector reflector : this.allReflectors) {
             if (reflector != null) {
@@ -44,9 +46,7 @@ public class Machine {
         return count;
     }
 
-    public String getAllChars() {
-        return this.allChars;
-    }
+    public String getAllChars() { return this.allChars; }
 
     public void resetSwitchPlug() {
         this.switchPlug.clear();
@@ -70,8 +70,6 @@ public class Machine {
         if (switchPlug.put(secondLetter, firstLetter) != null) {
             throw new IllegalArgumentException("Cannot assign letter '" + secondLetter + "' twice ");
         }
-
-
     }
 
     private void setCharMap(String char_set) {
@@ -85,8 +83,8 @@ public class Machine {
 
     public void setSelectedReflector(int reflectorId) {
 
-        if (reflectorId < 0 || reflectorId > this.getAmountOfAvailableReflectrors()) {
-            throw new IllegalArgumentException("Reflector ID must be between 1 - " + getAmountOfAvailableReflectrors());
+        if (reflectorId < 0 || reflectorId > this.getAmountOfAvailableReflectors()) {
+            throw new IllegalArgumentException("Reflector ID must be between 1 - " + getAmountOfAvailableReflectors());
         }
 
         this.selectedReflector = this.allReflectors.get(reflectorId);
@@ -210,11 +208,10 @@ public class Machine {
                 throw new IllegalArgumentException("Each reflectors must have a different ID");
             }
         }
-        for (int i = 0; i < this.getAmountOfAvailableReflectrors(); i++) {
+        for (int i = 0; i < this.getAmountOfAvailableReflectors(); i++) {
             if (allReflectors.get(i) == null) {
                 throw new IllegalArgumentException("Reflectors cannot have gaps between id's");
             }
-
         }
     }
 
@@ -293,6 +290,13 @@ public class Machine {
         if (rotorsID.stream().distinct().count() != rotorsID.size()) {
             throw new IllegalArgumentException("rotors id must be unique");
         }
+    }
 
+    public boolean isTheInitialCodeDefined() {
+        return isTheInitialCodeDefined;
+    }
+
+    public void setTheInitialCodeDefined(boolean theInitialCodeDefined) {
+        isTheInitialCodeDefined = theInitialCodeDefined;
     }
 }

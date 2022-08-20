@@ -5,7 +5,7 @@ public class MachineInformation {
     private final String availableChars;
 
     public MachineInformation(Machine machine) {
-        this.availableReflectors = machine.getAmountOfAvailableReflectrors();
+        this.availableReflectors = machine.getAmountOfAvailableReflectors();
         this.amountOfRotorsRequired = machine.getAmountOfRotorNeeded();
         this.amountOfRotors = machine.getAllRotors().size();
         this.availableChars = machine.getAllChars();

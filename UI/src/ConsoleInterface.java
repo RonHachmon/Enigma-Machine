@@ -7,11 +7,10 @@ public class ConsoleInterface {
     public static final String SANITY_SMALL_XML_FILE_NAME = "test files/ex1-sanity-small.xml";
     public static final String PAPER_ENIGMA_XML_FILE_NAME = "test files/ex1-sanity-paper-enigma.xml";
 
-    private MachineManager machineManager = new MachineManager();
     private final Scanner scanner = new Scanner(System.in);
-    private boolean runMachine = true;
-
+    private MachineManager machineManager = new MachineManager();
     private MachineInformation machineInformation;
+    private boolean runMachine = true;
 
     public static void main(String[] args) {
         ConsoleInterface game = new ConsoleInterface();
@@ -29,7 +28,7 @@ public class ConsoleInterface {
                 userChoice = getValidInput();
                 doMenuOption(menuOptions[userChoice - 1]);
             } catch (NumberFormatException e) {
-                out.println("input is not a number , please try again");
+                out.println("input is not a number, please try again");
             } catch (Exception e) {
                 out.println(e.getMessage());
             }
@@ -57,6 +56,10 @@ public class ConsoleInterface {
     }
 
     private void doMenuOption(eMainMenuOption menuSelection) {
+        if (menuSelection != eMainMenuOption.READFILE && menuSelection != eMainMenuOption.ENDPROGRAM){
+            handleMachineDoesNotExist();
+        }
+
         switch (menuSelection) {
             case READFILE:
                 this.loadFromXML();
@@ -101,17 +104,16 @@ public class ConsoleInterface {
                 this.loadFromXML();
             }
         }
-        machineInformation=machineManager.getMachineInformation();
+        machineInformation = machineManager.getMachineInformation();
     }
 
     private void showMachineStructure() {
+        handleMachineHasNotBeenSet();
 
         out.println("Amount of total rotors: " + this.machineInformation.getAmountOfRotors());
         out.println("Amount of required rotors: " + this.machineInformation.getAmountOfRotorsRequired());
         out.println("Amount of available reflectors: " + this.machineInformation.getAvailableReflectors());
         out.println("Amount of message processed: " + this.machineManager.getAmountOfProcessedInputs());
-
-
         out.println("Initial Code configuration");
         out.println(this.machineManager.getInitialFullMachineCode());
         out.println("Current Code configuration");
@@ -121,22 +123,20 @@ public class ConsoleInterface {
     }
 
     private void autoZeroMachine() {
-        out.println("Auto machine settings has been deployed");
         this.machineManager.autoZeroMachine();
+        out.println("Auto machine settings has been deployed");
         showMachineStructure();
     }
 
     private void getMachineInput() {
-        boolean validInput;
+        boolean validInput = this.getRotors();
 
-        validInput = this.getRotors();
         if (validInput) {
             validInput = this.getStartingIndexes();
             if (validInput) {
                 validInput = this.getReflector();
                 if (validInput) {
                     validInput = this.getSwitchPlug();
-
                 }
             }
         }
@@ -147,7 +147,8 @@ public class ConsoleInterface {
 
     private void processInput() {
         boolean validInput = false;
-        //String input="WOWCANTBELIEVEITACTUALLYWORKS";
+
+        handleMachineHasNotBeenSet();
         System.out.println("Machine known characters: "+ machineInformation.getAvailableChars());
         String input = this.getInput("Please enter a sentence for encryption");
         input = input.toUpperCase();
@@ -170,11 +171,13 @@ public class ConsoleInterface {
     }
 
     private void resetRotor() {
+        handleMachineHasNotBeenSet();
         this.machineManager.resetMachine();
         out.println("The machine is reset");
     }
 
     private void showHistoryAndStatistic() {
+        handleMachineHasNotBeenSet();
         out.println("History & Statistics:");
         out.println(this.machineManager.getStatistic());
     }
@@ -220,11 +223,9 @@ public class ConsoleInterface {
     private boolean getStartingIndexes() {
 
         boolean validInput = false;
-
         int amountOfIndexesNeeded = this.machineInformation.getAmountOfRotorsRequired();
         StringBuilder input = new StringBuilder(getInput("Please enter set of " + amountOfIndexesNeeded +
-
-                " starting index .\n"));
+                " starting characters\n"));
 
         try {
             input.reverse();
@@ -246,7 +247,6 @@ public class ConsoleInterface {
     }
 
     private boolean getReflector() {
-
         boolean validInput = false;
         int index=0;
         int amountOfAvailableReflectors = this.machineInformation.getAvailableReflectors();
@@ -280,6 +280,7 @@ public class ConsoleInterface {
 
     private boolean getSwitchPlug() {
         boolean validInput = false;
+        System.out.println("Machine known characters: "+ machineInformation.getAvailableChars());
         String input = getInput("Enter a pair of switch plugs without any separator between them\n" +
                 "Press enter to skip");
 
@@ -305,7 +306,6 @@ public class ConsoleInterface {
 
         return validInput;
     }
-
 
     //maybe with command pattern tryAgain will receive command to run
     private boolean tryAgain() {
@@ -333,13 +333,28 @@ public class ConsoleInterface {
         }
     }
 
+    private void handleMachineHasNotBeenSet() {
+        if (!machineManager.isMachineSettingInitialized()){
+            throw new RuntimeException("Machine has not been set");
+        }
+    }
+
+    private void handleMachineDoesNotExist() {
+        if (!machineManager.isMachineExists()){
+            throw new NullPointerException("Machine does not exist, make sure to load XML file");
+        }
+    }
+
+    private void printWelcomeMsg() {
+        out.println("Welcome ! You're about to crack the Enigma :O");
+    }
+
     private void exit() {
         this.runMachine = false;
     }
 
     //for testing purposes only
     private void sanity_check_loaded_from_xml() {
-
         //machineManager.addSwitchPlug('A', 'F');
         machineManager.setSelectedReflector(0);
         machineManager.setSelectedRotors(new ArrayList<Integer>() {{
@@ -351,10 +366,6 @@ public class ConsoleInterface {
         out.println("input char = " + input_string);
         //System.out.println("Machine output  "+machineManager.getMachine().runEncryptOnString(input_string.toUpperCase()));
         out.println("Expected output " + "CEEFBDFCDAAB");
-    }
-
-    private void printWelcomeMsg() {
-        out.println("Welcome ! You're about to crack the Enigma :O");
     }
     // for testing purposes only
     /*private void paperEnigmaCheckLoadedFromXml() {

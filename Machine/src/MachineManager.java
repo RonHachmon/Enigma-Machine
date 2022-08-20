@@ -14,11 +14,9 @@ public class MachineManager {
     private Machine machine = new Machine();
     private Statistic statistic = new Statistic();
     private Setting setting = new Setting();
-
-    private int processedInputCounter = 0;
-
     private MachineInformation machineInformation = null;
-
+    private int processedInputCounter = 0;
+    private boolean isMachineExists = false;
 
     public String getStatistic() {
         return statistic.historyAndStatistic();
@@ -27,7 +25,6 @@ public class MachineManager {
     public void addCodeToStatistic() {
         this.statistic.addCodeFormats(this.setting.getInitialFullMachineCode());
     }
-
 
     public int getAmountOfProcessedInputs() {
         return this.statistic.getAmountOfProcessedInputs();
@@ -47,6 +44,7 @@ public class MachineManager {
 
     public void commitChangesToMachine() {
         processedInputCounter = 0;
+        machine.setTheInitialCodeDefined(true);
         this.addCodeToStatistic();
     }
 
@@ -102,7 +100,6 @@ public class MachineManager {
         this.setStartingIndex(stringBuilder.toString());
     }
 
-
     public MachineInformation getMachineInformation() {
         return machineInformation;
     }
@@ -148,6 +145,7 @@ public class MachineManager {
         tempMachine.loadRotators(enigma);
         tempMachine.loadReflector(enigma);
         machine = tempMachine;
+        isMachineExists = true;
         this.machineInformation = new MachineInformation(machine);
     }
 
@@ -180,5 +178,13 @@ public class MachineManager {
         timeAndStatistic.append("-->");
         timeAndStatistic.append('<' + output + '>');
         timeAndStatistic.append("(" + duration.getNano() + " nano-seconds)");
+    }
+
+    public boolean isMachineExists(){
+        return this.isMachineExists;
+    }
+
+    public boolean isMachineSettingInitialized() {
+        return machine.isTheInitialCodeDefined();
     }
 }
