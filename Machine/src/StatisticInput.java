@@ -1,4 +1,6 @@
-public class StatisticInput {
+import java.io.Serializable;
+
+public class StatisticInput implements Serializable {
     private int codeIndex;
     private String processedInput;
 

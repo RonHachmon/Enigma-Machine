@@ -1,7 +1,6 @@
 import jaxb_classes.CTEEnigma;
-
 import javax.xml.bind.JAXBException;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
@@ -67,6 +66,10 @@ public class MachineManager {
         this.machine.setStartingIndex(startingCharArray);
         this.setting.setSettingStartingChar(startingCharArray);
         this.setting.setInitialRotorsAndDistanceFromNotch(machine);
+    }
+
+    public void setIsMachineExists(boolean isMachineExists){
+        this.isMachineExists = isMachineExists;
     }
 
     public void setSwitchPlug(String plugs) {
@@ -180,11 +183,35 @@ public class MachineManager {
         timeAndStatistic.append("(" + duration.getNano() + " nano-seconds)");
     }
 
-    public boolean isMachineExists(){
+    public boolean isMachineExists() {
         return this.isMachineExists;
     }
 
     public boolean isMachineSettingInitialized() {
         return machine.isTheInitialCodeDefined();
+    }
+
+    public void saveMachineToFile(String path) throws IOException {
+        try (ObjectOutputStream out =
+                     new ObjectOutputStream(
+                             new FileOutputStream(path))) {
+            out.writeObject(machine);
+            out.writeObject(statistic);
+            out.writeObject(setting);
+            out.writeObject(processedInputCounter);
+            out.flush();
+        }
+    }
+
+    public void loadMachineFromFile(String path) throws IOException, ClassNotFoundException {
+        try (ObjectInputStream in =
+                     new ObjectInputStream(
+                             new FileInputStream(path))) {
+            machine = (Machine) in.readObject();
+            statistic = (Statistic) in.readObject();
+            setting = (Setting) in.readObject();
+            processedInputCounter = (int) in.readObject();
+            this.machineInformation = new MachineInformation(machine);
+        }
     }
 }

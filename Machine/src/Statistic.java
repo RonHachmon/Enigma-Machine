@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Statistic {
+public class Statistic implements Serializable {
     private final List<String> codeFormats = new ArrayList<>();
     private final List<StatisticInput> processedInput = new ArrayList<>();
     private int intCurrentCodeFormatIndex = -1;

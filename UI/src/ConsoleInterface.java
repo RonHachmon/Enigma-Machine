@@ -1,3 +1,4 @@
+import java.io.ObjectOutputStream;
 import java.util.*;
 
 import static java.lang.System.out;
@@ -8,7 +9,7 @@ public class ConsoleInterface {
     public static final String PAPER_ENIGMA_XML_FILE_NAME = "test files/ex1-sanity-paper-enigma.xml";
 
     private final Scanner scanner = new Scanner(System.in);
-    private MachineManager machineManager = new MachineManager();
+    private static MachineManager machineManager = new MachineManager();
     private MachineInformation machineInformation;
     private boolean runMachine = true;
 
@@ -18,15 +19,14 @@ public class ConsoleInterface {
     }
 
     private void runMachine() {
-        int userChoice = 0;
-        eMainMenuOption[] menuOptions = eMainMenuOption.values();
+        eMainMenuOption userChoice = null;
 
         printWelcomeMsg();
-        while (userChoice != 8) {
+        while (userChoice != eMainMenuOption.ENDPROGRAM) {
             printMainMenu();
             try {
                 userChoice = getValidInput();
-                doMenuOption(menuOptions[userChoice - 1]);
+                doMenuOption(userChoice);
             } catch (NumberFormatException e) {
                 out.println("input is not a number, please try again");
             } catch (Exception e) {
@@ -37,26 +37,29 @@ public class ConsoleInterface {
         out.println("Bye Bye :)");
     }
 
-    private int getValidInput() {
+    private eMainMenuOption getValidInput() {
         int input = Integer.parseInt(getInput(""));
+        eMainMenuOption[] menuOptions = eMainMenuOption.values();
 
-        while (input < 1 || input > 8) {
-            input = Integer.parseInt(getInput("Please choose an option (1-8)"));
+        while (input < 1 || input > menuOptions.length) {
+            input = Integer.parseInt(getInput("Please choose an option (1-" + menuOptions.length +"):"));
         }
 
-        return input;
+        return menuOptions[input - 1];
     }
 
     private void printMainMenu() {
-        out.println(System.lineSeparator() + "Please choose an option (1-8) from the menu:");
+        out.println(System.lineSeparator() + "Please choose an option from the menu (1-" + eMainMenuOption.values().length +"):");
         eMainMenuOption[] menuOptions = eMainMenuOption.values();
+
         for (int i = 0; i < menuOptions.length; i++) {
             out.println((i + 1) + " " + menuOptions[i]);
         }
     }
 
     private void doMenuOption(eMainMenuOption menuSelection) {
-        if (menuSelection != eMainMenuOption.READFILE && menuSelection != eMainMenuOption.ENDPROGRAM){
+        if (menuSelection != eMainMenuOption.READFILE && menuSelection != eMainMenuOption.ENDPROGRAM
+            && menuSelection != eMainMenuOption.LOADMACHINESTATE) {
             handleMachineDoesNotExist();
         }
 
@@ -81,6 +84,12 @@ public class ConsoleInterface {
                 break;
             case HISTORYANDSTATS:
                 this.showHistoryAndStatistic();
+                break;
+            case SAVEMACHINESTATE:
+                this.saveMachineToFile();
+                break;
+            case LOADMACHINESTATE:
+                this.loadMachineFromFile();
                 break;
             case ENDPROGRAM:
                 this.exit();
@@ -151,8 +160,7 @@ public class ConsoleInterface {
 
         handleMachineHasNotBeenSet();
         System.out.println("Machine known characters: "+ machineInformation.getAvailableChars());
-        String input = this.getInput("Please enter a sentence for encryption");
-        input = input.toUpperCase();
+        String input = this.getInput("Please enter a sentence for encryption").toUpperCase();
         out.println("Input: " + input);
 
         try {
@@ -181,6 +189,31 @@ public class ConsoleInterface {
         handleMachineHasNotBeenSet();
         out.println("History & Statistics:");
         out.println(this.machineManager.getStatistic());
+    }
+
+    public void saveMachineToFile() {
+        handleMachineHasNotBeenSet();
+        String msg = "Please enter full path including name of the file\nFor example: C:\\Academic\\Java Rules\\machine";
+        String filePath = getInput(msg);
+
+        try {
+            machineManager.saveMachineToFile(filePath);
+            out.println("Machine Saved");
+        } catch (Exception e) {
+            out.println(e.getMessage());
+        }
+    }
+
+    private void loadMachineFromFile() {
+        String filePath = getInput("Please enter full path of the machine file");
+        try {
+            machineManager.loadMachineFromFile(filePath);
+            machineManager.setIsMachineExists(true);
+            machineInformation = machineManager.getMachineInformation();
+            out.println("Machine Loaded");
+        } catch (Exception e) {
+            out.println(e.getMessage());
+        }
     }
 
     private boolean getRotors() {
