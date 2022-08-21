@@ -1,4 +1,6 @@
-public class Line {
+import java.io.Serializable;
+
+public class Line implements Serializable {
     private char leftChar;
     private char rightChar;
 

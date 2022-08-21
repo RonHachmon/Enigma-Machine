@@ -1,10 +1,11 @@
 import jaxb_classes.CTEReflector;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Reflector {
+public class Reflector implements Serializable {
     public static final int EMPTY = -1;
     public List<Integer> integerList = new ArrayList<>();
 

@@ -7,6 +7,8 @@ public enum eMainMenuOption {
     INPUTPROCESSING("Process input"),
     RESET("Reset machine"),
     HISTORYANDSTATS("Show machine statistics"),
+    SAVEMACHINESTATE("Save machine to file"),
+    LOADMACHINESTATE("Load machine from file"),
     ENDPROGRAM("End program");
 
     public static final int SIZE = values().length;

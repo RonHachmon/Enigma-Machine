@@ -1,12 +1,11 @@
 import jaxb_classes.CTEPositioning;
 import jaxb_classes.CTERotor;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class Rotor {
-
+public class Rotor implements Serializable {
     private final List<Line> lineArray = new ArrayList<>();
-
     private int notchIndex;
     private int rotatorIndex = 0;
 
@@ -19,6 +18,7 @@ public class Rotor {
         if (temp < 0) {
             temp += lineArray.size();
         }
+
         return temp;
     }
 
@@ -30,7 +30,6 @@ public class Rotor {
         return lineArray.get(rotatorIndex).getRightChar();
     }
 
-
     public boolean isRotorOnNotch() {
         if (notchIndex == rotatorIndex) {
             //System.out.println("        notch");
@@ -41,9 +40,9 @@ public class Rotor {
     public int getExitIndexFromRight(int index) {
         int real_index = (index + rotatorIndex) % lineArray.size();
         char right_char = lineArray.get(real_index).getRightChar();
+        int rotator_exit_index = 0;
         //System.out.println("        Right char = "+right_char);
 
-        int rotator_exit_index = 0;
         for (Line current_line : lineArray) {
             if (current_line.getLeftChar() == right_char) {
                 rotator_exit_index -= rotatorIndex;

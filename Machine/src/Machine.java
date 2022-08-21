@@ -1,9 +1,10 @@
 import jaxb_classes.*;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Machine {
+public class Machine implements Serializable {
     private final Map<Character, Integer> charMap = new HashMap<>();
     private final Map<Integer, Character> reverseCharMap = new HashMap<>();
     private final Map<Character, Character> switchPlug = new HashMap<>();
@@ -88,7 +89,6 @@ public class Machine {
         }
 
         this.selectedReflector = this.allReflectors.get(reflectorId);
-
         if (this.selectedReflector == null) {
             throw new IllegalArgumentException("Reflector does not exist");
         }
@@ -180,7 +180,6 @@ public class Machine {
             currentRotor = Rotor.createRotorFromXML(xmlRotorsArr.get(i), this.allChars);
             allRotors.add(currentRotor);
         }
-        //System.out.println(currentRotor);
     }
 
     private List<CTERotor> sortXMLRotors(List<CTERotor> xmlRotorsArr) {
@@ -271,7 +270,6 @@ public class Machine {
         StringBuilder nonExistingChar = new StringBuilder();
 
         allChars.chars().forEach(character -> allChar.add((char) character));
-
         inputString.chars().forEach(c ->
         {
             //for new char in set add return true

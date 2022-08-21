@@ -1,8 +1,9 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Setting {
+public class Setting implements Serializable {
     public static final String EMPTY = "";
     private String setOfPlugs = EMPTY;
     private List<Integer> selectedRotorsIndexes = new ArrayList<>();
