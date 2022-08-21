@@ -97,7 +97,7 @@ public class MachineManager {
         return this.setting.getCurrentMachineCode(this.machine);
     }
 
-    public void resetMachine() {
+    public void resetMachineCode() {
         StringBuilder stringBuilder = new StringBuilder(this.setting.getInitialRotorIndexes());
         stringBuilder.reverse();
         this.setStartingIndex(stringBuilder.toString());
@@ -191,6 +191,7 @@ public class MachineManager {
         return machine.isTheInitialCodeDefined();
     }
 
+
     public void saveMachineToFile(String path) throws IOException {
         try (ObjectOutputStream out =
                      new ObjectOutputStream(
@@ -213,5 +214,12 @@ public class MachineManager {
             processedInputCounter = (int) in.readObject();
             this.machineInformation = new MachineInformation(machine);
         }
+    }
+
+    public void reset()
+    {
+        this.statistic.reset();
+        this.processedInputCounter=0;
+
     }
 }

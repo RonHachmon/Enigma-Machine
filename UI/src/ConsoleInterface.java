@@ -101,7 +101,7 @@ public class ConsoleInterface {
         String filePath = getInput("Please enter full xml file path");
         out.println("Loading file...");
         try {
-            machineManager.createMachineFromXML(PAPER_ENIGMA_XML_FILE_NAME);
+            machineManager.createMachineFromXML(filePath);
             loadedSuccessfully = true;
             out.println("File loaded successfully");
         } catch (Exception e) {
@@ -113,16 +113,23 @@ public class ConsoleInterface {
                 this.loadFromXML();
             }
         }
-        machineInformation = machineManager.getMachineInformation();
+        if(loadedSuccessfully)
+        {
+            machineManager.reset();
+            machineInformation = machineManager.getMachineInformation();
+
+        }
+
     }
 
     private void showMachineStructure() {
-        handleMachineHasNotBeenSet();
+
 
         out.println("Amount of total rotors: " + this.machineInformation.getAmountOfRotors());
         out.println("Amount of required rotors: " + this.machineInformation.getAmountOfRotorsRequired());
         out.println("Amount of available reflectors: " + this.machineInformation.getAvailableReflectors());
         out.println("Amount of message processed: " + this.machineManager.getAmountOfProcessedInputs());
+        handleMachineHasNotBeenSet();
         out.println("Initial Code configuration");
         out.println(this.machineManager.getInitialFullMachineCode());
         out.println("Current Code configuration");
@@ -181,7 +188,7 @@ public class ConsoleInterface {
 
     private void resetRotor() {
         handleMachineHasNotBeenSet();
-        this.machineManager.resetMachine();
+        this.machineManager.resetMachineCode();
         out.println("The machine is reset");
     }
 
@@ -367,6 +374,8 @@ public class ConsoleInterface {
     }
 
     private void handleMachineHasNotBeenSet() {
+
+        //return machineManager.isMachineSettingInitialized();
         if (!machineManager.isMachineSettingInitialized()){
             throw new RuntimeException("Machine has not been set");
         }
