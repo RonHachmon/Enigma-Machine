@@ -35,4 +35,10 @@ public class Statistic implements Serializable {
         intCurrentCodeFormatIndex++;
         codeFormats.add("Machine configuration: " + codeFormat);
     }
+    public void reset()
+    {
+        codeFormats.clear();
+        processedInput.clear();
+        this.intCurrentCodeFormatIndex=-1;
+    }
 }
