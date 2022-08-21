@@ -196,11 +196,12 @@ public class ConsoleInterface {
         handleMachineHasNotBeenSet();
         out.println("History & Statistics:");
         out.println(this.machineManager.getStatistic());
+        getInput("To continue press enter");
     }
 
     public void saveMachineToFile() {
         handleMachineHasNotBeenSet();
-        String msg = "Please enter full path including name of the file\nFor example: C:\\Academic\\Java Rules\\machine";
+        String msg = "Please enter the full path where you want to save the file including name of file\nFor example: C:\\Academic\\Java Rules\\NameOfMachine";
         String filePath = getInput(msg);
 
         try {
@@ -212,7 +213,7 @@ public class ConsoleInterface {
     }
 
     private void loadMachineFromFile() {
-        String filePath = getInput("Please enter full path of the machine file");
+        String filePath = getInput("Please enter full path of the machine file\nFor example: C:\\Academic\\Java Rules\\NameOfMachine");
         try {
             machineManager.loadMachineFromFile(filePath);
             machineManager.setIsMachineExists(true);
@@ -230,7 +231,7 @@ public class ConsoleInterface {
         String currentRotorIndex="";
         out.println("Available rotors 1-"+machineInformation.getAmountOfRotors());
         String input = getInput("Please enter set of " + amountOfIndexesNeeded +
-                " unique rotors index separated by a ','.\n");
+                " unique rotors index separated by a ','.\nFor example: 2,3,1");
         List<Integer> indexes = new ArrayList<>();
         try {
             for (String rotorIndex : input.split(",")) {
@@ -377,7 +378,7 @@ public class ConsoleInterface {
 
         //return machineManager.isMachineSettingInitialized();
         if (!machineManager.isMachineSettingInitialized()){
-            throw new RuntimeException("Machine has not been set");
+            throw new RuntimeException("Machine has not been initialized");
         }
     }
 
