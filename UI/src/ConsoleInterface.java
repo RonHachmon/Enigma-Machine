@@ -19,9 +19,13 @@ public class ConsoleInterface {
     }
 
     private void runMachine() {
+
         eMainMenuOption userChoice = null;
 
         printWelcomeMsg();
+
+
+
         while (userChoice != eMainMenuOption.ENDPROGRAM) {
             printMainMenu();
             try {
