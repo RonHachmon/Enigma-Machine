@@ -9,11 +9,11 @@ public class Setting implements Serializable {
     private List<Integer> selectedRotorsIndexes = new ArrayList<>();
     private String chosenReflector;
     private String initialRotorIndexes = EMPTY;
-    private String initialRotorDistanceFromNotch = EMPTY;
+    private String initialRotorIndexesAndDistanceFromNotch = EMPTY;
 
     public String getCurrentMachineCode(Machine machine) {
-        String code = "<" + RotorsAndDistanceFromNotch(machine) + ">" +
-                "<" + currentRotorsIndexes(machine) + ">" +
+        String code = "<" + RotorsAndDistanceFromNotch() + ">" +
+                "<" + rotorsIndexAndDistanceFromNotch(machine) + ">" +
                 "<" + chosenReflector + ">" +
                 getAddPlugs();
 
@@ -21,8 +21,8 @@ public class Setting implements Serializable {
     }
 
     public String getInitialFullMachineCode() {
-        String code = "<" + initialRotorDistanceFromNotch + ">" +
-                "<" + initialRotorIndexes + ">" +
+        String code = "<" + RotorsAndDistanceFromNotch()  + ">" +
+                "<" + initialRotorIndexesAndDistanceFromNotch + ">" +
                 "<" + chosenReflector + ">" +
                 getAddPlugs();
 
@@ -37,18 +37,16 @@ public class Setting implements Serializable {
         return this.initialRotorIndexes;
     }
 
-    public void setInitialRotorsAndDistanceFromNotch(Machine machine) {
-        initialRotorDistanceFromNotch = this.RotorsAndDistanceFromNotch(machine);
-    }
 
     public void setSettingRotators(List<Integer> RotorsID) {
         selectedRotorsIndexes = RotorsID;
     }
 
     //gets full set of characters for example "AO!"
-    public void setSettingStartingChar(String startingCharArray) {
+    public void setSettingStartingChar(String startingCharArray,Machine machine) {
         StringBuilder string = new StringBuilder(startingCharArray);
         initialRotorIndexes = string.reverse().toString();
+        initialRotorIndexesAndDistanceFromNotch = rotorsIndexAndDistanceFromNotch(machine);
     }
 
     public void setSettingReflector(int selectedReflector) {
@@ -63,20 +61,24 @@ public class Setting implements Serializable {
         }
     }
 
-    private String currentRotorsIndexes(Machine machine) {
+
+    private String RotorsAndDistanceFromNotch() {
         String result = EMPTY;
-        for (int i = selectedRotorsIndexes.size() - 1; i >= 0; i--) {
-            int currentRotorIndex = selectedRotorsIndexes.get(i);
-            result += machine.getAllRotors().get(currentRotorIndex).currentStartingChar();
+        int i;
+        int currentRotorIndex;
+        for ( i = selectedRotorsIndexes.size() - 1; i > 0; i--) {
+             currentRotorIndex = selectedRotorsIndexes.get(i);
+            result += (currentRotorIndex + 1) +",";
         }
+        currentRotorIndex = selectedRotorsIndexes.get(i);
+        result += (currentRotorIndex + 1);
         return result;
     }
-
-    private String RotorsAndDistanceFromNotch(Machine machine) {
+    private String rotorsIndexAndDistanceFromNotch(Machine machine) {
         String result = EMPTY;
         for (int i = selectedRotorsIndexes.size() - 1; i >= 0; i--) {
             int currentRotorIndex = selectedRotorsIndexes.get(i);
-            result += (currentRotorIndex + 1) +
+            result += machine.getAllRotors().get(currentRotorIndex).currentStartingChar() +
                     "(" + machine.getAllRotors().get(currentRotorIndex).distanceFromNotch() + ")";
         }
         return result;

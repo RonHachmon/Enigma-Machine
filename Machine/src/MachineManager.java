@@ -64,8 +64,7 @@ public class MachineManager {
 
     public void setStartingIndex(String startingCharArray) {
         this.machine.setStartingIndex(startingCharArray);
-        this.setting.setSettingStartingChar(startingCharArray);
-        this.setting.setInitialRotorsAndDistanceFromNotch(machine);
+        this.setting.setSettingStartingChar(startingCharArray,this.machine);
     }
 
     public void setIsMachineExists(boolean isMachineExists){
