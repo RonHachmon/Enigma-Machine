@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.FlowPane?>
+
+
+<FlowPane prefHeight="164.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="54.0" prefWidth="56.0" style="-fx-border-width: 2px;" styleClass="keyboard" stylesheets="@../ConfigScene.css" text="E">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <FlowPane.margin>
+            <Insets left="15.0" top="30.0" />
+         </FlowPane.margin>
+      </Label>
+   </children>
+</FlowPane>
