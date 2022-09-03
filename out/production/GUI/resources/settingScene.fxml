@@ -49,7 +49,16 @@
                         <Insets bottom="15.0" top="15.0" />
                      </VBox.margin>
                   </Button>
-                  <Button id="load-button" fx:id="confirmSetting" minHeight="20.0" minWidth="50.0" mnemonicParsing="false" onAction="#confirmAllSetting" prefHeight="40.0" prefWidth="200.0" text="confirm" />
+                  <HBox>
+                     <children>
+                        <Button id="cancel-button" fx:id="confirmSetting" minHeight="20.0" minWidth="50.0" mnemonicParsing="false" onAction="#confirmAllSetting" prefHeight="40.0" prefWidth="200.0" text="cancel">
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button id="load-button" fx:id="confirmSetting1" minHeight="20.0" minWidth="50.0" mnemonicParsing="false" onAction="#confirmAllSetting" prefHeight="40.0" prefWidth="200.0" text="confirm" />
+                     </children>
+                  </HBox>
                </children>
             </VBox>
             <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowSpan="3">

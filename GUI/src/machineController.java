@@ -135,8 +135,9 @@ public class machineController {
         this.settingController.getRotorIndexes().forEach(choiceBox -> rotorsID.add(choiceBox.getValue()-1));
         this.settingController.getRotorStartingIndexes().forEach(characterChoiceBox -> staringIndexes.append(characterChoiceBox.getValue()));
         this.settingController.getAllSwitchPlugChoiceBoxes().forEach(switchPlugsBox->switchPlugs.append(switchPlugsBox.getValue()));
+
         Collections.reverse(rotorsID);
-        staringIndexes.reverse();
+        
         machineManager.setSelectedRotors(rotorsID);
         machineManager.setStartingIndex( staringIndexes.reverse().toString());
         machineManager.setSelectedReflector(this.settingController.getSelectedReflector()-1);
