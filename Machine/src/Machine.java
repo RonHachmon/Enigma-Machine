@@ -3,6 +3,8 @@ import jaxb_classes.*;
 import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
+import javafx.event.*;
+
 
 public class Machine implements Serializable {
     private final Map<Character, Integer> charMap = new HashMap<>();
@@ -15,6 +17,8 @@ public class Machine implements Serializable {
     private String allChars;
     private int amountOfRotorNeeded;
     private boolean isTheInitialCodeDefined;
+    private EventHandler encryptedChar;
+
 
     public Machine() {
         isTheInitialCodeDefined = false;
