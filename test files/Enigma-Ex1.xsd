@@ -5,11 +5,11 @@
 	<xs:element name="CTE-Rotors">
 		<xs:complexType>
 			<xs:sequence maxOccurs="unbounded">
-				<xs:element ref="CTE-Rotor"/>
+				<xs:element ref="CTE-machineparts.Rotor"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
-	<xs:element name="CTE-Rotor">
+	<xs:element name="CTE-machineparts.Rotor">
 		<xs:complexType>
 			<xs:sequence maxOccurs="unbounded">
 				<xs:element ref="CTE-Positioning"/>
@@ -21,11 +21,11 @@
 	<xs:element name="CTE-Reflectors">
 		<xs:complexType>
 			<xs:sequence maxOccurs="5">
-				<xs:element ref="CTE-Reflector"/>
+				<xs:element ref="CTE-machineparts.Reflector"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
-	<xs:element name="CTE-Reflector">
+	<xs:element name="CTE-machineparts.Reflector">
 		<xs:complexType>
 			<xs:sequence maxOccurs="unbounded">
 				<xs:element ref="CTE-Reflect"/>
@@ -55,7 +55,7 @@
 			<xs:attribute name="right" type="xs:string" use="required"/>
 		</xs:complexType>
 	</xs:element>
-	<xs:element name="CTE-Machine">
+	<xs:element name="CTE-machineparts.Machine">
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element name="ABC" type="xs:string"/>
@@ -68,7 +68,7 @@
 	<xs:element name="CTE-Enigma">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="CTE-Machine"/>
+				<xs:element ref="CTE-machineparts.Machine"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
