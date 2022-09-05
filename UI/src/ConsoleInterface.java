@@ -1,4 +1,6 @@
-import java.io.ObjectOutputStream;
+import Engine.machineutils.MachineInformation;
+import Engine.machineutils.MachineManager;
+
 import java.util.*;
 
 import static java.lang.System.out;
@@ -152,7 +154,7 @@ public class ConsoleInterface {
         boolean validInput = this.getRotors();
 
         if (validInput) {
-            System.out.println("Machine known characters: "+ machineInformation.getAvailableChars());
+            System.out.println("machineparts.Machine known characters: "+ machineInformation.getAvailableChars());
             validInput = this.getStartingIndexes();
             if (validInput) {
                 validInput = this.getReflector();
@@ -170,7 +172,7 @@ public class ConsoleInterface {
         boolean validInput = false;
 
         handleMachineHasNotBeenSet();
-        System.out.println("Machine known characters: "+ machineInformation.getAvailableChars());
+        System.out.println("machineparts.Machine known characters: "+ machineInformation.getAvailableChars());
         String input = this.getInput("Please enter a sentence for encryption").toUpperCase();
         out.println("Input: " + input);
 
@@ -210,7 +212,7 @@ public class ConsoleInterface {
 
         try {
             machineManager.saveMachineToFile(filePath);
-            out.println("Machine Saved");
+            out.println("machineparts.Machine Saved");
         } catch (Exception e) {
             out.println(e.getMessage());
         }
@@ -222,7 +224,7 @@ public class ConsoleInterface {
             machineManager.loadMachineFromFile(filePath);
             machineManager.setIsMachineExists(true);
             machineInformation = machineManager.getMachineInformation();
-            out.println("Machine Loaded");
+            out.println("machineparts.Machine Loaded");
         } catch (Exception e) {
             out.println(e.getMessage());
         }
@@ -382,13 +384,13 @@ public class ConsoleInterface {
 
         //return machineManager.isMachineSettingInitialized();
         if (!machineManager.isMachineSettingInitialized()){
-            throw new RuntimeException("Machine has not been initialized");
+            throw new RuntimeException("machineparts.Machine has not been initialized");
         }
     }
 
     private void handleMachineDoesNotExist() {
         if (!machineManager.isMachineExists()){
-            throw new NullPointerException("Machine does not exist, make sure to load XML file");
+            throw new NullPointerException("machineparts.Machine does not exist, make sure to load XML file");
         }
     }
 
@@ -411,7 +413,7 @@ public class ConsoleInterface {
         machineManager.setStartingIndex("CC");
         String input_string = "AABBCCDDEEFF";
         out.println("input char = " + input_string);
-        //System.out.println("Machine output  "+machineManager.getMachine().runEncryptOnString(input_string.toUpperCase()));
+        //System.out.println("machineparts.Machine output  "+machineManager.getMachine().runEncryptOnString(input_string.toUpperCase()));
         out.println("Expected output " + "CEEFBDFCDAAB");
     }
     // for testing purposes only
@@ -431,7 +433,7 @@ public class ConsoleInterface {
         machineManager.getMachine().setStartingIndex("ODX");
         String input_string="WOWCANTBELIEVEITACTUALLYWORKS";
         System.out.println("input char = "+input_string);
-        System.out.println("Machine output  "+machineManager.getMachine().run_encrypt_on_string(input_string.toUpperCase()));
+        System.out.println("machineparts.Machine output  "+machineManager.getMachine().run_encrypt_on_string(input_string.toUpperCase()));
         System.out.println("Expected output "+"CVRDIZWDAWQKUKBVHJILPKRNDXWIY");
     }*/
 }
