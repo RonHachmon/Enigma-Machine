@@ -104,10 +104,11 @@ public class ConsoleInterface {
 
     private void loadFromXML() {
         boolean loadedSuccessfully = false;
-        String filePath = getInput("Please enter full xml file path");
+        //String filePath = getInput("Please enter full xml file path");
         out.println("Loading file...");
         try {
-            machineManager.createMachineFromXML(filePath);
+            machineManager.createMachineFromXML(PAPER_ENIGMA_XML_FILE_NAME);
+            //machineManager.createMachineFromXML(filePath);
             loadedSuccessfully = true;
             out.println("File loaded successfully");
         } catch (Exception e) {
@@ -177,7 +178,7 @@ public class ConsoleInterface {
         out.println("Input: " + input);
 
         try {
-            out.println("Output: " + this.machineManager.encryptSentence(input));
+            out.println("Output: " + this.machineManager.encryptSentenceAndAddToStatistic(input));
             validInput = true;
 //            System.out.println("Expected Output");
 //            System.out.println("CVRDIZWDAWQKUKBVHJILPKRNDXWIY");

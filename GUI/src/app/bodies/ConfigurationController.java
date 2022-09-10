@@ -1,5 +1,6 @@
 package app.bodies;
 
+import app.bodies.absractScene.MainAppScene;
 import app.settings.SettingController;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -11,8 +12,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import Engine.machineutils.MachineInformation;
-import Engine.machineutils.MachineManager;
 
 
 import java.io.IOException;
@@ -20,11 +19,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ConfigurationController {
+public class ConfigurationController extends MainAppScene {
     public static final String SETTING_SCENE_FXML = "/app/settings/settingScene.fxml";
     public static final String SETTING_CSS = "/app/settings/setting.css";
-    private MachineManager machineManager;
-    private MachineInformation machineInformation;
+    public static final String EMPTY = "";
 
     private SettingController settingController;
 
@@ -49,12 +47,12 @@ public class ConfigurationController {
     @FXML
     private Label currentCodeConfig;
 
-    public void setMachineManager(MachineManager machineManager) {
-        this.machineManager = machineManager;
-    }
+    @FXML
+    private Label initialCodeConfig;
+
 
     @FXML
-    void setCode(ActionEvent event) {
+    void setCodeManually(ActionEvent event) {
 
         try {
             Stage settingStage = loadSettingStage();
@@ -62,7 +60,11 @@ public class ConfigurationController {
             settingStage.showAndWait();
             if(settingController.getIsCodeValid())
             {
-                this.setMachinceCode();
+                this.setMachineCode();
+                this.initialCodeConfig.setText(machineManager.getInitialFullMachineCode());
+                this.mainAppController.setInitialCode();
+                this.mainAppController.enableEncrypt();
+                this.mainAppController.clearEncryptText();
             }
 
         } catch (IOException e) {
@@ -82,7 +84,7 @@ public class ConfigurationController {
         settingStage.setTitle("machine setting");
         return settingStage;
     }
-    private void setMachinceCode() {
+    private void setMachineCode() {
         List<Integer> rotorsID = new ArrayList<>();
         StringBuilder staringIndexes = new StringBuilder("");
         StringBuilder switchPlugs = new StringBuilder("");
@@ -100,8 +102,6 @@ public class ConfigurationController {
         {
             machineManager.setSwitchPlug(switchPlugs.toString());
         }
-
-        this.currentCodeConfig.setText(machineManager.getCurrentCodeSetting());
     }
 
     @FXML
@@ -111,7 +111,12 @@ public class ConfigurationController {
             this.machineManager.autoZeroMachine();
             Platform.runLater(()->
             {
+                this.initialCodeConfig.setText(machineManager.getInitialFullMachineCode());
                 this.currentCodeConfig.setText(machineManager.getCurrentCodeSetting());
+                this.mainAppController.setInitialCode();
+                this.mainAppController.enableEncrypt();
+                this.mainAppController.clearEncryptText();
+
             });
 
         }).start();
@@ -126,8 +131,25 @@ public class ConfigurationController {
         amountOfProcessedInput.setText(String.valueOf(machineManager.getAmountOfProcessedInputs()));
     }
 
+    public void updateMachineCode() {
+        this.currentCodeConfig.setText(machineManager.getCurrentCodeSetting());
+    }
 
-    public void setMachineInformation(MachineInformation machineInformation) {
-        this.machineInformation = machineInformation;
+    public void resetInformation()
+    {
+        amountOfRotors.setText(EMPTY);
+        amountOfRequiredRotors.setText(EMPTY);
+        amountOfReflectors.setText(EMPTY);
+        amountOfProcessedInput.setText(EMPTY);
+    }
+    public void resetCode()
+    {
+        this.currentCodeConfig.setText(EMPTY);
+        this.initialCodeConfig.setText(EMPTY);
+    }
+
+    public void disableConfigButtons() {
+        this.setCode.setDisable(false);
+        this.setRandomCode.setDisable(false);
     }
 }

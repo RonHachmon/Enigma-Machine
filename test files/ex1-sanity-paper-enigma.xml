@@ -2,10 +2,12 @@
 <CTE-Enigma xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="Enigma-Ex1.xsd">
 	<CTE-machineparts.Machine rotors-count="3">
 		<ABC>
-			ABCDEFGHIJKLMNOPQRSTUVWXYZ
+			ABCDEFGHIJKLMNOPQRSTUVWXYZ 1
 		</ABC>
 		<CTE-Rotors>
 			<CTE-machineparts.Rotor id="1" notch="17">
+				<CTE-Positioning right="1" left=" "/>
+				<CTE-Positioning right=" " left="1"/>
 				<CTE-Positioning right="E" left="A"/>
 				<CTE-Positioning right="K" left="B"/>
 				<CTE-Positioning right="M" left="C"/>
@@ -32,8 +34,11 @@
 				<CTE-Positioning right="R" left="X"/>
 				<CTE-Positioning right="C" left="Y"/>
 				<CTE-Positioning right="J" left="Z"/>
+
 			</CTE-machineparts.Rotor>
 			<CTE-machineparts.Rotor id="2" notch="5">
+				<CTE-Positioning right="1" left=" "/>
+				<CTE-Positioning right=" " left="1"/>
 				<CTE-Positioning right="A" left="A"/>
 				<CTE-Positioning right="J" left="B"/>
 				<CTE-Positioning right="D" left="C"/>
@@ -62,6 +67,8 @@
 				<CTE-Positioning right="E" left="Z"/>
 			</CTE-machineparts.Rotor>
 			<CTE-machineparts.Rotor id="3" notch="22">
+				<CTE-Positioning right="1" left=" "/>
+				<CTE-Positioning right=" " left="1"/>
 				<CTE-Positioning right="B" left="A"/>
 				<CTE-Positioning right="D" left="B"/>
 				<CTE-Positioning right="F" left="C"/>
@@ -105,6 +112,7 @@
 				<CTE-Reflect input="13" output="15"/>
 				<CTE-Reflect input="20" output="26"/>
 				<CTE-Reflect input="22" output="23"/>
+				<CTE-Reflect input="27" output="28"/>
 			</CTE-machineparts.Reflector>
 		</CTE-Reflectors>
 	</CTE-machineparts.Machine>

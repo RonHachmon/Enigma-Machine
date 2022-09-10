@@ -1,6 +1,7 @@
 package app;
 
 import app.bodies.ConfigurationController;
+import app.bodies.EncryptController;
 import app.header.HeaderController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -21,22 +22,78 @@ public class MainAppController implements Initializable {
     @FXML private GridPane configurationComponent;
     @FXML private ConfigurationController configurationComponentController;
 
+    @FXML private GridPane encryptComponent;
+
+    @FXML private EncryptController encryptComponentController;
+
 
 
 
 
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
+        encryptComponent.setVisible(false);
         headerComponentController.setMachineManager(machineManager);
-        configurationComponentController.setMachineManager(machineManager);
+        encryptComponentController.setMainAppController(this);
         headerComponentController.setMainAppController(this);
-
-
+        configurationComponentController.setMainAppController(this);
     }
 
     public void updateMachineInformation()
     {
-        configurationComponentController.setMachineInformation(machineManager.getMachineInformation());
         configurationComponentController.updateMachineInformation();
+    }
+
+    public void displayMachineConfigScene() {
+        this.configurationComponent.setVisible(true);
+        this.encryptComponent.setVisible(false);
+    }
+    public void displayEncrypt() {
+        this.configurationComponent.setVisible(false);
+        this.encryptComponent.setVisible(true);
+    }
+
+    public void updateAllControllers() {
+        configurationComponentController.setMachineManager(machineManager);
+        configurationComponentController.setMachineInformation(machineManager.getMachineInformation());
+        encryptComponentController.setMachineManager(machineManager);
+        encryptComponentController.setMachineInformation(machineManager.getMachineInformation());
+        this.updateMachineInformation();
+        this.updateMachineKeyBoard();
+    }
+
+    private void updateMachineKeyBoard() {
+        encryptComponentController.updateMachineKeyboard();
+    }
+
+    public void updateMachineCode() {
+        encryptComponentController.updateCurrentCode();
+        configurationComponentController.updateMachineCode();
+
+    }
+    public void setInitialCode() {
+        encryptComponentController.setInitalCodeConfig();
+        configurationComponentController.updateMachineCode();
+
+    }
+
+    public void enableEncrypt()
+    {
+        headerComponentController.enableEncrypt();
+    }
+
+    //called when new machine is loaded
+    public void resetAll() {
+        this.displayMachineConfigScene();
+        this.clearEncryptText();
+        configurationComponentController.resetCode();
+        configurationComponentController.disableConfigButtons();
+        encryptComponentController.clearStats();
+
+
+    }
+    public void clearEncryptText()
+    {
+        this.encryptComponentController.clearText();
     }
 }

@@ -16,6 +16,7 @@ import java.util.Random;
 public class MachineManager {
     private Machine machine = new Machine();
     private Statistic statistic = new Statistic();
+    private NewStatistic newStatistic = new NewStatistic();
     private Setting setting = new Setting();
     private MachineInformation machineInformation = null;
     private int processedInputCounter = 0;
@@ -33,15 +34,21 @@ public class MachineManager {
         return this.statistic.getAmountOfProcessedInputs();
     }
 
-    public String encryptSentence(String sentence) {
+    public String encryptSentenceAndAddToStatistic(String sentence) {
         Instant timeStart = Instant.now();
         String output = this.machine.runEncryptOnString(sentence);
         StringBuilder timeAndStatistic = new StringBuilder(++processedInputCounter + ". ");
         Duration duration = Duration.between(timeStart, Instant.now());
 
         buildHistoryAndStatistic(sentence, timeAndStatistic, output, duration);
+        newStatistic.addStatistic(setting.getInitialFullMachineCode(),sentence,output,duration.getNano());
+        newStatistic.printMap();
         this.statistic.addProcessedInput(timeAndStatistic.toString());
 
+        return output;
+    }
+    public String encryptSentence(String sentence) {
+        String output = this.machine.runEncryptOnString(sentence);
         return output;
     }
 
@@ -51,8 +58,7 @@ public class MachineManager {
         this.addCodeToStatistic();
     }
 
-    //might need to be modified , depends on if rotor comes left to right
-    // or right to left. currently from right to left
+
     public void setSelectedRotors(List<Integer> rotorsID) {
         if (rotorsID.size() != machineInformation.getAmountOfRotorsRequired()) {
             throw new IllegalArgumentException("amount of indexes must be " + machineInformation.getAmountOfRotorsRequired());
@@ -179,18 +185,17 @@ public class MachineManager {
         commitChangesToMachine();
     }
 
-    private void buildHistoryAndStatistic(String sentence, StringBuilder timeAndStatistic, String output, Duration duration) {
-        timeAndStatistic.append('<' + sentence + '>');
-        timeAndStatistic.append("-->");
-        timeAndStatistic.append('<' + output + '>');
-        timeAndStatistic.append("(" + duration.getNano() + " nano-seconds)");
-    }
+
 
     public boolean isMachineExists() {
         return this.isMachineExists;
     }
 
     public boolean isMachineSettingInitialized() {
+        if(machine==null)
+        {
+            return false;
+        }
         return machine.isTheInitialCodeDefined();
     }
 
@@ -225,4 +230,31 @@ public class MachineManager {
         this.processedInputCounter=0;
 
     }
+    private void buildHistoryAndStatistic(String sentence, StringBuilder timeAndStatistic, String output, Duration duration) {
+        timeAndStatistic.append('<' + sentence + '>');
+        timeAndStatistic.append("-->");
+        timeAndStatistic.append('<' + output + '>');
+        timeAndStatistic.append("(" + duration.getNano() + " nano-seconds)");
+    }
+
+    //--------------------------------------------New StatisticRelated--------------------------------
+    public ArrayList<NewStatisticInput> getStatsPerCode(String code)
+    {
+        return newStatistic.getStatsPerCode(code);
+    }
+
+    public NewStatisticInput getLastStatsPerCode(String code)
+    {
+        ArrayList<NewStatisticInput> statsPerCode = newStatistic.getStatsPerCode(code);
+        int lastIndex = statsPerCode.size();
+        return  statsPerCode.get(lastIndex-1);
+    }
+    public void sendToStats(String input,String output,Integer duration)
+    {
+        newStatistic.addStatistic(this.getInitialFullMachineCode(),input,output,duration);
+
+    }
+
+
+    //--------------------------------------------EndOf:New StatisticRelated--------------------------------
 }
