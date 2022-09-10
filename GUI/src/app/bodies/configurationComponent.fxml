@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -20,12 +21,12 @@
       <ColumnConstraints hgrow="NEVER" maxWidth="525.6666564941406" minWidth="10.0" prefWidth="18.66668701171875" />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints fillHeight="false" maxHeight="1.7976931348623157E308" minHeight="170.0" prefHeight="170.0" vgrow="ALWAYS" />
-      <RowConstraints maxHeight="83.0" minHeight="60.0" prefHeight="83.0" vgrow="ALWAYS" />
-      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+      <RowConstraints fillHeight="false" maxHeight="1.7976931348623157E308" minHeight="150.0" prefHeight="150.0" vgrow="ALWAYS" />
+      <RowConstraints maxHeight="120.0" minHeight="120.0" prefHeight="120.0" vgrow="ALWAYS" />
+      <RowConstraints maxHeight="29.0" minHeight="0.0" prefHeight="29.0" vgrow="NEVER" />
    </rowConstraints>
    <children>
-      <Button fx:id="setRandomCode" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#setRandomCode" prefHeight="30.0" prefWidth="170.0" text="Random code " GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <Button fx:id="setRandomCode" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#setRandomCode" prefHeight="30.0" prefWidth="170.0" text="Random code " GridPane.columnIndex="1" GridPane.rowIndex="1">
          <opaqueInsets>
             <Insets left="5.0" right="5.0" />
          </opaqueInsets>
@@ -36,7 +37,7 @@
             <Insets left="5.0" right="5.0" />
          </GridPane.margin>
       </Button>
-      <Button fx:id="setCode" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#setCode" prefHeight="30.0" prefWidth="170.0" text="Set code" GridPane.columnIndex="2" GridPane.rowIndex="1">
+      <Button fx:id="setCode" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#setCodeManually" prefHeight="30.0" prefWidth="170.0" text="Set code" GridPane.columnIndex="2" GridPane.rowIndex="1">
          <opaqueInsets>
             <Insets left="5.0" right="5.0" />
          </opaqueInsets>
@@ -143,16 +144,45 @@
             </HBox>
          </children>
       </VBox>
-      <Label fx:id="currentCodeConfig" alignment="TOP_LEFT" minWidth="200.0" prefHeight="30.0" prefWidth="320.0" style="-fx-border-color: black;" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
-         <opaqueInsets>
-            <Insets left="5.0" right="5.0" />
-         </opaqueInsets>
-         <font>
-            <Font size="18.0" />
-         </font>
+      <VBox GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
          <GridPane.margin>
             <Insets left="5.0" />
          </GridPane.margin>
-      </Label>
+         <children>
+            <BorderPane>
+               <center>
+                  <Label fx:id="currentCodeConfig" alignment="TOP_LEFT" minWidth="200.0" prefHeight="30.0" prefWidth="320.0" style="-fx-border-color: black;">
+                     <opaqueInsets>
+                        <Insets left="5.0" right="5.0" />
+                     </opaqueInsets>
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+               </center>
+               <top>
+                  <Label alignment="CENTER" prefHeight="20.0" prefWidth="152.0" text="current code" BorderPane.alignment="CENTER" />
+               </top>
+            </BorderPane>
+            <BorderPane>
+               <VBox.margin>
+                  <Insets top="15.0" />
+               </VBox.margin>
+               <center>
+                  <Label fx:id="initialCodeConfig" alignment="TOP_LEFT" minWidth="200.0" prefHeight="30.0" prefWidth="320.0" style="-fx-border-color: black;">
+                     <opaqueInsets>
+                        <Insets left="5.0" right="5.0" />
+                     </opaqueInsets>
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+               </center>
+               <top>
+                  <Label alignment="CENTER" prefHeight="14.0" prefWidth="152.0" text="initial code" BorderPane.alignment="CENTER" />
+               </top>
+            </BorderPane>
+         </children>
+      </VBox>
    </children>
 </GridPane>

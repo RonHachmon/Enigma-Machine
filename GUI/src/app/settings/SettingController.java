@@ -167,6 +167,7 @@ public class SettingController implements Initializable {
                 selectedHbox.setId(SELECTED_SWITCH_PLUG);
             });
 
+            //setting selectable letters
             for (int i = 0; i < switchPlug.getChildren().size(); i++) {
                 if (switchPlug.getChildren().get(i) instanceof ChoiceBox) {
                     ChoiceBox<Character> choiceBox = (ChoiceBox<Character>) switchPlug.getChildren().get(i);

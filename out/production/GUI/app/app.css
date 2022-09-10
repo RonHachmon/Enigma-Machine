@@ -1,5 +1,6 @@
-/*.root { -fx-font-size: 26px;
+/*.root { -fx-font-size: 12px;
  }*/
+
 
 .keyboard{
    -fx-background-color:
@@ -13,8 +14,8 @@
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
     -fx-font-family: "Arial";
     -fx-text-fill: linear-gradient(white, #d0d0d0);
-    -fx-font-size: 22px;
-    -fx-padding: 10 20 10 20;
+    -fx-font-size: 12px;
+    -fx-padding: 5 10 5 10;
 
     -fx-border-color:white;
     -fx-border-radius:50%;
@@ -23,33 +24,20 @@
 
 }
 
-.keyboard:hover{
+/*pressed keyboard*/
+#pressed-key{
      -fx-border-color:yellow;
      -fx-text-fill: yellow;
 }
 
 
-#selected-switch-plug{
--fx-border-color:#90C2E7;
-
-}
-
-.switch-plug{
--fx-border-color:black;
-
-}
-.switch-plug:hover{
--fx-border-color:#90C2E7;
-
-}
 
 
 #load-button{
 -fx-background-color:#4CAF50;
 }
-#cancel-button{
 
-}
+
 
 .button:{
 -fx-border-width:100%;
@@ -63,7 +51,23 @@
 .button:hover{
 -fx-border-width:100%;
 -fx-border-color:#696969;
+}
 
+.menu-button{
+   -fx-background-color:
+        #4287f5,
+        linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
+        linear-gradient(#20262b, #191d22),
+        radial-gradient(center 50% 0%, radius 100%, rgba(50,30,200,0.9), rgba(24,24,24,0));
+    -fx-background-insets: 0,1,2,0;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-font-family: "Arial";
+    -fx-text-fill: linear-gradient(white, #d0d0d0);
+    -fx-font-size: 20px;
+    -fx-padding: 5 10 5 10;
+    -fx-border-color:white;
+    -fx-border-width:2px;
 
 }
 
