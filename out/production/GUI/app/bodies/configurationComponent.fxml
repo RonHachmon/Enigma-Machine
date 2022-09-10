@@ -21,9 +21,9 @@
       <ColumnConstraints hgrow="NEVER" maxWidth="525.6666564941406" minWidth="10.0" prefWidth="18.66668701171875" />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints fillHeight="false" maxHeight="1.7976931348623157E308" minHeight="170.0" prefHeight="170.0" vgrow="ALWAYS" />
-      <RowConstraints maxHeight="83.0" minHeight="60.0" prefHeight="83.0" vgrow="ALWAYS" />
-      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+      <RowConstraints fillHeight="false" maxHeight="1.7976931348623157E308" minHeight="150.0" prefHeight="150.0" vgrow="ALWAYS" />
+      <RowConstraints maxHeight="120.0" minHeight="120.0" prefHeight="120.0" vgrow="ALWAYS" />
+      <RowConstraints maxHeight="29.0" minHeight="0.0" prefHeight="29.0" vgrow="NEVER" />
    </rowConstraints>
    <children>
       <Button fx:id="setRandomCode" alignment="CENTER" contentDisplay="CENTER" disable="true" mnemonicParsing="false" onAction="#setRandomCode" prefHeight="30.0" prefWidth="170.0" text="Random code " GridPane.columnIndex="1" GridPane.rowIndex="1">
