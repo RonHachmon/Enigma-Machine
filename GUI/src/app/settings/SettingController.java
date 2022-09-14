@@ -177,7 +177,7 @@ public class SettingController implements Initializable {
                                     this.switchPlugError.setText("");
 
                                 } else {
-                                    this.switchPlugError.setText("Error, each key can only once ");
+                                    this.switchPlugError.setText("Error, each key can only appear once ");
                                 }
 
                             });
