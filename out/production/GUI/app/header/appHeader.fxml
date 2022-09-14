@@ -69,7 +69,7 @@
                         <Font size="21.0" />
                      </font>
                   </Button>
-                  <Button fx:id="bruteForceButton" minHeight="25.0" minWidth="186.0" mnemonicParsing="false" onAction="#bruteForceClicked" styleClass="menu-button" text="Brute force">
+                  <Button fx:id="bruteForceButton" disable="true" minHeight="25.0" minWidth="186.0" mnemonicParsing="false" onAction="#bruteForceClicked" styleClass="menu-button" text="Brute force">
                      <HBox.margin>
                         <Insets left="5.0" right="5.0" />
                      </HBox.margin>

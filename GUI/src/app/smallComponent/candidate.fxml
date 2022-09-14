@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.text.Font?>
+
+<TextField alignment="CENTER" prefHeight="28.0" prefWidth="129.0" promptText="PrimeNumber" style="-fx-border-color: red; -fx-background-color: cyan; -fx-text-fill: black;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+   <font>
+      <Font name="Arial" size="14.0" />
+   </font>
+</TextField>

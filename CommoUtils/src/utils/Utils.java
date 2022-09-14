@@ -1,5 +1,14 @@
 package utils;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Tooltip;
+import javafx.util.Duration;
+
+import java.io.IOException;
+import java.lang.reflect.Field;
+
 public class Utils {
     public static String convertIntToRoman(int number) {
         switch (number) {
@@ -34,5 +43,35 @@ public class Utils {
                 throw new IllegalArgumentException("Invalid Reflector,id must between 1-5 ");
         }
 
+    }
+
+    public static boolean isNumeric(String strNum) {
+        if (strNum == null) {
+            return false;
+        }
+        try {
+            int d = Integer.parseInt(strNum);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
+    }
+
+    //changes duration until tool tip is shown
+    public static void hackTooltipStartTiming(Tooltip tooltip) {
+        try {
+            Field fieldBehavior = tooltip.getClass().getDeclaredField("BEHAVIOR");
+            fieldBehavior.setAccessible(true);
+            Object objBehavior = fieldBehavior.get(tooltip);
+
+            Field fieldTimer = objBehavior.getClass().getDeclaredField("activationTimer");
+            fieldTimer.setAccessible(true);
+            Timeline objTimer = (Timeline) fieldTimer.get(objBehavior);
+
+            objTimer.getKeyFrames().clear();
+            objTimer.getKeyFrames().add(new KeyFrame(new Duration(100)));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
