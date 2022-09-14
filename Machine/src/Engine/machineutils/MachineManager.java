@@ -263,5 +263,14 @@ public class MachineManager {
     }
 
 
+
+
     //--------------------------------------------EndOf:New StatisticRelated--------------------------------
+
+    //--------------------------------------------Brute Force Related--------------------------------
+
+    public MachineManager cloneMachine() {
+        return null;
+    }
+    //--------------------------------------------ENDof: Brute Force Related--------------------------------
 }

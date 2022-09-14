@@ -1,10 +1,16 @@
 package Engine.BruteForce;
 
+import Engine.EnigmaException.TaskIsCanceledException;
+
 public enum DifficultyLevel implements SetTask {
     EASY(){
         @Override
         public void setTask(TasksManager tasksManager) throws Exception {
-            tasksManager.setEasyTasks();
+            try {
+                tasksManager.setEasyTasks();
+            } catch (TaskIsCanceledException e) {
+                throw new RuntimeException(e);
+            }
         }
     },
     MEDIUM(){

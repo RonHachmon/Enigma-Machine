@@ -29,7 +29,7 @@
 
 .switch-plug{
 -fx-border-color:black;
-
+ -fx-border-width:2px;
 }
 .choice-box{
     -fx-background-color: #fdfdfd;
