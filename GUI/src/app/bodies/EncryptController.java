@@ -2,6 +2,7 @@ package app.bodies;
 
 import Engine.machineutils.NewStatisticInput;
 import app.bodies.absractScene.MainAppScene;
+import app.bodies.interfaces.CodeHolder;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -23,7 +24,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class EncryptController extends MainAppScene implements Initializable {
+public class EncryptController extends MainAppScene implements Initializable, CodeHolder {
     public static final String KEYBOARD_BUTTON_FXML = "/app/smallComponent/keyboardButton.fxml";
 
 
@@ -136,7 +137,7 @@ public class EncryptController extends MainAppScene implements Initializable {
     @FXML
     void resetCodeClicked(ActionEvent event) {
         this.machineManager.resetMachineCode();
-        this.mainAppController.updateMachineCode();
+        this.mainAppController.updateMachineCode(machineManager.getCurrentCodeSetting());
     }
 
     @FXML
@@ -151,7 +152,7 @@ public class EncryptController extends MainAppScene implements Initializable {
         this.machineManager.sendToStats(inputArea.getText().toUpperCase(),outputArea.getText(),currentNanoDuration);
         currentNanoDuration=0;
         this.mainAppController.clearEncryptText();
-        updateStats();
+        updateStatsistic();
 
     }
 
@@ -160,7 +161,8 @@ public class EncryptController extends MainAppScene implements Initializable {
         try {
             String output = this.machineManager.encryptSentenceAndAddToStatistic(inputArea.getText().toUpperCase());
             outputArea.setText(output);
-            updateStats();
+            updateStatsistic();
+            mainAppController.updateMachineCode(machineManager.getCurrentCodeSetting());
         }
         catch (Exception e) {
             Alert a = new Alert(Alert.AlertType.ERROR);
@@ -171,7 +173,7 @@ public class EncryptController extends MainAppScene implements Initializable {
 
     }
 
-    private void updateStats() {
+    private void updateStatsistic() {
         if(codeChooseBox.getValue()!=null)
         {
             if(codeChooseBox.getValue().equals(machineManager.getInitialFullMachineCode())) {
@@ -217,13 +219,16 @@ public class EncryptController extends MainAppScene implements Initializable {
     }
 
 
-    public void updateCurrentCode() {
-        currentCode.setText(machineManager.getCurrentCodeSetting());
+
+    @Override
+    public void updateCode(String code) {
+        this.currentCode.setText(code);
     }
 
-    public void setInitalCodeConfig() {
-        updateCurrentCode();
-        codeChooseBox.getItems().add(machineManager.getCurrentCodeSetting());
+
+    public void addCodeToComboBox(String code) {
+ /*       updateCurrentCode();*/
+        codeChooseBox.getItems().add(code);
     }
 
     private void lightInputKeyboard(String keyPressed) {
@@ -269,7 +274,7 @@ public class EncryptController extends MainAppScene implements Initializable {
                     encryptNewText(oldValue, newValue);
                 } else {
                     this.machineManager.resetMachineCode();
-                    this.mainAppController.updateMachineCode();
+                    this.mainAppController.updateMachineCode(machineManager.getCurrentCodeSetting());
                     this.outputArea.setText("");
                     encryptString(newValue);
                 }
@@ -307,7 +312,7 @@ public class EncryptController extends MainAppScene implements Initializable {
         String output = this.machineManager.encryptSentence(input.toString().toUpperCase());
         currentNanoDuration+=Duration.between(timeStart, Instant.now()).getNano();
         outputArea.setText(outputArea.getText() + output);
-        mainAppController.updateMachineCode();
+        mainAppController.updateMachineCode(machineManager.getCurrentCodeSetting());
         darkOutputKeyboard();
         lightOutputKeyboard(output);
     }

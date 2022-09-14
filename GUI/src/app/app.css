@@ -30,7 +30,15 @@
      -fx-text-fill: yellow;
 }
 
+#error-tool-tip{
+    -fx-background-color:#d9534f ;
 
+}
+
+#error-text-field{
+    -fx-border-color:#d9534f ;
+     -fx-border-width:2px;
+}
 
 
 #load-button{

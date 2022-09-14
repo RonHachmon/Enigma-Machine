@@ -61,6 +61,7 @@
                   <children>
                     <fx:include fx:id="configurationComponent" source="bodies/configurationComponent.fxml" BorderPane.alignment="CENTER" />
                     <fx:include fx:id="encryptComponent" source="bodies/encryptComponent.fxml" BorderPane.alignment="CENTER" />
+                    <fx:include fx:id="bruteForceComponent" source="bodies/bruteForceComponent.fxml" BorderPane.alignment="CENTER" />
                   </children>
                 </StackPane>
               </center>

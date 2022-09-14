@@ -1,11 +1,15 @@
 package app.bodies;
 
 import app.bodies.absractScene.MainAppScene;
+import app.bodies.interfaces.CodeHolder;
 import app.settings.SettingController;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -15,16 +19,19 @@ import javafx.stage.Stage;
 
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.ResourceBundle;
 
-public class ConfigurationController extends MainAppScene {
+public class ConfigurationController extends MainAppScene implements Initializable, CodeHolder {
     public static final String SETTING_SCENE_FXML = "/app/settings/settingScene.fxml";
     public static final String SETTING_CSS = "/app/settings/setting.css";
     public static final String EMPTY = "";
 
     private SettingController settingController;
+
 
     @FXML
     private Button setRandomCode;
@@ -51,6 +58,12 @@ public class ConfigurationController extends MainAppScene {
     private Label initialCodeConfig;
 
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+    }
+
+
     @FXML
     void setCodeManually(ActionEvent event) {
 
@@ -62,8 +75,9 @@ public class ConfigurationController extends MainAppScene {
             {
                 this.setMachineCode();
                 this.initialCodeConfig.setText(machineManager.getInitialFullMachineCode());
-                this.mainAppController.setInitialCode();
+                this.mainAppController.setInitialCode(machineManager.getInitialFullMachineCode());
                 this.mainAppController.enableEncrypt();
+                this.mainAppController.enableBruteForce();
                 this.mainAppController.clearEncryptText();
             }
 
@@ -111,12 +125,12 @@ public class ConfigurationController extends MainAppScene {
             this.machineManager.autoZeroMachine();
             Platform.runLater(()->
             {
-                this.initialCodeConfig.setText(machineManager.getInitialFullMachineCode());
-                this.currentCodeConfig.setText(machineManager.getCurrentCodeSetting());
-                this.mainAppController.setInitialCode();
-                this.mainAppController.enableEncrypt();
-                this.mainAppController.clearEncryptText();
 
+                this.initialCodeConfig.setText(machineManager.getInitialFullMachineCode());
+                this.mainAppController.setInitialCode(machineManager.getInitialFullMachineCode());
+                this.mainAppController.enableEncrypt();
+                this.mainAppController.enableBruteForce();
+                this.mainAppController.clearEncryptText();
             });
 
         }).start();
@@ -129,10 +143,6 @@ public class ConfigurationController extends MainAppScene {
         amountOfRequiredRotors.setText(String.valueOf(machineInformation.getAmountOfRotorsRequired()));
         amountOfReflectors.setText(String.valueOf(machineInformation.getAvailableReflectors()) );
         amountOfProcessedInput.setText(String.valueOf(machineManager.getAmountOfProcessedInputs()));
-    }
-
-    public void updateMachineCode() {
-        this.currentCodeConfig.setText(machineManager.getCurrentCodeSetting());
     }
 
     public void resetInformation()
@@ -152,4 +162,12 @@ public class ConfigurationController extends MainAppScene {
         this.setCode.setDisable(false);
         this.setRandomCode.setDisable(false);
     }
+
+
+    @Override
+    public void updateCode(String code) {
+        this.currentCodeConfig.setText(code);
+    }
+
+
 }

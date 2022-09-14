@@ -1,7 +1,9 @@
 package app.header;
 
 import app.MainAppController;
+import app.bodies.absractScene.MainAppScene;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -15,13 +17,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class HeaderController implements Initializable {
-
-
-
-
-    private MachineManager machineManager;
-    private MainAppController mainAppController;
+public class HeaderController extends MainAppScene   {
 
     @FXML
     private Button machineButton;
@@ -36,6 +32,10 @@ public class HeaderController implements Initializable {
     private TextField currentPath;
     @FXML
     void bruteForceClicked(ActionEvent event) {
+        bruteForceButton.setDisable(true);
+        encryptButton.setDisable(false);
+        machineButton.setDisable(false);
+        mainAppController.bruteForce();
 
     }
 
@@ -43,6 +43,7 @@ public class HeaderController implements Initializable {
     void encryptClicked(ActionEvent event) {
         encryptButton.setDisable(true);
         machineButton.setDisable(false);
+        bruteForceButton.setDisable(false);
         mainAppController.displayEncrypt();
 
     }
@@ -51,6 +52,7 @@ public class HeaderController implements Initializable {
     void machineClicked(ActionEvent event) {
         machineButton.setDisable(true);
         encryptButton.setDisable(false);
+        bruteForceButton.setDisable(false);
         mainAppController.displayMachineConfigScene();
 
     }
@@ -58,11 +60,13 @@ public class HeaderController implements Initializable {
 
     @FXML
     void loadXML(ActionEvent event) {
-/*        machineManager.createMachineFromXML("C:\\Users\\97254\\IdeaProjects\\Enigma-Machine\\test files\\ex1-sanity-paper-enigma.xml");
+        machineManager.createMachineFromXML("C:\\Users\\97254\\IdeaProjects\\Enigma-Machine\\test files\\ex1-sanity-paper-enigma.xml");
         this.currentPath.setText("C:\\Users\\97254\\IdeaProjects\\Enigma-Machine\\test files\\ex1-sanity-paper-enigma.xml");
+        mainAppController.resetAll();
         mainAppController.updateAllControllers();
-        mainAppController.resetAll();*/
 
+
+/*
         FileChooser fileChooser = configFileChooser();
         File selectedFile = fileChooser.showOpenDialog(null);
         if(selectedFile!=null)
@@ -94,6 +98,7 @@ public class HeaderController implements Initializable {
                 }).start();
 
         }
+*/
 
 
     }
@@ -112,17 +117,11 @@ public class HeaderController implements Initializable {
         this.machineManager = machineManager;
     }
 
-    public void setMainAppController(MainAppController mainAppController) {
-        this.mainAppController = mainAppController;
+    public void enableEncrypt(boolean toEnable) {
+        encryptButton.setDisable(!toEnable);
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
-    }
-
-
-    public void enableEncrypt() {
-        encryptButton.setDisable(false);
+    public void enableBruteForce(boolean toEnable) {
+        bruteForceButton.setDisable(!toEnable);
     }
 }

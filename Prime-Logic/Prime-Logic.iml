@@ -7,8 +7,5 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="Machine" />
-    <orderEntry type="module" module-name="CommoUtils" />
-    <orderEntry type="module" module-name="Prime-Logic" />
   </component>
 </module>
