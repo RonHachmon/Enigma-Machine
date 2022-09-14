@@ -45,6 +45,9 @@ public class Setting implements Serializable {
     public void setSettingRotators(List<Integer> RotorsID) {
         selectedRotorsIndexes = RotorsID;
     }
+    public List<Integer> getCurrentRotorsList() {
+        return selectedRotorsIndexes;
+    }
 
     //gets full set of characters for example "AO!"
     public void setSettingStartingChar(String startingCharArray,Machine machine) {

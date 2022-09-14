@@ -17,7 +17,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        primaryStage.setTitle("Niggas in Paris");
+        primaryStage.setTitle("Cracking The Enigma");
         Parent load = FXMLLoader.load(getClass().getResource(APP_FXML));
         Scene scene = new Scene(load,1000,600);
         primaryStage.setScene(scene);

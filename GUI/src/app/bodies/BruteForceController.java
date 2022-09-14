@@ -74,7 +74,6 @@ public class BruteForceController extends MainAppScene implements Initializable,
 
 
     private SimpleIntegerProperty totalFoundCandidate=new SimpleIntegerProperty();
-
     private List<String> dictWords=new ArrayList<>();
     private  FindCandidateTask currentRunningTask;
     private Tooltip toolTipError;

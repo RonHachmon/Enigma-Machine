@@ -12,8 +12,6 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 public class FindCandidateTask extends Task<Boolean> {
-
-
     private final UIAdapter uiAdapter;
     private final Long totalNumbers;
     private final BruteForceController controller;
@@ -87,7 +85,6 @@ public class FindCandidateTask extends Task<Boolean> {
             lastKnownIndex=primeNumberList.size();
             updateProgress(lastKnownIndex,20);
         }
-
     }
 
     public void pause()

@@ -7,8 +7,6 @@ import java.util.Map;
 public class NewStatistic {
     private final Map<String, ArrayList<NewStatisticInput>> statistic = new HashMap<>();
 
-
-
     public ArrayList<NewStatisticInput> getStatsPerCode(String code)
     {
         return statistic.get(code);

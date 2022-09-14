@@ -22,6 +22,9 @@ public class MachineManager {
     private int processedInputCounter = 0;
     private boolean isMachineExists = false;
 
+    public String getAvailableChars() {
+        return machineInformation.getAvailableChars();
+    }
     public String getStatistic() {
         return statistic.historyAndStatistic();
     }
@@ -57,7 +60,6 @@ public class MachineManager {
         machine.setTheInitialCodeDefined(true);
         this.addCodeToStatistic();
     }
-
 
     public void setSelectedRotors(List<Integer> rotorsID) {
         if (rotorsID.size() != machineInformation.getAmountOfRotorsRequired()) {
@@ -105,6 +107,11 @@ public class MachineManager {
     public String getCurrentCodeSetting() {
         return this.setting.getCurrentMachineCode(this.machine);
     }
+
+    public List<Integer> getCurrentRotorsList() {
+        return this.setting.getCurrentRotorsList();
+    }
+
 
     public void resetMachineCode() {
         StringBuilder stringBuilder = new StringBuilder(this.setting.getInitialRotorIndexes());

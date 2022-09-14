@@ -45,25 +45,21 @@ public class PrimeFinder {
         System.out.println("done");
     }
     private boolean isPrime(Integer runningNumber) {
-        for (int i=2;i<=Math.sqrt(runningNumber);i++)
-        {
-            if(runningNumber%i==0)
-            {
+        for (int i = 2; i <= Math.sqrt(runningNumber); i++) {
+            if (runningNumber % i == 0) {
                 return false;
             }
         }
         return true;
     }
 
-    synchronized private void  submit(Integer runningNumber) {
+    synchronized private void submit(Integer runningNumber) {
         amountFound++;
         primeNumbers.add(runningNumber);
     }
-     public int  listSize() {
+     public int listSize() {
         return this.primeNumbers.size();
-
     }
-
 
     public int getAmountFound() {
         return amountFound;

@@ -22,28 +22,17 @@ public class MainAppController implements Initializable {
     private MachineManager machineManager=new MachineManager();
     @FXML private VBox headerComponent;
     @FXML private HeaderController headerComponentController;
-
-
     @FXML private GridPane configurationComponent;
     @FXML private ConfigurationController configurationComponentController;
-
     @FXML private GridPane encryptComponent;
-
     @FXML private EncryptController encryptComponentController;
-
     @FXML private GridPane bruteForceComponent;
-
     @FXML private BruteForceController bruteForceComponentController;
-    @FXML
-    private Label amountOfCandidateFound;
+    @FXML private Label amountOfCandidateFound;
 
-
-
-
-    private  List<CodeHolder> codeHolders=new ArrayList<>();
+    private List<CodeHolder> codeHolders=new ArrayList<>();
     /*private  final CodeHolder codeHolders [] = {bruteForceComponentController,encryptComponentController,configurationComponentController};*/
-    private  final List<MainAppScene> mainAppScenes = new ArrayList<>();
-
+    private final List<MainAppScene> mainAppScenes = new ArrayList<>();
 
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
@@ -131,14 +120,11 @@ public class MainAppController implements Initializable {
         configurationComponentController.resetInformation();
         configurationComponentController.disableConfigButtons();
         encryptComponentController.clearStats();
-
-
     }
     public void clearEncryptText()
     {
         this.encryptComponentController.clearText();
     }
-
 
     public void enableBruteForce() {
         headerComponentController.enableBruteForce(true);
