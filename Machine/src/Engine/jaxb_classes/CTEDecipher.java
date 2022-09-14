@@ -21,9 +21,9 @@ import javax.xml.bind.annotation.*;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element ref="{}CTE-Machine"/>
- *         &lt;element ref="{}CTE-Decipher"/>
+ *         &lt;element ref="{}CTE-Dictionary"/>
  *       &lt;/sequence>
+ *       &lt;attribute name="agents" use="required" type="{http://www.w3.org/2001/XMLSchema}int" />
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -33,63 +33,54 @@ import javax.xml.bind.annotation.*;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "cteMachine",
-    "cteDecipher"
+    "cteDictionary"
 })
-@XmlRootElement(name = "CTE-Enigma")
-public class CTEEnigma {
+@XmlRootElement(name = "CTE-Decipher")
+public class CTEDecipher {
 
-    @XmlElement(name = "CTE-Machine", required = true)
-    protected CTEMachine cteMachine;
-    @XmlElement(name = "CTE-Decipher", required = true)
-    protected CTEDecipher cteDecipher;
+    @XmlElement(name = "CTE-Dictionary", required = true)
+    protected CTEDictionary cteDictionary;
+    @XmlAttribute(name = "agents", required = true)
+    protected int agents;
 
     /**
-     * Gets the value of the cteMachine property.
+     * Gets the value of the cteDictionary property.
      * 
      * @return
      *     possible object is
-     *     {@link CTEMachine }
+     *     {@link CTEDictionary }
      *     
      */
-    public CTEMachine getCTEMachine() {
-        return cteMachine;
+    public CTEDictionary getCTEDictionary() {
+        return cteDictionary;
     }
 
     /**
-     * Sets the value of the cteMachine property.
+     * Sets the value of the cteDictionary property.
      * 
      * @param value
      *     allowed object is
-     *     {@link CTEMachine }
+     *     {@link CTEDictionary }
      *     
      */
-    public void setCTEMachine(CTEMachine value) {
-        this.cteMachine = value;
+    public void setCTEDictionary(CTEDictionary value) {
+        this.cteDictionary = value;
     }
 
     /**
-     * Gets the value of the cteDecipher property.
+     * Gets the value of the agents property.
      * 
-     * @return
-     *     possible object is
-     *     {@link CTEDecipher }
-     *     
      */
-    public CTEDecipher getCTEDecipher() {
-        return cteDecipher;
+    public int getAgents() {
+        return agents;
     }
 
     /**
-     * Sets the value of the cteDecipher property.
+     * Sets the value of the agents property.
      * 
-     * @param value
-     *     allowed object is
-     *     {@link CTEDecipher }
-     *     
      */
-    public void setCTEDecipher(CTEDecipher value) {
-        this.cteDecipher = value;
+    public void setAgents(int value) {
+        this.agents = value;
     }
 
 }
