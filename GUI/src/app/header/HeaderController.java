@@ -9,7 +9,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import Engine.machineutils.MachineManager;
 
@@ -17,7 +19,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class HeaderController extends MainAppScene   {
+public class HeaderController extends MainAppScene implements Initializable   {
 
     @FXML
     private Button machineButton;
@@ -30,6 +32,9 @@ public class HeaderController extends MainAppScene   {
 
     @FXML
     private TextField currentPath;
+
+    @FXML
+    private Label titleLabel;
     @FXML
     void bruteForceClicked(ActionEvent event) {
         bruteForceButton.setDisable(true);
@@ -125,5 +130,11 @@ public class HeaderController extends MainAppScene   {
 
     public void enableBruteForce(boolean toEnable) {
         bruteForceButton.setDisable(!toEnable);
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        Font font = Font.loadFont("file:resources/fonts/windows_command_prompt.ttf", 26);
+        titleLabel.setFont(font);
     }
 }

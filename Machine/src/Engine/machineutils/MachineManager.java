@@ -269,6 +269,9 @@ public class MachineManager {
         newStatistic.addStatistic(this.getInitialFullMachineCode(),input,output,duration);
 
     }
+    public int getProcessedInputCounter(){
+        return newStatistic.getTotalEncryptedWordCounter();
+    }
     //--------------------------------------------EndOf:New StatisticRelated--------------------------------
 
     //--------------------------------------------Brute Force Related--------------------------------

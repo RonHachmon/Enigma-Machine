@@ -201,8 +201,8 @@ public class BruteForceController extends MainAppScene implements Initializable,
             Node wordCandidate = loader.load();
             wordCandidate.setFocusTraversable(false);
             CandidateController wordCandidateController = loader.getController();
-            Font font = Font.loadFont("file:resources/fonts/windows_command_prompt.ttf", 15);
-            wordCandidateController.setTextFont(font);
+
+            wordCandidateController.setTextFont();
             wordCandidateController.setText("HAIL HITLER");
             FlowPane.setMargin(wordCandidate, new Insets(2, 10, 2, 10));
             this.candidatesFlowPane.getChildren().add(wordCandidate);

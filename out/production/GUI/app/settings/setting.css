@@ -44,22 +44,19 @@
 
 #selected-switch-plug{
 -fx-border-color:#90C2E7;
-
+-fx-background-color: #0275d8;
 }
 
 
 #load-button{
--fx-background-color:#4CAF50;
+-fx-background-color:#5cb85c ;
 }
 #cancel-button{
 
 }
-
-
-
-
-
-
+.error-message{
+-fx-text-fill:#d9534f ;
+}
 
 .reflector{
     -fx-padding: 8 15 15 15;
@@ -99,4 +96,11 @@
         radial-gradient(center 50% 50%, radius 100%, #ea7f4b, #c54e2c);
         -fx-border-width:5px;
         -fx-border-color:#696969;
+}
+
+.setting-buttons{
+    -fx-background-color:#f7f7f7;
+
+    -fx-text-fill:#1a1a1a;
+    -fx-font-size: 15px;
 }
