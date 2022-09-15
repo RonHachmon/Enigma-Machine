@@ -9,8 +9,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class BruteForceDataFromXML {
-   /* private final Dictionary dictionary=new Dictionary();*/
-    private final Set<String> dictionary = new HashSet<>();
+    private final Dictionary dictionary=new Dictionary();
+    /*private final Set<String> dictionary = new HashSet<>();*/
     private final int maxAmountOfAgent;
     private String excludeChars;
 
@@ -28,16 +28,11 @@ public class BruteForceDataFromXML {
     }
 
     private void filterDictionary(CTEDictionary cteDictionary) {
-        this.excludeChars = cteDictionary.getExcludeChars();
-        String[] allWords = cteDictionary.getWords().split(" ");
-        /*Arrays.stream(allWords).sequential().forEach(s -> System.out.println(s));*/
-        Arrays.stream(cteDictionary.getWords().split(" ")).sequential().forEach(str -> {
-                    dictionary.add(str.replaceAll("[" + excludeChars + "]", "").toUpperCase());
-                });
+        dictionary.setDictionary(cteDictionary.getWords(),cteDictionary.getExcludeChars());
 
     }
 
-    public Set<String> getDictionary() {
+    public Dictionary getDictionary() {
         return dictionary;
     }
 

@@ -41,6 +41,8 @@ public class BruteForceController extends MainAppScene implements Initializable,
 
     @FXML
     private TextArea outputArea;
+    @FXML
+    private ChoiceBox<Integer> amountOfAgentsChoiceBox;
 
     @FXML
     private ComboBox<eDifficulty> difficultyComboBox;
@@ -89,13 +91,7 @@ public class BruteForceController extends MainAppScene implements Initializable,
 
         setInitialDictionaryTable();
 
-        toolTipError=new Tooltip("input must be a number");
-        toolTipError.setId("error-tool-tip");
-
-        //changes duration until tool tip is shown
-        Utils.hackTooltipStartTiming(toolTipError,100);
-        assignmentSizeText.setOnMouseEntered(event -> showToolTip());
-        assignmentSizeText.setOnMouseExited(event ->toolTipError.hide());
+        setToolTip();
 
         assignmentSizeText.textProperty().
                 addListener((object, oldValue, newValue)->validateInput(newValue));
@@ -103,6 +99,22 @@ public class BruteForceController extends MainAppScene implements Initializable,
         searchBar.textProperty().
                 addListener((object, oldValue, newValue)->filterDictionaryTable(newValue));
 
+    }
+
+    public void updateAmountOfAgent() {
+        for (int j = 0; j < machineManager.getBruteForceData().getMaxAmountOfAgent(); j++) {
+            amountOfAgentsChoiceBox.getItems().add(j+1);
+
+        }
+    }
+
+    private void setToolTip() {
+        toolTipError=new Tooltip("input must be a number");
+        toolTipError.setId("error-tool-tip");
+        //changes duration until tool tip is shown
+        Utils.hackTooltipStartTiming(toolTipError,100);
+        assignmentSizeText.setOnMouseEntered(event -> showToolTip());
+        assignmentSizeText.setOnMouseExited(event ->toolTipError.hide());
     }
 
     @FXML
@@ -253,7 +265,7 @@ public class BruteForceController extends MainAppScene implements Initializable,
         /*Arrays.stream(splitStringsOne).sequential().forEach(s ->dictionaryTable.getItems().add(s));*/
     }
     public void updateInitialDictionaryTable(){
-        dictionary =machineManager.getBruteForceData().getDictionary();
+        dictionary =machineManager.getBruteForceData().getDictionary().getDictionary();
         dictionary.forEach(s ->dictionaryTable.getItems().add(s) );
     }
     private void showToolTip() {
@@ -309,7 +321,8 @@ public class BruteForceController extends MainAppScene implements Initializable,
 
         }
         else {
-            dictionary.stream().filter(s -> s.startsWith(newValue)).forEach(s ->dictionaryTable.getItems().add(s));
+            dictionary.stream().filter(s -> s.startsWith(newValue.toUpperCase())).
+                    forEach(s ->dictionaryTable.getItems().add(s));
         }
     }
 
