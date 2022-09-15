@@ -15,6 +15,7 @@ public class AgentTask {
     private final String encryptedString;
     private final Engine.BruteForce.Dictionary dictionary;
     private final ExecutorService candidatesThreadPoolExecutor;
+    private  int maxAmountOfAgents;
 //    private final BruteForceUIAdapter bruteForceUIAdapter;
 //    private final DecipherStatistics decipherStatistics;
     private String startingRotorPositions;
@@ -72,6 +73,14 @@ public class AgentTask {
 
     public void addDecryptionCandidateTaskToThreadPool(Runnable decryptionCandidateTask) {
         candidatesThreadPoolExecutor.execute(decryptionCandidateTask);
+    }
+    public void setMaxAmountOfAgents(int maxAmountOfAgents)
+    {
+        this.maxAmountOfAgents=maxAmountOfAgents;
+    }
+    public int getMaxAmountOfAgents()
+    {
+        return maxAmountOfAgents;
     }
 }
 

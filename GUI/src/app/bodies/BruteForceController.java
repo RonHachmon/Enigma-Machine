@@ -74,14 +74,12 @@ public class BruteForceController extends MainAppScene implements Initializable,
 
 
     private SimpleIntegerProperty totalFoundCandidate=new SimpleIntegerProperty();
-    private List<String> dictWords=new ArrayList<>();
     private boolean validAssignment=false;
     private  FindCandidateTask currentRunningTask;
     private Tooltip toolTipError;
     private DMData dmData=new DMData();
-    private String loremIpsumText ="Lorem ipsum dolor sit amet consectetur adipisicing elit." +
-            " Adipisci quisquam suscipit magni dicta, repellat, quod illo harum libero" +
-            " esse quidem veniam dolor dolores! Optio rerum atque maxime vero at voluptatibus!";
+    private Set<String> dictionary;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -95,7 +93,7 @@ public class BruteForceController extends MainAppScene implements Initializable,
         toolTipError.setId("error-tool-tip");
 
         //changes duration until tool tip is shown
-        Utils.hackTooltipStartTiming(toolTipError);
+        Utils.hackTooltipStartTiming(toolTipError,100);
         assignmentSizeText.setOnMouseEntered(event -> showToolTip());
         assignmentSizeText.setOnMouseExited(event ->toolTipError.hide());
 
@@ -201,10 +199,11 @@ public class BruteForceController extends MainAppScene implements Initializable,
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/app/smallComponent/wordCandidate.fxml"));
             Node wordCandidate = loader.load();
-
+            wordCandidate.setFocusTraversable(false);
             CandidateController wordCandidateController = loader.getController();
-            Font font = Font.loadFont("file:resources/fonts/windows_command_prompt.ttf", 20);
+            Font font = Font.loadFont("file:resources/fonts/windows_command_prompt.ttf", 15);
             wordCandidateController.setTextFont(font);
+            wordCandidateController.setText("HAIL HITLER");
             FlowPane.setMargin(wordCandidate, new Insets(2, 10, 2, 10));
             this.candidatesFlowPane.getChildren().add(wordCandidate);
 
@@ -249,8 +248,13 @@ public class BruteForceController extends MainAppScene implements Initializable,
     }
     private void setInitialDictionaryTable() {
         wordsColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue()));
-        String[] splitStringsOne = loremIpsumText.split(" ");
-        Arrays.stream(splitStringsOne).sequential().forEach(s ->dictionaryTable.getItems().add(s));
+        /*String[] splitStringsOne = loremIpsumText.split(" ");*/
+
+        /*Arrays.stream(splitStringsOne).sequential().forEach(s ->dictionaryTable.getItems().add(s));*/
+    }
+    public void updateInitialDictionaryTable(){
+        dictionary =machineManager.getBruteForceData().getDictionary();
+        dictionary.forEach(s ->dictionaryTable.getItems().add(s) );
     }
     private void showToolTip() {
         String currentInput = assignmentSizeText.getText();
@@ -288,7 +292,7 @@ public class BruteForceController extends MainAppScene implements Initializable,
     }
     private void addWordToInput(String selectedWord) {
         String inputText = inputArea.getText();
-        if (!inputText.isEmpty()&&inputText.charAt(inputText.length()-1)==' ')
+        if(inputText.isEmpty()||inputText.charAt(inputText.length()-1)==' ')
         {
             inputArea.setText(inputText+selectedWord);
         }
@@ -296,17 +300,16 @@ public class BruteForceController extends MainAppScene implements Initializable,
         {
             inputArea.setText(inputText+" "+selectedWord);
         }
-
     }
     private void filterDictionaryTable(String newValue) {
-        String[] splitStrings = loremIpsumText.split(" ");
         dictionaryTable.getItems().clear();
         if(newValue.isEmpty())
         {
-            Arrays.stream(splitStrings).sequential().forEach(s ->dictionaryTable.getItems().add(s));
+            dictionary.forEach(s ->dictionaryTable.getItems().add(s));
+
         }
         else {
-            Arrays.stream(splitStrings).filter(s -> s.startsWith(newValue)).forEach(s ->dictionaryTable.getItems().add(s));
+            dictionary.stream().filter(s -> s.startsWith(newValue)).forEach(s ->dictionaryTable.getItems().add(s));
         }
     }
 

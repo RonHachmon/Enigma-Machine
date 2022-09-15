@@ -58,7 +58,7 @@ public class Utils {
     }
 
     //changes duration until tool tip is shown
-    public static void hackTooltipStartTiming(Tooltip tooltip) {
+    public static void hackTooltipStartTiming(Tooltip tooltip,int milliSecondDelay) {
         try {
             Field fieldBehavior = tooltip.getClass().getDeclaredField("BEHAVIOR");
             fieldBehavior.setAccessible(true);
@@ -69,7 +69,7 @@ public class Utils {
             Timeline objTimer = (Timeline) fieldTimer.get(objBehavior);
 
             objTimer.getKeyFrames().clear();
-            objTimer.getKeyFrames().add(new KeyFrame(new Duration(100)));
+            objTimer.getKeyFrames().add(new KeyFrame(new Duration(milliSecondDelay)));
         } catch (Exception e) {
             e.printStackTrace();
         }
