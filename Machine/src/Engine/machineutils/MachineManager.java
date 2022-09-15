@@ -21,13 +21,12 @@ public class MachineManager {
     private MachineInformation machineInformation = null;
     private int processedInputCounter = 0;
     private boolean isMachineExists = false;
-
     private BruteForceDataFromXML bruteForceData;
+
 
     public BruteForceDataFromXML getBruteForceData(){
         return bruteForceData;
     }
-
     public String getAvailableChars() {
         return machineInformation.getAvailableChars();
     }

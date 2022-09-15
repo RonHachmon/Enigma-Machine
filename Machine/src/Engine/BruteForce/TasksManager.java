@@ -1,6 +1,7 @@
 package Engine.BruteForce;
 
 
+import DTO.DMData;
 import Engine.EnigmaException.TaskIsCanceledException;
 import Engine.machineparts.*;
 
@@ -39,17 +40,16 @@ public class TasksManager extends Task<Boolean> {
 
 
     /*BruteForceTask bruteForceTask*/
-    public TasksManager(MachineManager enigmaMachine, String encryptedString, Engine.BruteForce.Dictionary dictionary, ExecutorService candidatesPool, String decryptedSettingsFormat, Consumer<Runnable> onCancel) throws Exception {
-        this.machineManager = enigmaMachine;
-        machineInformation=machineManager.getMachineInformation();
-/*        this.difficultyLevel = bruteForceTask.getDifficultTaskLevel();
-        this.amountOfAgents = bruteForceTask.getAmountOfAgents();
-        this.taskSize = bruteForceTask.getTaskSize();*/
-        this.encryptedString = encryptedString;
-        //this.bruteForceUIAdapter = UIAdapter;
-        this.dictionary = dictionary;
-        this.candidatesPool = candidatesPool;
-        this.settingsFormat = decryptedSettingsFormat;
+    public TasksManager(DMData dMData, MachineManager machineManager, Consumer<Runnable> onCancel) throws Exception {
+        this.machineManager = machineManager;
+        machineInformation = machineManager.getMachineInformation();
+        this.difficultyLevel = dMData.getDifficulty();
+        this.amountOfAgents = dMData.getAmountOfAgents();
+        this.taskSize = dMData.getAssignmentSize();
+        this.encryptedString = dMData.getEncryptedString();
+        this.dictionary = machineManager.getBruteForceData().getDictionary();
+        this.candidatesPool = Executors.newFixedThreadPool(1);
+//        this.settingsFormat = decryptedSettingsFormat;
         this.onCancel = onCancel;
         this.blockingQueue = new ArrayBlockingQueue<Runnable>(MAX_QUEUE_SIZE);
         this.tasksPool = new ThreadPoolExecutor(amountOfAgents,
@@ -193,7 +193,6 @@ public class TasksManager extends Task<Boolean> {
                 throw new RuntimeException(e);
             }
         }
-
     }
 
     synchronized public void resumeMission() {

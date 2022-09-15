@@ -6,6 +6,7 @@ public class DMData {
     private int amountOfAgents;
     private DifficultyLevel difficulty;
     private int assignmentSize;
+    private String encryptedString;
 
     public int getAmountOfAgents() {
         return amountOfAgents;
@@ -29,5 +30,13 @@ public class DMData {
 
     public void setDifficulty(DifficultyLevel difficulty) {
         this.difficulty = difficulty;
+    }
+
+    public String getEncryptedString() {
+        return encryptedString;
+    }
+
+    public void setEncryptedString(String encryptedString) {
+        this.encryptedString = encryptedString;
     }
 }

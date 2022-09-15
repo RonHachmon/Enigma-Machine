@@ -5,7 +5,7 @@ import java.util.List;
 public class Permutation {
     private String allAvailableChars;
     private int allAvailableCharsSize;
-    private List<Character>  current;
+    private List<Character> current;
 
 
     public Permutation(String allAvailableChars)
