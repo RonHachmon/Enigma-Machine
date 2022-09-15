@@ -18,6 +18,39 @@ public class PrimeFinder {
         this.amountOfIntegerToFind=amountOfIntegerToFind;
     }
 
+    public static void main(String[] args) {
+        findPrimes();
+    }
+
+    public static void findPrimes()
+    {
+        DaemonThread daemonThreadFactory = new DaemonThread();
+
+        ExecutorService threadExecutor = Executors.newFixedThreadPool(6,daemonThreadFactory);
+        int runningNumber=10000;
+        final int[] amountFound2 = {0};
+
+        while ( amountFound2[0] !=20)
+        {
+            int finalRunningNumber = runningNumber;
+            threadExecutor.execute(()-> {
+                if (isPrime2(finalRunningNumber)) {
+                    System.out.println(finalRunningNumber);
+                    amountFound2[0]++;
+                    /*this.submit(finalRunningNumber);*/
+                }
+            });
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
+            runningNumber++;
+        }
+        System.out.println("done");
+    }
+
     public void findPrimes(Task<Boolean> aTask)
     {
         DaemonThread daemonThreadFactory = new DaemonThread();
@@ -45,6 +78,14 @@ public class PrimeFinder {
         System.out.println("done");
     }
     private boolean isPrime(Integer runningNumber) {
+        for (int i = 2; i <= Math.sqrt(runningNumber); i++) {
+            if (runningNumber % i == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+    private static boolean isPrime2(Integer runningNumber) {
         for (int i = 2; i <= Math.sqrt(runningNumber); i++) {
             if (runningNumber % i == 0) {
                 return false;

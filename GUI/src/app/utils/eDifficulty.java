@@ -6,8 +6,6 @@ public enum eDifficulty {
         HARD("Hard"),
         IMPOSSIBLE("Impossible :O");
 
-        public static final int SIZE = values().length;
-        //public static final int PIVOT = 2;
         private String message;
 
         private eDifficulty(String message) {
