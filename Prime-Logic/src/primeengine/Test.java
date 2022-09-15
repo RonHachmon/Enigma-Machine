@@ -1,5 +1,6 @@
 package primeengine;
 
+import utils.ListPermutation;
 import utils.Permutation;
 
 import java.util.ArrayList;
@@ -16,7 +17,33 @@ public class Test {
         Permutation permutation =new Permutation("ABC");
         permutation.increasePermutation(4,characters);
         characters.forEach(character -> System.out.print(character));
+        List<Integer> allRotors=new ArrayList<>();
+        allRotors.add(0);
+        allRotors.add(1);
+        allRotors.add(2);
+        allRotors.add(3);
+        allRotors.add(4);
 
+
+        List<Integer> selectedRotors=new ArrayList<>();
+
+        selectedRotors.add(0);
+        selectedRotors.add(2);
+        selectedRotors.add(4);
+
+        ListPermutation listPermutation=new ListPermutation(selectedRotors,allRotors);
+        List<Integer> integers3=new ArrayList<>();
+        int count=0;
+        while (!listPermutation.done())
+        {
+            System.out.println();
+            integers3=listPermutation.increasePermutation();
+            integers3.forEach(integer -> System.out.print(integer));
+            count++;
+
+        }
+        System.out.println();
+        System.out.println(count);
 
     }
 }

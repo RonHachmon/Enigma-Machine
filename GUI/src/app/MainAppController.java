@@ -91,6 +91,7 @@ public class MainAppController implements Initializable {
         this.updateMachineInformation();
         this.updateMachineKeyBoard();
         this.bruteForceComponentController.updateInitialDictionaryTable();
+        this.bruteForceComponentController.updateAmountOfAgent();
     }
 
     private void updateMachineKeyBoard() {

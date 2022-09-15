@@ -74,4 +74,13 @@ public class Utils {
             e.printStackTrace();
         }
     }
+    public static Integer binomial(int numOfActiveRotors, int numOfAllRotors) {
+        return factorial(numOfAllRotors) / (factorial(numOfActiveRotors) * factorial(numOfAllRotors - numOfActiveRotors));
+    }
+    public static Integer factorial(int size) {
+        if(size == 0) {
+            return 1;
+        }
+        return size * factorial(size - 1);
+    }
 }
