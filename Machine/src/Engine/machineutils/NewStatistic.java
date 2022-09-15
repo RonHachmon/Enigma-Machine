@@ -6,6 +6,7 @@ import java.util.Map;
 
 public class NewStatistic {
     private final Map<String, ArrayList<NewStatisticInput>> statistic = new HashMap<>();
+    private int totalEncryptedWordCounter=0;
 
     public ArrayList<NewStatisticInput> getStatsPerCode(String code)
     {
@@ -14,6 +15,7 @@ public class NewStatistic {
     }
     public void addStatistic(String code, String input,String output,Integer duration)
     {
+        totalEncryptedWordCounter++;
         statistic.computeIfAbsent(code,s -> new ArrayList<>());
         statistic.get(code).add(new NewStatisticInput(input,output,duration) );
 
@@ -26,5 +28,8 @@ public class NewStatistic {
             System.out.println(code);
             value.forEach(newStatisticInput -> System.out.println("\t"+newStatisticInput));
         }
+    }
+    public int getTotalEncryptedWordCounter(){
+        return totalEncryptedWordCounter;
     }
 }

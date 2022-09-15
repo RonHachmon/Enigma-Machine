@@ -20,8 +20,9 @@ public class CandidateController {
     private Label agentLabel;
 
     private Tooltip fullText;
-    public void setTextFont(Font font)
+    public void setTextFont()
     {
+        Font font = Font.loadFont("file:resources/fonts/windows_command_prompt.ttf", 15);
         textLabel.setFont(font);
     }
     public void setText(String text)

@@ -152,7 +152,7 @@ public class EncryptController extends MainAppScene implements Initializable, Co
         this.machineManager.sendToStats(inputArea.getText().toUpperCase(),outputArea.getText(),currentNanoDuration);
         currentNanoDuration=0;
         this.mainAppController.clearEncryptText();
-        updateStatsistic();
+        updateStatistic();
 
     }
 
@@ -161,7 +161,7 @@ public class EncryptController extends MainAppScene implements Initializable, Co
         try {
             String output = this.machineManager.encryptSentenceAndAddToStatistic(inputArea.getText().toUpperCase());
             outputArea.setText(output);
-            updateStatsistic();
+            updateStatistic();
             mainAppController.updateMachineCode(machineManager.getCurrentCodeSetting());
         }
         catch (Exception e) {
@@ -173,7 +173,8 @@ public class EncryptController extends MainAppScene implements Initializable, Co
 
     }
 
-    private void updateStatsistic() {
+    private void updateStatistic() {
+        this.mainAppController.updateTotalWordEncrypted( this.machineManager.getProcessedInputCounter());
         if(codeChooseBox.getValue()!=null)
         {
             if(codeChooseBox.getValue().equals(machineManager.getInitialFullMachineCode())) {
@@ -214,8 +215,6 @@ public class EncryptController extends MainAppScene implements Initializable, Co
             outputKeyboard.getChildren().add(outputKeyLabel);
 
         }
-
-
     }
 
 

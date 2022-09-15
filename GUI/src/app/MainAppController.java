@@ -130,4 +130,8 @@ public class MainAppController implements Initializable {
     public void enableBruteForce() {
         headerComponentController.enableBruteForce(true);
     }
+
+    public void updateTotalWordEncrypted(int processedInputCounter) {
+        this.configurationComponentController.updateTotalEncryptedWord(processedInputCounter);
+    }
 }
