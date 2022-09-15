@@ -4,6 +4,7 @@ package Engine.BruteForce;
 import Engine.EnigmaException.TaskIsCanceledException;
 import Engine.machineparts.*;
 
+import Engine.machineutils.MachineInformation;
 import Engine.machineutils.MachineManager;
 import javafx.concurrent.Task;
 import java.util.ArrayList;
@@ -34,15 +35,18 @@ public class TasksManager extends Task<Boolean> {
     private BlockingQueue<Runnable> blockingQueue;
     private Consumer<Runnable> onCancel;
     private Boolean isPaused;
+    private MachineInformation machineInformation;
 
 
-    public TasksManager(MachineManager enigmaMachine, String encryptedString, BruteForceTask bruteForceTask, Engine.BruteForce.Dictionary dictionary, ExecutorService candidatesPool, String decryptedSettingsFormat, Consumer<Runnable> onCancel) throws Exception {
+    /*BruteForceTask bruteForceTask*/
+    public TasksManager(MachineManager enigmaMachine, String encryptedString, Engine.BruteForce.Dictionary dictionary, ExecutorService candidatesPool, String decryptedSettingsFormat, Consumer<Runnable> onCancel) throws Exception {
         this.machineManager = enigmaMachine;
-        this.difficultyLevel = bruteForceTask.getDifficultTaskLevel();
+        machineInformation=machineManager.getMachineInformation();
+/*        this.difficultyLevel = bruteForceTask.getDifficultTaskLevel();
+        this.amountOfAgents = bruteForceTask.getAmountOfAgents();
+        this.taskSize = bruteForceTask.getTaskSize();*/
         this.encryptedString = encryptedString;
         //this.bruteForceUIAdapter = UIAdapter;
-        this.amountOfAgents = bruteForceTask.getAmountOfAgents();
-        this.taskSize = bruteForceTask.getTaskSize();
         this.dictionary = dictionary;
         this.candidatesPool = candidatesPool;
         this.settingsFormat = decryptedSettingsFormat;
@@ -78,7 +82,7 @@ public class TasksManager extends Task<Boolean> {
     private List<List<Integer>> getAllPossibleRotorsCombinationsFromAllPossibleRotorsExist() {
         List<List<Integer>> allPossibleRotorsCombinationsFromAllRotors = new ArrayList<>();
         List<Integer> allPossibleRotors = new ArrayList<>();
-        calculateAllPossibleRotorsIDsCombinations(machineManager.getAllRotors().size(),1, machineManager.getNumOfActiveRotors(), allPossibleRotors, allPossibleRotorsCombinationsFromAllRotors);
+        calculateAllPossibleRotorsIDsCombinations(machineInformation.getAmountOfRotors(),1, machineInformation.getAmountOfRotorsRequired(), allPossibleRotors, allPossibleRotorsCombinationsFromAllRotors);
         return allPossibleRotorsCombinationsFromAllRotors;
     }
 

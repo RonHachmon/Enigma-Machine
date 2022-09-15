@@ -61,6 +61,14 @@
 -fx-border-color:#696969;
 }
 
+.candidate{
+-fx-font-weight:900;
+
+}
+#candidate-text{
+    -fx-text-fill:white;
+}
+
 .menu-button{
    -fx-background-color:
         #4287f5,

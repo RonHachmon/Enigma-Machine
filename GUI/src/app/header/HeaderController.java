@@ -60,8 +60,10 @@ public class HeaderController extends MainAppScene   {
 
     @FXML
     void loadXML(ActionEvent event) {
-        machineManager.createMachineFromXML("test files/ex1-sanity-paper-enigma.xml");
-        this.currentPath.setText("test files/ex1-sanity-paper-enigma.xml");
+
+        machineManager.createMachineFromXML("test_files/ex2-basic.xml");
+        this.currentPath.setText("test_files/ex2-basic.xml");
+
         mainAppController.resetAll();
         mainAppController.updateAllControllers();
 
