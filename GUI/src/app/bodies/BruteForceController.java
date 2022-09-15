@@ -1,12 +1,12 @@
 package app.bodies;
 
+import DTO.DMData;
 import app.bodies.absractScene.MainAppScene;
 import app.bodies.interfaces.CodeHolder;
 import app.utils.FindCandidateTask;
 import app.utils.UIAdapter;
 import app.utils.candidate.CandidateController;
 import app.utils.eDifficulty;
-import app.utils.threads.DMData;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;

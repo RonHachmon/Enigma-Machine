@@ -10,5 +10,6 @@
     <orderEntry type="module" module-name="Machine" />
     <orderEntry type="module" module-name="Prime-Logic" />
     <orderEntry type="module" module-name="CommoUtils" />
+    <orderEntry type="module" module-name="DTO" />
   </component>
 </module>

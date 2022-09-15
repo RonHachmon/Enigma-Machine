@@ -1,6 +1,5 @@
 package Engine.machineutils;
 
-import Engine.BruteForce.AgentTask;
 import Engine.jaxb_classes.CTEEnigma;
 import Engine.machineparts.Machine;
 
@@ -23,9 +22,9 @@ public class MachineManager {
     private int processedInputCounter = 0;
     private boolean isMachineExists = false;
 
-    private BruteForceData bruteForceData;
+    private BruteForceDataFromXML bruteForceData;
 
-    public BruteForceData getBruteForceData(){
+    public BruteForceDataFromXML getBruteForceData(){
         return bruteForceData;
     }
 
@@ -170,7 +169,7 @@ public class MachineManager {
         tempMachine.loadCharSet(enigma);
         tempMachine.loadRotators(enigma);
         tempMachine.loadReflector(enigma);
-        bruteForceData =new BruteForceData(enigma.getCTEDecipher());
+        bruteForceData =new BruteForceDataFromXML(enigma.getCTEDecipher());
         machine = tempMachine;
         isMachineExists = true;
         this.machineInformation = new MachineInformation(machine);
