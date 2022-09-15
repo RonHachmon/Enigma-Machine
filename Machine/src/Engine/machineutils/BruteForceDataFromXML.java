@@ -1,5 +1,6 @@
 package Engine.machineutils;
 
+import Engine.BruteForce.Dictionary;
 import Engine.jaxb_classes.CTEDecipher;
 import Engine.jaxb_classes.CTEDictionary;
 
@@ -7,16 +8,17 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-public class BruteForceData {
+public class BruteForceDataFromXML {
+   /* private final Dictionary dictionary=new Dictionary();*/
     private final Set<String> dictionary = new HashSet<>();
-    private final int maxAmountOfCharacters;
+    private final int maxAmountOfAgent;
     private String excludeChars;
 
 
-    public BruteForceData(CTEDecipher cteDecipher) {
+    public BruteForceDataFromXML(CTEDecipher cteDecipher) {
 
         if (cteDecipher.getAgents() >= 2 && cteDecipher.getAgents() <= 50) {
-            maxAmountOfCharacters = cteDecipher.getAgents();
+            maxAmountOfAgent = cteDecipher.getAgents();
         } else {
             throw new IllegalArgumentException("amount of agent can only be between 2 to 50 ");
         }
@@ -39,8 +41,8 @@ public class BruteForceData {
         return dictionary;
     }
 
-    public int getMaxAmountOfCharacters() {
-        return maxAmountOfCharacters;
+    public int getMaxAmountOfAgent() {
+        return maxAmountOfAgent;
     }
 
     public String getExcludeChars() {
