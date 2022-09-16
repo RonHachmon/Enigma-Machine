@@ -27,6 +27,10 @@ public class MachineManager {
     public BruteForceDataFromXML getBruteForceData(){
         return bruteForceData;
     }
+    public int getReflector()
+    {
+         return this.setting.getReflector();
+    }
     public String getAvailableChars() {
         return machineInformation.getAvailableChars();
     }

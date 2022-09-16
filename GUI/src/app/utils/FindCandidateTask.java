@@ -1,5 +1,9 @@
 package app.utils;
 
+import DTO.DMData;
+import Engine.BruteForce.DifficultyLevel;
+import Engine.bruteForce2.DecryptManager;
+import Engine.machineutils.MachineManager;
 import app.bodies.BruteForceController;
 import app.utils.threads.DaemonThread;
 import javafx.concurrent.Task;
@@ -20,12 +24,13 @@ public class FindCandidateTask extends Task<Boolean> {
     private PrimeFinder primeFinder =new PrimeFinder(20);
     private int lastKnownIndex=0;
     private ScheduledExecutorService timedExecute;
+    private DecryptManager decryptManager;
     ScheduledFuture<?> scheduledFuture;
 
 
  /*   private bruteForce;*/
 
-    public FindCandidateTask(long totalNumbers, UIAdapter uiAdapter, BruteForceController bruteForceController) {
+    public FindCandidateTask(long totalNumbers, UIAdapter uiAdapter, BruteForceController bruteForceController, MachineManager machineManager) {
         this.uiAdapter = uiAdapter;
         this.totalNumbers = totalNumbers;
         this.controller=bruteForceController;
@@ -33,11 +38,20 @@ public class FindCandidateTask extends Task<Boolean> {
         DaemonThread daemonThreadFactory = new DaemonThread();
         timedExecute = Executors.newSingleThreadScheduledExecutor(daemonThreadFactory);
 
+        DMData dmData =new DMData();
+        dmData.setAssignmentSize(3);
+        dmData.setAmountOfAgents(1);
+        dmData.setEncryptedString("ABC");
+        dmData.setDifficulty(DifficultyLevel.EASY);
+
+        decryptManager =new DecryptManager(machineManager,dmData);
+
     }
     
     
     @Override
     protected Boolean call() throws Exception {
+        decryptManager.startDeciphering();
         startTimedTask();
         System.out.println("test");
         updateProgress(0,20);

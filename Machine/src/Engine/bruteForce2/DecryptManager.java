@@ -1,6 +1,8 @@
-package Engine.BruteForce;
+package Engine.bruteForce2;
 
 import DTO.DMData;
+import Engine.bruteForce2.TaskManger;
+import Engine.bruteForce2.utils.Dictionary;
 import Engine.machineutils.MachineManager;
 
 import java.util.concurrent.BlockingQueue;
@@ -11,17 +13,18 @@ public class DecryptManager {
     private Dictionary dictionary;
     private MachineManager machineManager;
     private DMData DMdata;
-    private TasksManager tasksManager;
+    private TaskManger tasksManager;
 
 
-    public DecryptManager(MachineManager machineManager, Dictionary dictionary,DMData dmData) {
+    public DecryptManager(MachineManager machineManager,DMData dmData) {
         this.machineManager = machineManager;
-        this.dictionary = dictionary;
+/*        this.dictionary = dictionary;*/
         this.DMdata=dmData;
     }
 
     public void startDeciphering() throws Exception{
-        tasksManager = new TasksManager(DMdata,machineManager,(stop) -> System.out.println("ff"));
+        tasksManager = new TaskManger(DMdata,machineManager,(stop) -> System.out.println("ff"));
+        tasksManager.start();
 
     }
 

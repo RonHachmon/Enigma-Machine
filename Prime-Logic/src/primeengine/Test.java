@@ -8,24 +8,26 @@ import java.util.List;
 
 public class Test {
     public static void main(String[] args) {
-        List<Character> characters=new ArrayList<>();
+        String input="CBB";
 
-        characters.add('B');
-        characters.add('B');
-        characters.add('C');
+
         /*Permutation permutation =new Permutation("ABCDEFGHIJKLMNOPQRSTUVWXYZ");*/
         Permutation permutation =new Permutation("ABC");
-        permutation.increasePermutation(4,characters);
-        characters.forEach(character -> System.out.print(character));
+        System.out.println(permutation.increasePermutation(4,input));
+        if(permutation.getOverFlow())
+        {
+            System.out.println("Ywes");
+        }
+/*        characters.forEach(character -> System.out.print(character));
         List<Integer> allRotors=new ArrayList<>();
         allRotors.add(0);
         allRotors.add(1);
         allRotors.add(2);
         allRotors.add(3);
-        allRotors.add(4);
+        allRotors.add(4);*/
 
 
-        List<Integer> selectedRotors=new ArrayList<>();
+/*        List<Integer> selectedRotors=new ArrayList<>();
 
         selectedRotors.add(0);
         selectedRotors.add(2);
@@ -43,7 +45,7 @@ public class Test {
 
         }
         System.out.println();
-        System.out.println(count);
+        System.out.println(count);*/
 
     }
 }

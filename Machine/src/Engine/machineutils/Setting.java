@@ -48,6 +48,10 @@ public class Setting implements Serializable {
     public List<Integer> getCurrentRotorsList() {
         return selectedRotorsIndexes;
     }
+    public int getReflector()
+    {
+        return  (Utils.convertRomanToInt(this.chosenReflector)-1);
+    }
 
     //gets full set of characters for example "AO!"
     public void setSettingStartingChar(String startingCharArray,Machine machine) {

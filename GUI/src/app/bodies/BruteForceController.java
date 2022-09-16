@@ -158,7 +158,7 @@ public class BruteForceController extends MainAppScene implements Initializable,
 
     @FXML
     void startBruteForce(ActionEvent event) {
-        currentRunningTask = new FindCandidateTask(0, createUIAdapter(),this);
+        currentRunningTask = new FindCandidateTask(0, createUIAdapter(),this,this.machineManager);
         new Thread(currentRunningTask).start();
         startButton.setDisable(true);
 
