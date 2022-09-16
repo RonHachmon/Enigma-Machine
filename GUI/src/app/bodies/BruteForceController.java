@@ -1,13 +1,12 @@
 package app.bodies;
 
+import DTO.DMData;
 import app.bodies.absractScene.MainAppScene;
 import app.bodies.interfaces.CodeHolder;
 import app.utils.FindCandidateTask;
 import app.utils.UIAdapter;
+import app.utils.candidate.CandidateController;
 import app.utils.eDifficulty;
-import app.utils.threads.DMData;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -16,15 +15,16 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
-import javafx.util.Duration;
+import javafx.scene.text.Font;
 import utils.Utils;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.*;
 
@@ -41,6 +41,8 @@ public class BruteForceController extends MainAppScene implements Initializable,
 
     @FXML
     private TextArea outputArea;
+    @FXML
+    private ChoiceBox<Integer> amountOfAgentsChoiceBox;
 
     @FXML
     private ComboBox<eDifficulty> difficultyComboBox;
@@ -74,62 +76,46 @@ public class BruteForceController extends MainAppScene implements Initializable,
 
 
     private SimpleIntegerProperty totalFoundCandidate=new SimpleIntegerProperty();
-    private List<String> dictWords=new ArrayList<>();
+    private boolean validAssignment=false;
     private  FindCandidateTask currentRunningTask;
     private Tooltip toolTipError;
     private DMData dmData=new DMData();
-    private String loremIpsumText ="Lorem ipsum dolor sit amet consectetur adipisicing elit." +
-            " Adipisci quisquam suscipit magni dicta, repellat, quod illo harum libero" +
-            " esse quidem veniam dolor dolores! Optio rerum atque maxime vero at voluptatibus!";
+    private Set<String> dictionary;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
        Arrays.stream(eDifficulty.values()).sequential().forEach(eDifficulty ->difficultyComboBox.getItems().add(eDifficulty));
         amountOfCandidateFound.textProperty().bind(Bindings.format("%,d", totalFoundCandidate));
-        wordsColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue()));
 
-        String[] splitStringsOne = loremIpsumText.split(" ");
-        Arrays.stream(splitStringsOne).sequential().forEach(s ->dictionaryTable.getItems().add(s));
+        setInitialDictionaryTable();
+
+        setToolTip();
+
+        assignmentSizeText.textProperty().
+                addListener((object, oldValue, newValue)->validateInput(newValue));
+
+        searchBar.textProperty().
+                addListener((object, oldValue, newValue)->filterDictionaryTable(newValue));
+
+    }
+
+    public void updateAmountOfAgent() {
+        for (int j = 0; j < machineManager.getBruteForceData().getMaxAmountOfAgent(); j++) {
+            amountOfAgentsChoiceBox.getItems().add(j+1);
+
+        }
+    }
+
+    private void setToolTip() {
         toolTipError=new Tooltip("input must be a number");
         toolTipError.setId("error-tool-tip");
         //changes duration until tool tip is shown
-        Utils.hackTooltipStartTiming(toolTipError);
-        assignmentSizeText.setOnMouseEntered(event ->toolTipError.show(assignmentSizeText, event.getScreenX(), event.getScreenY() + 15));
+        Utils.hackTooltipStartTiming(toolTipError,100);
+        assignmentSizeText.setOnMouseEntered(event -> showToolTip());
         assignmentSizeText.setOnMouseExited(event ->toolTipError.hide());
-
-        assignmentSizeText.textProperty().addListener((object, oldValue, newValue)->{
-            if(newValue.isEmpty())
-            {
-                assignmentSizeText.setTooltip(null);
-                assignmentSizeText.setId(null);
-            }
-            else {
-                if (Utils.isNumeric(newValue)) {
-                    dmData.setAssignmentSize(Integer.parseInt(newValue));
-                    assignmentSizeText.setTooltip(null);
-                    assignmentSizeText.setId(null);
-
-                } else {
-                    assignmentSizeText.setId("error-text-field");
-                    assignmentSizeText.setTooltip(toolTipError);
-                }
-            }
-
-        } );
-        searchBar.textProperty().addListener((object, oldValue, newValue)->{
-            String[] splitStrings = loremIpsumText.split(" ");
-            dictionaryTable.getItems().clear();
-            if(newValue.isEmpty())
-            {
-                Arrays.stream(splitStrings).sequential().forEach(s ->dictionaryTable.getItems().add(s));
-            }
-            else {
-                Arrays.stream(splitStrings).filter(s -> s.startsWith(newValue)).forEach(s ->dictionaryTable.getItems().add(s));
-            }
-        } );
     }
-
 
     @FXML
     void runClicked(ActionEvent event) {
@@ -144,10 +130,6 @@ public class BruteForceController extends MainAppScene implements Initializable,
             a.setTitle("Invalid character");
             a.show();
         }
-
-
-
-
     }
     @FXML
     void pauseClicked(ActionEvent event) {
@@ -167,12 +149,12 @@ public class BruteForceController extends MainAppScene implements Initializable,
     }
     @FXML
     void selectedWord(MouseEvent event) {
-        if (event.getClickCount() == 2) //Checking double click
-        {
-            System.out.println(dictionaryTable.getSelectionModel().getSelectedItem());
+        if (event.getClickCount() == 2) {
+            this.addWordToInput(dictionaryTable.getSelectionModel().getSelectedItem());
         }
-
     }
+
+
 
     @FXML
     void startBruteForce(ActionEvent event) {
@@ -192,10 +174,6 @@ public class BruteForceController extends MainAppScene implements Initializable,
 
     }
 
-
-
-
-
     @Override
     public void updateCode(String code) {
         currentCode.setText(code);
@@ -206,7 +184,8 @@ public class BruteForceController extends MainAppScene implements Initializable,
     private UIAdapter createUIAdapter() {
         return new UIAdapter(
                 PrimeNumberData -> {
-                    createCandidate(PrimeNumberData.getInteger());
+                    createWordCandidate(PrimeNumberData.getInteger());
+                   /* createCandidate(PrimeNumberData.getInteger());*/
                 },
                 (delta) -> {
                /*     HistogramsUtils.log("EDT: INCREASE total processed words");
@@ -225,6 +204,24 @@ public class BruteForceController extends MainAppScene implements Initializable,
             FlowPane.setMargin(candidate, new Insets(2, 10, 2, 10));
             this.candidatesFlowPane.getChildren().add(candidate);
 
+    }
+    private void createWordCandidate(Integer integer) {
+
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/app/smallComponent/wordCandidate.fxml"));
+            Node wordCandidate = loader.load();
+            wordCandidate.setFocusTraversable(false);
+            CandidateController wordCandidateController = loader.getController();
+
+            wordCandidateController.setTextFont();
+            wordCandidateController.setText("HAIL HITLER");
+            FlowPane.setMargin(wordCandidate, new Insets(2, 10, 2, 10));
+            this.candidatesFlowPane.getChildren().add(wordCandidate);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void bindTaskToUIComponents(Task<Boolean> aTask) {
@@ -251,7 +248,8 @@ public class BruteForceController extends MainAppScene implements Initializable,
         });*/
     }
 
-    //--------------------------------------------End: Task related--------------------------------
+
+    //--------------------------------------------inner Logic button related--------------------------------
     private <T> T loadFXML(String path) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
         try {
@@ -260,4 +258,73 @@ public class BruteForceController extends MainAppScene implements Initializable,
             return null;
         }
     }
+    private void setInitialDictionaryTable() {
+        wordsColumn.setCellValueFactory(data -> new SimpleStringProperty(data.getValue()));
+        /*String[] splitStringsOne = loremIpsumText.split(" ");*/
+
+        /*Arrays.stream(splitStringsOne).sequential().forEach(s ->dictionaryTable.getItems().add(s));*/
+    }
+    public void updateInitialDictionaryTable(){
+        dictionary =machineManager.getBruteForceData().getDictionary().getDictionary();
+        dictionary.forEach(s ->dictionaryTable.getItems().add(s) );
+    }
+    private void showToolTip() {
+        String currentInput = assignmentSizeText.getText();
+
+        if(!currentInput.isEmpty()&&!validAssignment)
+        {
+            renderToolTip();
+        }
+        else {
+            toolTipError.hide();
+        }
+    }
+    private void validateInput(String newValue) {
+        if(newValue.isEmpty())
+        {
+            assignmentSizeText.setId(null);
+            toolTipError.hide();
+        }
+        else {
+            if (Utils.isNumeric(newValue)) {
+                dmData.setAssignmentSize(Integer.parseInt(newValue));
+                assignmentSizeText.setId(null);
+                validAssignment=true;
+                toolTipError.hide();
+            } else {
+                validAssignment=false;
+                renderToolTip();
+                assignmentSizeText.setId("error-text-field");
+            }
+        }
+    }
+    private void renderToolTip() {
+        Bounds boundsInScene = assignmentSizeText.localToScreen(assignmentSizeText.getBoundsInLocal());
+        toolTipError.show(assignmentSizeText, boundsInScene.getMaxX(), boundsInScene.getMaxY() + 15);
+    }
+    private void addWordToInput(String selectedWord) {
+        String inputText = inputArea.getText();
+        if(inputText.isEmpty()||inputText.charAt(inputText.length()-1)==' ')
+        {
+            inputArea.setText(inputText+selectedWord);
+        }
+        else
+        {
+            inputArea.setText(inputText+" "+selectedWord);
+        }
+    }
+    private void filterDictionaryTable(String newValue) {
+        dictionaryTable.getItems().clear();
+        if(newValue.isEmpty())
+        {
+            dictionary.forEach(s ->dictionaryTable.getItems().add(s));
+
+        }
+        else {
+            dictionary.stream().filter(s -> s.startsWith(newValue.toUpperCase())).
+                    forEach(s ->dictionaryTable.getItems().add(s));
+        }
+    }
+
+    //--------------------------------------------End: inner Logic button related--------------------------------
 }

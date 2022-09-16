@@ -42,7 +42,25 @@
 
 
 #load-button{
--fx-background-color:#4CAF50;
+    -fx-background-color: #23b574;
+    -fx-text-fill: #f7f7f7;
+     -fx-background-radius: 0%;
+    -fx-border-radius:0%;
+    -fx-border-color:#1a1a1a ;
+    -fx-border-width:1px;
+
+}
+#load-button:hover{
+
+-fx-border-width:3px;
+
+}
+
+#path{
+   -fx-background-radius: 0%;
+   -fx-text-fill: #1a1a1a;
+   -fx-border-color:#1a1a1a ;
+   -fx-border-width:1px;
 }
 
 
@@ -57,11 +75,19 @@
 
 
 .button:hover{
--fx-border-width:100%;
+-fx-border-width:2px;
 -fx-border-color:#696969;
 }
 
-.menu-button{
+.candidate{
+-fx-font-weight:900;
+
+}
+#candidate-text{
+    -fx-text-fill:white;
+}
+
+/*.menu-button{
    -fx-background-color:
         #4287f5,
         linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
@@ -77,8 +103,25 @@
     -fx-border-color:white;
     -fx-border-width:2px;
 
-}
+}*/
 
+.menu-button{
+    -fx-background-color:#0874bc;
+    -fx-background-radius: 30;
+    -fx-background-insets: 0,1,2,3,0;
+    -fx-font-weight: bold;
+    -fx-font-size: 17px;
+    -fx-padding: 10 20 10 20;
+    -fx-font-family: "Arial";
+    -fx-text-fill: linear-gradient(white, #d0d0d0);
+    -fx-border-radius:30;
+    -fx-border-width:3px;
+
+
+}
+#shiny-orange {
+
+}
 
 
 

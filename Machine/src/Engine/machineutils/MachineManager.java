@@ -21,7 +21,12 @@ public class MachineManager {
     private MachineInformation machineInformation = null;
     private int processedInputCounter = 0;
     private boolean isMachineExists = false;
+    private BruteForceDataFromXML bruteForceData;
 
+
+    public BruteForceDataFromXML getBruteForceData(){
+        return bruteForceData;
+    }
     public String getAvailableChars() {
         return machineInformation.getAvailableChars();
     }
@@ -163,6 +168,7 @@ public class MachineManager {
         tempMachine.loadCharSet(enigma);
         tempMachine.loadRotators(enigma);
         tempMachine.loadReflector(enigma);
+        bruteForceData =new BruteForceDataFromXML(enigma.getCTEDecipher());
         machine = tempMachine;
         isMachineExists = true;
         this.machineInformation = new MachineInformation(machine);
@@ -261,7 +267,15 @@ public class MachineManager {
         newStatistic.addStatistic(this.getInitialFullMachineCode(),input,output,duration);
 
     }
-
-
+    public int getProcessedInputCounter(){
+        return newStatistic.getTotalEncryptedWordCounter();
+    }
     //--------------------------------------------EndOf:New StatisticRelated--------------------------------
+
+    //--------------------------------------------Brute Force Related--------------------------------
+
+    public MachineManager cloneMachine() {
+        return null;
+    }
+    //--------------------------------------------ENDof: Brute Force Related--------------------------------
 }

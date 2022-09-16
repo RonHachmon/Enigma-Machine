@@ -8,14 +8,15 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <VBox alignment="CENTER" prefHeight="136.0" prefWidth="625.0" style="-fx-border-color: black;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.header.HeaderController">
    <children>
-      <Label alignment="CENTER" contentDisplay="CENTER" style="-fx-text-fill: black; -fx-background-color: cyan;" text="Enigma machine" textAlignment="CENTER" VBox.vgrow="NEVER">
+      <Label fx:id="titleLabel" alignment="CENTER" contentDisplay="CENTER" style="-fx-text-fill: black;" text="The Enigma Machine" textAlignment="CENTER" VBox.vgrow="NEVER">
          <font>
-            <Font name="Aharoni Bold" size="19.0" />
+            <Font name="Aharoni Bold" size="24.0" />
          </font>
          <padding>
             <Insets top="5.0" />
@@ -40,48 +41,52 @@
                   <Insets />
                </opaqueInsets>
                <font>
-                  <Font size="18.0" />
+                  <Font size="17.0" />
                </font>
             </Button>
-            <TextField fx:id="currentPath" editable="false" prefHeight="35.0" prefWidth="400.0" promptText="Current path" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+            <TextField id="path" fx:id="currentPath" editable="false" prefHeight="42.0" prefWidth="400.0" promptText="Current path" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                <padding>
                   <Insets left="5.0" right="5.0" />
                </padding>
                <GridPane.margin>
-                  <Insets left="5.0" />
+                  <Insets />
                </GridPane.margin>
             </TextField>
-            <HBox alignment="CENTER" maxHeight="55.0" minHeight="55.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="55.0" prefWidth="55.0" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+            <StackPane GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                <children>
-                  <Button fx:id="machineButton" disable="true" minHeight="25.0" minWidth="186.0" mnemonicParsing="false" onAction="#machineClicked" prefHeight="39.0" prefWidth="186.0" styleClass="menu-button" text="Machine">
-                     <HBox.margin>
+                  <HBox alignment="CENTER" maxHeight="55.0" minHeight="55.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="55.0" prefWidth="55.0">
+                     <children>
+                        <Button fx:id="machineButton" disable="true" minHeight="25.0" minWidth="186.0" mnemonicParsing="false" onAction="#machineClicked" styleClass="menu-button" text="Set Machine">
+                           <HBox.margin>
+                              <Insets left="5.0" right="10.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="21.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="encryptButton" disable="true" minHeight="25.0" minWidth="186.0" mnemonicParsing="false" onAction="#encryptClicked" styleClass="menu-button" text="Encrypt/Decrypt">
+                           <HBox.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="21.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="bruteForceButton" disable="true" minHeight="25.0" minWidth="186.0" mnemonicParsing="false" onAction="#bruteForceClicked" styleClass="menu-button" text="Brute force">
+                           <HBox.margin>
+                              <Insets left="10.0" right="5.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="21.0" />
+                           </font>
+                        </Button>
+                     </children>
+                     <opaqueInsets>
                         <Insets left="5.0" right="5.0" />
-                     </HBox.margin>
-                     <font>
-                        <Font size="21.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="encryptButton" disable="true" minHeight="25.0" minWidth="186.0" mnemonicParsing="false" onAction="#encryptClicked" styleClass="menu-button" text="Encrypt/Decrypt">
-                     <HBox.margin>
-                        <Insets left="10.0" right="10.0" />
-                     </HBox.margin>
-                     <font>
-                        <Font size="21.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="bruteForceButton" disable="true" minHeight="25.0" minWidth="186.0" mnemonicParsing="false" onAction="#bruteForceClicked" styleClass="menu-button" text="Brute force">
-                     <HBox.margin>
-                        <Insets left="5.0" right="5.0" />
-                     </HBox.margin>
-                     <font>
-                        <Font size="21.0" />
-                     </font>
-                  </Button>
+                     </opaqueInsets>
+                  </HBox>
                </children>
-               <opaqueInsets>
-                  <Insets left="5.0" right="5.0" />
-               </opaqueInsets>
-            </HBox>
+            </StackPane>
          </children>
       </GridPane>
    </children>

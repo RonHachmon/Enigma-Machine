@@ -169,5 +169,10 @@ public class ConfigurationController extends MainAppScene implements Initializab
         this.currentCodeConfig.setText(code);
     }
 
+    public void updateTotalEncryptedWord(int amount)
+    {
+        amountOfProcessedInput.setText(String.valueOf(amount));
+    }
+
 
 }

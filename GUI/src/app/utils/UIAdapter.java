@@ -15,7 +15,6 @@ public class UIAdapter {
         this.addNewPrimeNumber = addNewPrimeNumber;
         this.updateTotalFoundInteger = updateTotalFoundInteger;
         this.updateDistinct = updateDistinct;
-
     }
 
     public void addNewCandidate(PrimeNumberData primeNumber) {

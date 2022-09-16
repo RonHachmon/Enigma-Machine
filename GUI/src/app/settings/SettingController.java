@@ -177,7 +177,7 @@ public class SettingController implements Initializable {
                                     this.switchPlugError.setText("");
 
                                 } else {
-                                    this.switchPlugError.setText("Error, each key can only once ");
+                                    this.switchPlugError.setText("Error, each key can only appear once ");
                                 }
 
                             });
@@ -191,12 +191,22 @@ public class SettingController implements Initializable {
 
     @FXML
     void removeSwitchPlug(ActionEvent event) {
+        boolean foundSwitchPlug=false;
         for (int i = 0; i < this.allSwitchPlugs.getChildren().size(); i++) {
             if (allSwitchPlugs.getChildren().get(i).getId() == SELECTED_SWITCH_PLUG) {
                 allSwitchPlugs.getChildren().remove(i);
+                foundSwitchPlug=true;
                 break;
             }
         }
+        if(!foundSwitchPlug)
+        {
+            Alert a = new Alert(Alert.AlertType.ERROR);
+            a.setContentText("Please select the switch plug to delete");
+            a.setTitle("missing input");
+            a.show();
+        }
+
 
         if (isAllElementAreUniqueInListOfChoiceBox(this.getAllSwitchPlugChoiceBoxes())) {
             this.switchPlugError.setText("");

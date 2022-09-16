@@ -58,7 +58,7 @@ public class Utils {
     }
 
     //changes duration until tool tip is shown
-    public static void hackTooltipStartTiming(Tooltip tooltip) {
+    public static void hackTooltipStartTiming(Tooltip tooltip,int milliSecondDelay) {
         try {
             Field fieldBehavior = tooltip.getClass().getDeclaredField("BEHAVIOR");
             fieldBehavior.setAccessible(true);
@@ -69,9 +69,18 @@ public class Utils {
             Timeline objTimer = (Timeline) fieldTimer.get(objBehavior);
 
             objTimer.getKeyFrames().clear();
-            objTimer.getKeyFrames().add(new KeyFrame(new Duration(100)));
+            objTimer.getKeyFrames().add(new KeyFrame(new Duration(milliSecondDelay)));
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    public static Integer binomial(int numOfActiveRotors, int numOfAllRotors) {
+        return factorial(numOfAllRotors) / (factorial(numOfActiveRotors) * factorial(numOfAllRotors - numOfActiveRotors));
+    }
+    public static Integer factorial(int size) {
+        if(size == 0) {
+            return 1;
+        }
+        return size * factorial(size - 1);
     }
 }
