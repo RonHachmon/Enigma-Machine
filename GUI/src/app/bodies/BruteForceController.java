@@ -3,6 +3,7 @@ package app.bodies;
 import DTO.DMData;
 import DTO.DecryptionCandidate;
 import Engine.bruteForce2.DecryptManager;
+import Engine.bruteForce2.utils.DifficultyLevel;
 import app.bodies.absractScene.MainAppScene;
 import app.bodies.interfaces.CodeHolder;
 import app.utils.FindCandidateTask;
@@ -47,7 +48,7 @@ public class BruteForceController extends MainAppScene implements Initializable,
     private ChoiceBox<Integer> amountOfAgentsChoiceBox;
 
     @FXML
-    private ComboBox<eDifficulty> difficultyComboBox;
+    private ComboBox<DifficultyLevel> difficultyComboBox;
     @FXML
     private TextField assignmentSizeText;
 
@@ -88,7 +89,7 @@ public class BruteForceController extends MainAppScene implements Initializable,
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-       Arrays.stream(eDifficulty.values()).sequential().forEach(eDifficulty ->difficultyComboBox.getItems().add(eDifficulty));
+       Arrays.stream(DifficultyLevel.values()).sequential().forEach(eDifficulty ->difficultyComboBox.getItems().add(eDifficulty));
         amountOfCandidateFound.textProperty().bind(Bindings.format("%,d", totalFoundCandidate));
 
         setInitialDictionaryTable();
@@ -217,7 +218,10 @@ public class BruteForceController extends MainAppScene implements Initializable,
             CandidateController wordCandidateController = loader.getController();
 
             wordCandidateController.setTextFont();
-            wordCandidateController.setText("HAIL HITLER");
+            wordCandidateController.setText(decryptionCandidate.getDecryptedString());
+            wordCandidateController.setAgent(String.valueOf(decryptionCandidate.getAgentID()));
+            wordCandidateController.setCode(decryptionCandidate.getCodeConfiguration());
+
             FlowPane.setMargin(wordCandidate, new Insets(2, 10, 2, 10));
             this.candidatesFlowPane.getChildren().add(wordCandidate);
 

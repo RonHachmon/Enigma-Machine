@@ -50,16 +50,13 @@ public class Agent implements Runnable {
                     String encryptionOutput;
                     for (int i = 0; i < dMdata.getAssignmentSize() - 1; i++) {
                         encryptionOutput = machineManager.encryptSentence(dMdata.getEncryptedString());
-                        /*  System.out.println(machineManager.getInitialFullMachineCode()+this.getAgentId());*/
-                        //check with dictionary
- /*                   if(true)
-                    {
-                        candidateList.addCandidate(createCandidate(encryptionOutput));
-                    }*/
-                        /*                    Thread.sleep(2000);*/
+                        if(dictionary.isAtDictionary(encryptionOutput))
+                        {
+                            candidateList.addCandidate(createCandidate(encryptionOutput));
+                        }
+
                         increaseCodePermutation(codeConfiguration);
                     }
-                    /*       System.out.println("is anybody in here?");*/
                 }
                 else
                 {
