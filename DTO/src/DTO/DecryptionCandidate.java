@@ -5,6 +5,12 @@ public class DecryptionCandidate {
     private String decryptedString;
     private String codeConfiguration;
 
+    public DecryptionCandidate(int agentID, String decryptedString, String codeConfiguration) {
+        this.agentID = agentID;
+        this.decryptedString = decryptedString;
+        this.codeConfiguration = codeConfiguration;
+    }
+
     public String getCodeConfiguration() {
         return codeConfiguration;
     }
