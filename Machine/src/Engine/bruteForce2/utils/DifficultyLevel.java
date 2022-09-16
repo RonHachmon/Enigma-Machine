@@ -1,9 +1,26 @@
-package Engine.BruteForce;
+package Engine.bruteForce2.utils;
+
 
 import Engine.EnigmaException.TaskIsCanceledException;
 
-public enum DifficultyLevel implements SetTask {
-    EASY(){
+public enum DifficultyLevel {
+
+    EASY("Easy"),
+    MEDIUM("Medium"),
+    HARD("Hard"),
+    IMPOSSIBLE("Impossible :O");
+
+    private String message;
+
+    private DifficultyLevel(String message) {
+        this.message = message;
+    }
+
+    public String toString() {
+        return this.message;
+    }
+}
+/*    EASY(){
         @Override
         public void setTask(TasksManager tasksManager) throws Exception {
             try {
@@ -30,6 +47,6 @@ public enum DifficultyLevel implements SetTask {
         public void setTask(TasksManager tasksManager) throws Exception {
             tasksManager.setImpossibleTasks();
         }
-    };
+    };*/
 
-}
+

@@ -1,5 +1,10 @@
 package app.utils;
 
+import DTO.DMData;
+import DTO.DecryptionCandidate;
+import Engine.bruteForce2.utils.DifficultyLevel;
+import Engine.bruteForce2.DecryptManager;
+import Engine.machineutils.MachineManager;
 import app.bodies.BruteForceController;
 import app.utils.threads.DaemonThread;
 import javafx.concurrent.Task;
@@ -20,12 +25,13 @@ public class FindCandidateTask extends Task<Boolean> {
     private PrimeFinder primeFinder =new PrimeFinder(20);
     private int lastKnownIndex=0;
     private ScheduledExecutorService timedExecute;
+    private DecryptManager decryptManager;
     ScheduledFuture<?> scheduledFuture;
 
 
  /*   private bruteForce;*/
 
-    public FindCandidateTask(long totalNumbers, UIAdapter uiAdapter, BruteForceController bruteForceController) {
+    public FindCandidateTask(long totalNumbers, UIAdapter uiAdapter, BruteForceController bruteForceController, MachineManager machineManager) {
         this.uiAdapter = uiAdapter;
         this.totalNumbers = totalNumbers;
         this.controller=bruteForceController;
@@ -33,16 +39,25 @@ public class FindCandidateTask extends Task<Boolean> {
         DaemonThread daemonThreadFactory = new DaemonThread();
         timedExecute = Executors.newSingleThreadScheduledExecutor(daemonThreadFactory);
 
+        DMData dmData =new DMData();
+        dmData.setAssignmentSize(3);
+        dmData.setAmountOfAgents(1);
+        dmData.setEncryptedString("ABC");
+        dmData.setDifficulty(DifficultyLevel.EASY);
+
+        decryptManager =new DecryptManager(machineManager,dmData);
+
     }
     
     
     @Override
     protected Boolean call() throws Exception {
+        decryptManager.startDeciphering();
         startTimedTask();
-        System.out.println("test");
+/*        System.out.println("test");
         updateProgress(0,20);
 
-        primeFinder.findPrimes(this);
+        primeFinder.findPrimes(this);*/
 
 
 /*        System.out.println("starting task");
@@ -70,8 +85,21 @@ public class FindCandidateTask extends Task<Boolean> {
     private void startTimedTask() {
         scheduledFuture = timedExecute.scheduleAtFixedRate(() -> update(), 500, 1000, TimeUnit.MILLISECONDS);
     }
-
     private void update()
+    {
+        if (decryptManager.getSizeOfCandidateList()>lastKnownIndex)
+        {
+            System.out.println("in update");
+            List<DecryptionCandidate> decryptionCandidates = decryptManager.getCandidateList().getList();
+            for (int i = lastKnownIndex; i <decryptionCandidates.size() ; i++) {
+                uiAdapter.addNewCandidate(decryptionCandidates.get(i));
+            }
+            lastKnownIndex=decryptionCandidates.size();
+  /*          updateProgress(lastKnownIndex,20);*/
+        }
+    }
+
+/*    private void update()
     {
         if (primeFinder.listSize()>lastKnownIndex)
         {
@@ -85,7 +113,7 @@ public class FindCandidateTask extends Task<Boolean> {
             lastKnownIndex=primeNumberList.size();
             updateProgress(lastKnownIndex,20);
         }
-    }
+    }*/
 
     public void pause()
     {

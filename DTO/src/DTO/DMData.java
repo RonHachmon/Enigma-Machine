@@ -1,6 +1,6 @@
 package DTO;
 
-import Engine.BruteForce.DifficultyLevel;
+import Engine.bruteForce2.utils.DifficultyLevel;
 
 public class DMData {
     private int amountOfAgents;

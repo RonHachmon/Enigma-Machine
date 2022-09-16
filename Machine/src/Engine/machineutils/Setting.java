@@ -1,10 +1,12 @@
 package Engine.machineutils;
 
 import Engine.machineparts.Machine;
+import Engine.machineparts.Reflector;
 import utils.Utils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Setting implements Serializable {
@@ -47,6 +49,10 @@ public class Setting implements Serializable {
     }
     public List<Integer> getCurrentRotorsList() {
         return selectedRotorsIndexes;
+    }
+    public int getReflector()
+    {
+        return  (Utils.convertRomanToInt(this.chosenReflector)-1);
     }
 
     //gets full set of characters for example "AO!"
@@ -96,6 +102,16 @@ public class Setting implements Serializable {
             return EMPTY;
         }
         return "<" + setOfPlugs + ">";
+    }
+    public Setting clone() throws CloneNotSupportedException {
+        Setting clonedSetting = new Setting();
+        clonedSetting.selectedRotorsIndexes = new ArrayList<>(selectedRotorsIndexes);
+        clonedSetting.setOfPlugs = setOfPlugs;
+        clonedSetting.chosenReflector = this.chosenReflector;
+        clonedSetting.initialRotorIndexes = initialRotorIndexes;
+        clonedSetting.initialRotorIndexesAndDistanceFromNotch=initialRotorIndexesAndDistanceFromNotch;
+        return clonedSetting;
+
     }
 
 }
