@@ -1,30 +1,39 @@
 package app.utils;
 
 
+import DTO.DecryptionCandidate;
 import javafx.application.Platform;
 
 import java.util.function.Consumer;
 
 public class UIAdapter {
 
-    private Consumer<PrimeNumberData> addNewPrimeNumber;
+    private Consumer<DecryptionCandidate> addNewCandidate;
 
     private Consumer<Integer> updateTotalFoundInteger;
     private Runnable updateDistinct;
-    public UIAdapter(Consumer<PrimeNumberData> addNewPrimeNumber, Consumer<Integer> updateTotalFoundInteger, Runnable updateDistinct) {
-        this.addNewPrimeNumber = addNewPrimeNumber;
-        this.updateTotalFoundInteger = updateTotalFoundInteger;
+    public UIAdapter(Consumer<DecryptionCandidate> addNewCandidate, Consumer<Integer> updateTotalFoundWords, Runnable updateDistinct) {
+        this.addNewCandidate = addNewCandidate;
+        this.updateTotalFoundInteger = updateTotalFoundWords;
         this.updateDistinct = updateDistinct;
     }
+    public void addNewCandidate(DecryptionCandidate decryptionCandidate) {
+        Platform.runLater(
+                () -> {
+                    addNewCandidate.accept(decryptionCandidate);
+                    updateDistinct.run();
+                }
+        );
+    }
 
-    public void addNewCandidate(PrimeNumberData primeNumber) {
+/*    public void addNewCandidate(PrimeNumberData primeNumber) {
         Platform.runLater(
                 () -> {
                     addNewPrimeNumber.accept(primeNumber);
                     updateDistinct.run();
                 }
         );
-    }
+    }*/
 
 
 

@@ -1,6 +1,8 @@
 package app.bodies;
 
 import DTO.DMData;
+import DTO.DecryptionCandidate;
+import Engine.bruteForce2.DecryptManager;
 import app.bodies.absractScene.MainAppScene;
 import app.bodies.interfaces.CodeHolder;
 import app.utils.FindCandidateTask;
@@ -81,7 +83,7 @@ public class BruteForceController extends MainAppScene implements Initializable,
     private Tooltip toolTipError;
     private DMData dmData=new DMData();
     private Set<String> dictionary;
-
+    private DecryptManager decryptManager;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -183,9 +185,9 @@ public class BruteForceController extends MainAppScene implements Initializable,
 
     private UIAdapter createUIAdapter() {
         return new UIAdapter(
-                PrimeNumberData -> {
-                    createWordCandidate(PrimeNumberData.getInteger());
-                   /* createCandidate(PrimeNumberData.getInteger());*/
+                decryptionCandidateData -> {
+                    /*createWordCandidate(DecryptionCandidate);*/
+                    createWordCandidate(decryptionCandidateData);
                 },
                 (delta) -> {
                /*     HistogramsUtils.log("EDT: INCREASE total processed words");
@@ -205,7 +207,7 @@ public class BruteForceController extends MainAppScene implements Initializable,
             this.candidatesFlowPane.getChildren().add(candidate);
 
     }
-    private void createWordCandidate(Integer integer) {
+    private void createWordCandidate(DecryptionCandidate decryptionCandidate) {
 
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -265,7 +267,8 @@ public class BruteForceController extends MainAppScene implements Initializable,
         /*Arrays.stream(splitStringsOne).sequential().forEach(s ->dictionaryTable.getItems().add(s));*/
     }
     public void updateInitialDictionaryTable(){
-        dictionary =machineManager.getBruteForceData().getDictionary().getDictionary();
+        decryptManager=new DecryptManager(machineManager,dmData);
+        dictionary =decryptManager.getDictionary();
         dictionary.forEach(s ->dictionaryTable.getItems().add(s) );
     }
     private void showToolTip() {

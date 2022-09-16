@@ -1,5 +1,6 @@
 package Engine.bruteForce2.utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CodeConfiguration {
@@ -12,6 +13,13 @@ public class CodeConfiguration {
         this.charIndexes = charIndexes;
         this.rotorsID = rotorsID;
         this.reflectorID = reflectorID;
+    }
+    public CodeConfiguration clone(CodeConfiguration codeConfiguration)
+    {
+        CodeConfiguration clonedCode=new CodeConfiguration(codeConfiguration.getCharIndexes(),
+                                                            new ArrayList<>(codeConfiguration.getRotorsID()),
+                                                                codeConfiguration.getReflectorID());
+        return clonedCode;
     }
 
 

@@ -1,10 +1,11 @@
 package Engine.machineutils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class NewStatistic {
+public class NewStatistic implements Serializable {
     private final Map<String, ArrayList<NewStatisticInput>> statistic = new HashMap<>();
     private int totalEncryptedWordCounter=0;
 

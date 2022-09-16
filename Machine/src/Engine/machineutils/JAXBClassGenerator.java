@@ -20,7 +20,7 @@ public class JAXBClassGenerator {
         return enigma_machine;
     }
 
-    protected static <T> T unmarshall(String xml, Class<T> clazz)
+    public static <T> T unmarshall(String xml, Class<T> clazz)
             throws JAXBException {
         File file = new File(xml);
         JAXBContext jc = JAXBContext.newInstance(clazz);

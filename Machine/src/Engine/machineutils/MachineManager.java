@@ -2,6 +2,7 @@ package Engine.machineutils;
 
 import Engine.jaxb_classes.CTEEnigma;
 import Engine.machineparts.Machine;
+import Engine.machineparts.Rotor;
 
 import javax.xml.bind.JAXBException;
 import java.io.*;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class MachineManager {
+public class MachineManager implements Serializable {
     private Machine machine = new Machine();
     private Statistic statistic = new Statistic();
     private NewStatistic newStatistic = new NewStatistic();
@@ -22,14 +23,18 @@ public class MachineManager {
     private int processedInputCounter = 0;
     private boolean isMachineExists = false;
     private BruteForceDataFromXML bruteForceData;
+    private String filePath;
 
-
+    public String getFilePath()
+    {
+        return filePath;
+    }
     public BruteForceDataFromXML getBruteForceData(){
         return bruteForceData;
     }
     public int getReflector()
     {
-         return this.setting.getReflector();
+         return this.machine.getReflectorId();
     }
     public String getAvailableChars() {
         return machineInformation.getAvailableChars();
@@ -141,6 +146,7 @@ public class MachineManager {
         CTEEnigma enigma_machine = null;
         try {
             enigma_machine = JAXBClassGenerator.unmarshall(filePath, CTEEnigma.class);
+            this.filePath=filePath;
         } catch (JAXBException e) {
             String msg;
             if (e.getLinkedException() instanceof FileNotFoundException) {
@@ -280,6 +286,8 @@ public class MachineManager {
     public MachineManager clone() throws CloneNotSupportedException{
         MachineManager clonedManager = new MachineManager();
         clonedManager.machine = this.machine.clone();
+        clonedManager.setting=this.setting.clone();
+        clonedManager.machineInformation=this.machineInformation.clone(clonedManager.machine);
 
         return clonedManager;
     }

@@ -4,12 +4,13 @@ import DTO.DMData;
 import DTO.DecryptionCandidate;
 import Engine.bruteForce2.utils.CandidateList;
 import Engine.bruteForce2.utils.CodeConfiguration;
+import Engine.bruteForce2.utils.Dictionary;
 import Engine.machineutils.MachineManager;
+import utils.ObjectCloner;
 import utils.Permutation;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 
 //Consumer
@@ -20,50 +21,67 @@ public class Agent implements Runnable {
     private MachineManager machineManager;
     private DMData dMdata;
     private String currentCharConfiguration;
-    Permutation permutation;
+    private Permutation permutation;
+
+
     private CandidateList candidateList;
+    private Dictionary dictionary;
 
-    /*    private final String agentID;*/
-    /*    private long encryptionTimeDurationInNanoSeconds;*/
-
-    public Agent(BlockingQueue<CodeConfiguration> queue,MachineManager machineManager, DMData dMData, CandidateList candidateList) {
+    public Agent(BlockingQueue<CodeConfiguration> queue, MachineManager machineManager, DMData dMData, CandidateList candidateList, Dictionary dictionary) throws Exception {
         this.id = idRunningIndex;
         idRunningIndex++;
-        this.machineManager = machineManager; // ?
+        this.machineManager = (MachineManager) ObjectCloner.deepCopy(machineManager); // ?
         this.dMdata = dMData;
         this.candidateList=candidateList;
         this.queue=queue;
         permutation=new Permutation(machineManager.getMachineInformation().getAvailableChars());
+        this.dictionary =dictionary;
     }
     @Override
     public void run() {
         try {
             System.out.println("starting pull code");
             while (true) {
-                CodeConfiguration codeConfiguration = queue.take();
-                this.setInitialMachine(codeConfiguration);
-                String encryptionOutput;
-                for (int i=0;i<dMdata.getAssignmentSize();i++)
-                {
-                    encryptionOutput =machineManager.encryptSentence(dMdata.getEncryptedString());
-                    System.out.println(machineManager.getInitialFullMachineCode());
-                    //check with dictionary
+                CodeConfiguration codeConfiguration = queue.poll(10000, TimeUnit.MILLISECONDS);
+                if (codeConfiguration != null) {
+
+                    System.out.println("Taken = " + codeConfiguration.getCharIndexes());
+                    this.setInitialMachine(codeConfiguration);
+                    String encryptionOutput;
+                    for (int i = 0; i < dMdata.getAssignmentSize() - 1; i++) {
+                        encryptionOutput = machineManager.encryptSentence(dMdata.getEncryptedString());
+                        /*  System.out.println(machineManager.getInitialFullMachineCode()+this.getAgentId());*/
+                        //check with dictionary
  /*                   if(true)
                     {
                         candidateList.addCandidate(createCandidate(encryptionOutput));
                     }*/
-                    Thread.sleep(1000);
-                    increaseCodePermutation(codeConfiguration);
+                        /*                    Thread.sleep(2000);*/
+                        increaseCodePermutation(codeConfiguration);
+                    }
+                    /*       System.out.println("is anybody in here?");*/
+                }
+                else
+                {
+                    if(AssignmentProducer.isDone)
+                    {
+                        System.out.println("Agent "+getAgentId()+" done");
+                        return;
+                    }
                 }
             }
+
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
     }
     private void increaseCodePermutation(CodeConfiguration codeConfiguration) {
-        String newCodeConfiguration=permutation.increasePermutation(1,currentCharConfiguration);
+        /*System.out.println("before pemutation"+this.machineManager.getInitialFullMachineCode());*/
+         currentCharConfiguration=permutation.increasePermutation(1,currentCharConfiguration);
+       /* System.out.println(currentCharConfiguration);*/
 
-        this.machineManager.setStartingIndex(newCodeConfiguration);
+        this.machineManager.setStartingIndex(currentCharConfiguration);
+      /*  System.out.println(this.machineManager.getInitialFullMachineCode());*/
     }
 
     private DecryptionCandidate createCandidate(String encryptionOutput) {
@@ -72,6 +90,7 @@ public class Agent implements Runnable {
 
     private void setInitialMachine(CodeConfiguration codeConfiguration)
     {
+
         this.machineManager.setSelectedRotors(codeConfiguration.getRotorsID());
         this.machineManager.setStartingIndex(codeConfiguration.getCharIndexes());
         this.machineManager.setSelectedReflector(codeConfiguration.getReflectorID());

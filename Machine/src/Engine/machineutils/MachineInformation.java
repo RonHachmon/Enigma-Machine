@@ -2,7 +2,10 @@ package Engine.machineutils;
 
 import Engine.machineparts.Machine;
 
-public class MachineInformation {
+import java.io.Serializable;
+import java.util.ArrayList;
+
+public class MachineInformation implements Serializable {
     private final int availableReflectors;
     private final int amountOfRotorsRequired;
     private final int amountOfRotors;
@@ -29,5 +32,9 @@ public class MachineInformation {
 
     public String getAvailableChars() {
         return availableChars;
+    }
+
+    public MachineInformation clone(Machine machine){
+        return  new MachineInformation(machine);
     }
 }

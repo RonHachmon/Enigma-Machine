@@ -1,7 +1,8 @@
 package app.utils;
 
 import DTO.DMData;
-import Engine.BruteForce.DifficultyLevel;
+import DTO.DecryptionCandidate;
+import Engine.bruteForce2.utils.DifficultyLevel;
 import Engine.bruteForce2.DecryptManager;
 import Engine.machineutils.MachineManager;
 import app.bodies.BruteForceController;
@@ -53,10 +54,10 @@ public class FindCandidateTask extends Task<Boolean> {
     protected Boolean call() throws Exception {
         decryptManager.startDeciphering();
         startTimedTask();
-        System.out.println("test");
+/*        System.out.println("test");
         updateProgress(0,20);
 
-        primeFinder.findPrimes(this);
+        primeFinder.findPrimes(this);*/
 
 
 /*        System.out.println("starting task");
@@ -84,8 +85,21 @@ public class FindCandidateTask extends Task<Boolean> {
     private void startTimedTask() {
         scheduledFuture = timedExecute.scheduleAtFixedRate(() -> update(), 500, 1000, TimeUnit.MILLISECONDS);
     }
-
     private void update()
+    {
+        if (decryptManager.getSizeOfCandidateList()>lastKnownIndex)
+        {
+            System.out.println("in update");
+            List<DecryptionCandidate> decryptionCandidates = decryptManager.getCandidateList().getList();
+            for (int i = lastKnownIndex; i <decryptionCandidates.size() ; i++) {
+                uiAdapter.addNewCandidate(decryptionCandidates.get(i));
+            }
+            lastKnownIndex=decryptionCandidates.size();
+  /*          updateProgress(lastKnownIndex,20);*/
+        }
+    }
+
+/*    private void update()
     {
         if (primeFinder.listSize()>lastKnownIndex)
         {
@@ -99,7 +113,7 @@ public class FindCandidateTask extends Task<Boolean> {
             lastKnownIndex=primeNumberList.size();
             updateProgress(lastKnownIndex,20);
         }
-    }
+    }*/
 
     public void pause()
     {

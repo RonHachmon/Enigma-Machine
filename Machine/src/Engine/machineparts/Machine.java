@@ -24,6 +24,8 @@ public class Machine implements Serializable {
     private int amountOfRotorNeeded;
     private boolean isTheInitialCodeDefined;
 
+    private int reflectorId;
+
     public Machine() {
         isTheInitialCodeDefined = false;
         this.initializeReflector();
@@ -41,6 +43,15 @@ public class Machine implements Serializable {
 
     public List<Rotor> getAllRotors() {
         return allRotors;
+    }
+
+    public List<Rotor> selectedRotors() {
+        return selectedRotors;
+    }
+
+    public int getReflectorId()
+    {
+        return reflectorId;
     }
 
     //todo: why not just list.size ?
@@ -93,13 +104,14 @@ public class Machine implements Serializable {
     public void setSelectedReflector(int reflectorId) {
 
         if (reflectorId < 0 || reflectorId > this.getAmountOfAvailableReflectors()) {
-            throw new IllegalArgumentException("machineparts.Reflector ID must be between 1 - " + getAmountOfAvailableReflectors());
+            throw new IllegalArgumentException("Reflector ID must be between 1 - " + getAmountOfAvailableReflectors());
         }
 
         this.selectedReflector = this.allReflectors.get(reflectorId);
         if (this.selectedReflector == null) {
-            throw new IllegalArgumentException("machineparts.Reflector does not exist");
+            throw new IllegalArgumentException("Reflector does not exist");
         }
+        this.reflectorId=reflectorId;
     }
 
     public void setSelectedRotors(List<Integer> rotorsID) {
@@ -108,7 +120,7 @@ public class Machine implements Serializable {
         //throw out of bound or does not exist
         for (int id : rotorsID) {
             if (id < 0 || id > allRotors.size() - 1) {
-                throw new IllegalArgumentException("machineparts.Rotor ID must be in range of 1-" + allRotors.size());
+                throw new IllegalArgumentException("Rotor ID must be in range of 1-" + allRotors.size());
             }
             selectedRotors.add(allRotors.get(id));
         }
@@ -313,7 +325,20 @@ public class Machine implements Serializable {
         clonedMachine.allChars = this.allChars;
         clonedMachine.charMap = new HashMap<>(this.charMap);
         clonedMachine.setReverseCharMap();
-
         return clonedMachine;
+
+
+
+  /*      private Map<Character, Integer> charMap = new HashMap<>();
+        private final Map<Integer, Character> reverseCharMap = new HashMap<>();
+        private final Map<Character, Character> switchPlug = new HashMap<>();
+        private final List<Reflector> allReflectors = new ArrayList<>();
+        private List<Rotor> selectedRotors = new ArrayList<>();
+        private List<Rotor> allRotors = new ArrayList<>();
+        private Reflector selectedReflector;
+        private String allChars;
+        private int amountOfRotorNeeded;
+        private boolean isTheInitialCodeDefined;*/
+
     }
 }

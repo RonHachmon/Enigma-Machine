@@ -2,21 +2,25 @@ package Engine.bruteForce2.utils;
 
 import Engine.EnigmaException.WordNotValidInDictionaryException;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Dictionary {
-    private final static Set<String> words=new HashSet<>();
-    private final static Set<Character> excludeChars = new HashSet<>();
+public class Dictionary implements Serializable  {
+    private final Set<String> words;
+    private final Set<Character> excludeChars;
 
-
+    public Dictionary() {
+        this.words = new HashSet<>();
+        this.excludeChars = new HashSet<>();
+    }
     public void setDictionary(String words, String excludeChars){
         this.excludeChars.addAll(excludeChars.toUpperCase().chars().mapToObj(ch -> (char)ch).collect(Collectors.toList()));
 
         cleanDictionaryFromExcludeChars(Arrays.asList(words.toUpperCase().trim().split(" ")));
     }
 
-    public void cleanDictionaryFromExcludeChars(List<String> unCleanedWords) {
+    private void cleanDictionaryFromExcludeChars(List<String> unCleanedWords) {
         unCleanedWords.forEach(word -> {
             this.words.add(word.replaceAll("[" + excludeChars + "]", ""));
         });

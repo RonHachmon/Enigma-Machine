@@ -14,7 +14,7 @@ public class Test {
         /*Permutation permutation =new Permutation("ABCDEFGHIJKLMNOPQRSTUVWXYZ");*/
         Permutation permutation =new Permutation("ABC");
         System.out.println(permutation.increasePermutation(4,input));
-        if(permutation.getOverFlow())
+        if(permutation.isOverFlow())
         {
             System.out.println("Ywes");
         }

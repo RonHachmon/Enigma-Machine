@@ -16,5 +16,13 @@ public class CandidateList {
     {
         decryptionCandidates.add(decryptionCandidate);
     }
+    public int getSize()
+    {
+        return decryptionCandidates.size();
+    }
+    public List<DecryptionCandidate> getList()
+    {
+        return decryptionCandidates;
+    }
 
 }

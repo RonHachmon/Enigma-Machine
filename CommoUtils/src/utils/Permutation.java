@@ -68,7 +68,7 @@ public class Permutation {
         }
         return stringBuilder.toString();
     }
-    public boolean getOverFlow()
+    public boolean isOverFlow()
     {
         return this.overFlow;
     }
