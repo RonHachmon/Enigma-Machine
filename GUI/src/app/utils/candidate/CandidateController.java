@@ -32,5 +32,14 @@ public class CandidateController {
         textLabel.setTooltip(fullText);
         textLabel.setText(text);
     }
+    public void setAgent(String text)
+    {
+        agentLabel.setText(text);
+    }
+    public void setCode(String text)
+    {
+        codeLabel.setText(text);
+    }
+
 
 }

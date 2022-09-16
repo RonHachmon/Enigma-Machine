@@ -44,7 +44,6 @@ public class Dictionary implements Serializable  {
 
     public void validateWords(List<String> wordsToCheckAfterCleanExcludeChars) throws WordNotValidInDictionaryException {
         WordNotValidInDictionaryException wordNotValidInDictionary = new WordNotValidInDictionaryException(words);
-
         wordsToCheckAfterCleanExcludeChars.forEach(word -> {
             if(!words.contains(word)) {
                 wordNotValidInDictionary.addIllegalWord(word);
@@ -54,5 +53,17 @@ public class Dictionary implements Serializable  {
         if(wordNotValidInDictionary.isExceptionNeedToThrown()) {
             throw wordNotValidInDictionary;
         }
+    }
+
+    public boolean isAtDictionary(String encryptionOutput) {
+
+        String[] allWord = encryptionOutput.split(" ");
+        for (int i = 0; i <allWord.length ; i++) {
+            if(!words.contains(allWord[i]))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }
