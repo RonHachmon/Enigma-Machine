@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 
 public class Machine implements Serializable {
-    private final Map<Character, Integer> charMap = new HashMap<>();
+    private Map<Character, Integer> charMap = new HashMap<>();
     private final Map<Integer, Character> reverseCharMap = new HashMap<>();
     private final Map<Character, Character> switchPlug = new HashMap<>();
     private final List<Reflector> allReflectors = new ArrayList<>();
@@ -23,8 +23,6 @@ public class Machine implements Serializable {
     private String allChars;
     private int amountOfRotorNeeded;
     private boolean isTheInitialCodeDefined;
-
-
 
     public Machine() {
         isTheInitialCodeDefined = false;
@@ -306,5 +304,16 @@ public class Machine implements Serializable {
 
     public void setTheInitialCodeDefined(boolean theInitialCodeDefined) {
         isTheInitialCodeDefined = theInitialCodeDefined;
+    }
+
+    public Machine clone() throws CloneNotSupportedException {
+        Machine clonedMachine = new Machine();
+        clonedMachine.selectedReflector = (Reflector) this.selectedReflector.clone();
+        clonedMachine.selectedRotors = new ArrayList<>(this.selectedRotors);
+        clonedMachine.allChars = this.allChars;
+        clonedMachine.charMap = new HashMap<>(this.charMap);
+        clonedMachine.setReverseCharMap();
+
+        return clonedMachine;
     }
 }

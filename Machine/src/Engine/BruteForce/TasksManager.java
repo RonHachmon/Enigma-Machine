@@ -166,7 +166,7 @@ public class TasksManager extends Task<Boolean> {
         }
 
         while(numOfPossibleRotorsPositions > 0) {
-            MachineManager clonedEnigmaMachine = machineManager.cloneMachine();
+            MachineManager clonedEnigmaMachine = machineManager.clone();
             AgentTask agentTask = new AgentTask(taskSize, machineManager.getInitialFullMachineCode(), clonedEnigmaMachine , encryptedString, dictionary, candidatesPool);
             Agent agent = new Agent(agentTask,this);
 

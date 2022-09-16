@@ -17,14 +17,18 @@ public class Agent extends Thread {
     private DMData dMdata;
 
 
-    public Agent(MachineManager machineManager, DMData dMData, Runnable assignment) {
+    public Agent(MachineManager machineManager, DMData dMData, Runnable assignment){
         this.id = idRunningIndex;
         idRunningIndex++;
         this.agentID = Thread.currentThread().getName();
-        this.machineManager = machineManager.cloneMachine(); // ?
+        try {
+            this.machineManager = machineManager.clone(); // ?
+        }
+        catch (CloneNotSupportedException CNSE){
+            //TODO: handle exception
+        }
         this.dMdata = dMData;
     }
-
 
     @Override
     public void run() {

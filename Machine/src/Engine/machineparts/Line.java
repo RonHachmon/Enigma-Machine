@@ -1,6 +1,7 @@
 package Engine.machineparts;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Line implements Serializable {
     private char leftChar;
@@ -16,6 +17,11 @@ public class Line implements Serializable {
         ;
         this.rightChar = replaceSpecialXMLchar(right).charAt(0);
         this.leftChar = replaceSpecialXMLchar(left).charAt(0);
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException{
+        return new Line(this.rightChar,this.leftChar);
     }
 
     public char getLeftChar() {

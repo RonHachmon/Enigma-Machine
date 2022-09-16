@@ -7,10 +7,19 @@ import java.io.Serializable;
 import java.util.*;
 
 public class Rotor implements Serializable {
-    private final List<Line> lineArray = new ArrayList<>();
+    private List<Line> lineArray = new ArrayList<>();
     private int notchIndex;
     private int rotatorIndex = 0;
 
+    @Override
+    protected Object clone() throws CloneNotSupportedException{
+        Rotor clonedRotor = new Rotor();
+        clonedRotor.lineArray = new ArrayList<>(this.lineArray);
+        clonedRotor.notchIndex = this.notchIndex;
+        clonedRotor.rotatorIndex = this.rotatorIndex;
+
+        return clonedRotor;
+    }
     public int getRotatorIndex() {
         return rotatorIndex;
     }

@@ -34,10 +34,9 @@ public class TaskManger {
         this.setAgentMachine();
     }
 
-    private void setAgentMachine() {
+    private void setAgentMachine() throws CloneNotSupportedException{
         for (int i = 0; i <amountOfAgents ; i++) {
-            agentMachines.add(machineManager.cloneMachine());
-
+            agentMachines.add(machineManager.clone());
         }
     }
 

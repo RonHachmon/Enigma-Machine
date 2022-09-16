@@ -69,6 +69,14 @@ public class Reflector implements Serializable {
     }
 
     @Override
+    protected Object clone() throws CloneNotSupportedException {
+        Reflector clonedReflector = new Reflector();
+        clonedReflector.integerList = new ArrayList<>(this.integerList);
+
+        return clonedReflector;
+    }
+
+    @Override
     public String toString() {
         String res = new String();
         for (int value : integerList) {

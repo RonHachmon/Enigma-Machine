@@ -117,7 +117,6 @@ public class MachineManager {
         return this.setting.getCurrentRotorsList();
     }
 
-
     public void resetMachineCode() {
         StringBuilder stringBuilder = new StringBuilder(this.setting.getInitialRotorIndexes());
         stringBuilder.reverse();
@@ -274,8 +273,11 @@ public class MachineManager {
 
     //--------------------------------------------Brute Force Related--------------------------------
 
-    public MachineManager cloneMachine() {
-        return null;
+    public MachineManager clone() throws CloneNotSupportedException{
+        MachineManager clonedManager = new MachineManager();
+        clonedManager.machine = this.machine.clone();
+
+        return clonedManager;
     }
     //--------------------------------------------ENDof: Brute Force Related--------------------------------
 }
