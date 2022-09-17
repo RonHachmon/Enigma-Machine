@@ -45,7 +45,6 @@ public class Agent implements Runnable {
                 CodeConfiguration codeConfiguration = queue.poll(10000, TimeUnit.MILLISECONDS);
                 if (codeConfiguration != null) {
 
-                    System.out.println("Taken = " + codeConfiguration.getCharIndexes());
                     this.setInitialMachine(codeConfiguration);
                     String encryptionOutput;
                     for (int i = 0; i < dMdata.getAssignmentSize() - 1; i++) {
@@ -57,6 +56,7 @@ public class Agent implements Runnable {
 
                         increaseCodePermutation(codeConfiguration);
                     }
+                    TaskManger.addWorkDone(dMdata.getAssignmentSize());
                 }
                 else
                 {

@@ -5,6 +5,7 @@ import Engine.bruteForce2.utils.CandidateList;
 import Engine.bruteForce2.utils.CodeConfiguration;
 import Engine.bruteForce2.utils.Dictionary;
 import Engine.machineutils.MachineManager;
+import utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,8 @@ public class TaskManger {
     private Consumer<Runnable> onCancel;
     private CandidateList candidateList=new CandidateList();
     BlockingQueue<CodeConfiguration> blockingQueue = new LinkedBlockingDeque<>(MAX_QUEUE_SIZE);
+    private static long totalCombinations=0;
+    private static long doneCombinations=0;
 
 
     //
@@ -35,6 +38,7 @@ public class TaskManger {
         this.onCancel = onCancel;
         dmData = dMData;
         this.dictionary=dictionary;
+        calcMissionSize();
     }
 
 
@@ -62,45 +66,41 @@ public class TaskManger {
 
 
     }
+    private void calcMissionSize() {
+        long easy = (long) Math.pow(machineManager.getAvailableChars().length(), machineManager.getCurrentRotorsList().size());
+        long medium = easy * machineManager.getMachineInformation().getAvailableReflectors();
+        long hard = medium * Utils.factorial(machineManager.getCurrentRotorsList().size());
+        long impossible = hard * Utils.binomial(machineManager.getCurrentRotorsList().size(), machineManager.getMachineInformation().getAmountOfRotors());
 
-/*    private void setAgentMachine() {
->>>>>>> 757172a (basic consumer producer)
-        for (int i = 0; i <amountOfAgents ; i++) {
-            agentMachines.add(machineManager.clone());
+        switch (dmData.getDifficulty()) {
+            case EASY:
+                totalCombinations = easy;
+                break;
+            case MEDIUM:
+                totalCombinations = medium;
+                break;
+            case HARD:
+                totalCombinations = hard;
+                break;
+            case IMPOSSIBLE:
+                totalCombinations = impossible;
+                break;
         }
-    }*/
-
-/*    public void run(){
-
-        MachineManager machineManger;
-        //loop with all possible code configuration
-        candidatesPool.execute(()->{
-                this.decrypt();
-
-        });
-
-    }*/
-/*    synchronized void addCandidateToList(String foundWord,String codeSetting)
-    {
-        DecryptionCandidate decryptionCandidate = new DecryptionCandidate(parseThreadToId(), foundWord, codeSetting);
-        decryptionCandidates.add(decryptionCandidate);
-    }*/
-/*    synchronized int parseThreadToId()
-    {
-        return Integer.parseInt(Thread.currentThread().getName());
+        System.out.println("Total combination"+totalCombinations);
     }
-     synchronized MachineManager getMachine()
+    public  long getTotalWork()
     {
-        return agentMachines.get(parseThreadToId()-1);
+        return totalCombinations;
+    }
+    public long getWorkDone()
+    {
+        return doneCombinations;
+    }
+    synchronized static public void addWorkDone(long number)
+    {
+        doneCombinations+=number;
     }
 
-    private void decrypt() {
-        MachineManager currentAgentMachine=getMachine();
-        //loop over code
-        currentAgentMachine.encryptSentence(dmData.getEncryptedString());
-        //Dictinary
-        //add to list addCandidateToList()
 
-    }*/
 
 }

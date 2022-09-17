@@ -2,7 +2,6 @@ package app.utils;
 
 import DTO.DMData;
 import DTO.DecryptionCandidate;
-import Engine.bruteForce2.utils.DifficultyLevel;
 import Engine.bruteForce2.DecryptManager;
 import Engine.machineutils.MachineManager;
 import app.bodies.BruteForceController;
@@ -18,7 +17,6 @@ import java.util.concurrent.TimeUnit;
 
 public class FindCandidateTask extends Task<Boolean> {
     private final UIAdapter uiAdapter;
-    private final Long totalNumbers;
     private final BruteForceController controller;
 
     private int foundNumbers=0;
@@ -27,23 +25,23 @@ public class FindCandidateTask extends Task<Boolean> {
     private ScheduledExecutorService timedExecute;
     private DecryptManager decryptManager;
     ScheduledFuture<?> scheduledFuture;
+    private long totalWork=0;
 
 
  /*   private bruteForce;*/
 
-    public FindCandidateTask(long totalNumbers, UIAdapter uiAdapter, BruteForceController bruteForceController, MachineManager machineManager) {
+    public FindCandidateTask(DMData dmData, UIAdapter uiAdapter, BruteForceController bruteForceController, MachineManager machineManager) {
         this.uiAdapter = uiAdapter;
-        this.totalNumbers = totalNumbers;
         this.controller=bruteForceController;
         controller.bindTaskToUIComponents(this);
         DaemonThread daemonThreadFactory = new DaemonThread();
         timedExecute = Executors.newSingleThreadScheduledExecutor(daemonThreadFactory);
 
-        DMData dmData =new DMData();
+/*        DMData dmData =new DMData();
         dmData.setAssignmentSize(3);
         dmData.setAmountOfAgents(1);
         dmData.setEncryptedString("ABC");
-        dmData.setDifficulty(DifficultyLevel.EASY);
+        dmData.setDifficulty(DifficultyLevel.EASY);*/
 
         decryptManager =new DecryptManager(machineManager,dmData);
 
@@ -53,9 +51,11 @@ public class FindCandidateTask extends Task<Boolean> {
     @Override
     protected Boolean call() throws Exception {
         decryptManager.startDeciphering();
+        totalWork=decryptManager.getTotalTaskSize();
+        updateProgress(0,totalWork);
         startTimedTask();
 /*        System.out.println("test");
-        updateProgress(0,20);
+
 
         primeFinder.findPrimes(this);*/
 
@@ -95,25 +95,14 @@ public class FindCandidateTask extends Task<Boolean> {
                 uiAdapter.addNewCandidate(decryptionCandidates.get(i));
             }
             lastKnownIndex=decryptionCandidates.size();
-  /*          updateProgress(lastKnownIndex,20);*/
+            uiAdapter.updateTotalFoundWords(lastKnownIndex);
+
         }
+        updateProgress(decryptManager.getWorkDone(),totalWork);
+
     }
 
-/*    private void update()
-    {
-        if (primeFinder.listSize()>lastKnownIndex)
-        {
-            System.out.println("in update");
-            List<Integer> primeNumberList = primeFinder.getPrimeNumbers();
-            System.out.println("last know "+lastKnownIndex);
-            System.out.println("amount "+primeNumberList.size());
-            for (int i = lastKnownIndex; i <primeNumberList.size() ; i++) {
-                uiAdapter.addNewCandidate(new PrimeNumberData(primeNumberList.get(i)));
-            }
-            lastKnownIndex=primeNumberList.size();
-            updateProgress(lastKnownIndex,20);
-        }
-    }*/
+
 
     public void pause()
     {
@@ -126,14 +115,4 @@ public class FindCandidateTask extends Task<Boolean> {
     }
 
 
-    private boolean isPrime(Integer runningNumber) {
-        for (int i=2;i<=Math.sqrt(runningNumber);i++)
-        {
-            if(runningNumber%i==0)
-            {
-                return false;
-            }
-        }
-        return true;
-    }
 }

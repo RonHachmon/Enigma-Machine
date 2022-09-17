@@ -86,7 +86,7 @@
                   <Insets left="15.0" />
                </HBox.margin>
             </TextField>
-            <Button fx:id="startButton" mnemonicParsing="false" onAction="#startBruteForce" text="start">
+            <Button fx:id="startButton" disable="true" mnemonicParsing="false" onAction="#startBruteForce" text="start">
                <HBox.margin>
                   <Insets left="5.0" />
                </HBox.margin>
@@ -127,10 +127,10 @@
          </children>
       </HBox>
       <ProgressBar fx:id="taskProgressBar" maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="559.0" progress="0.0" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.rowIndex="4" GridPane.vgrow="ALWAYS" />
-      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3">
          <children>
-            <Label alignment="CENTER" prefHeight="17.0" prefWidth="46.0" text="count:" />
-            <Label fx:id="amountOfCandidateFound" />
+            <Label alignment="CENTER" prefHeight="17.0" prefWidth="94.0" text="found words:" />
+            <Label fx:id="amountOfCandidateFound" maxWidth="1.7976931348623157E308" prefHeight="17.0" />
          </children>
       </HBox>
       <Label fx:id="percentageLabel" GridPane.columnIndex="3" GridPane.rowIndex="4" />

@@ -10,9 +10,9 @@
 
 <StackPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.utils.candidate.CandidateController">
    <children>
-      <ImageView fitHeight="141.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="106.0" fitWidth="209.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@Picture1.png" />
+            <Image url="@pcScreen.png" />
          </image>
       </ImageView>
       <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="110.0" prefWidth="220.0">

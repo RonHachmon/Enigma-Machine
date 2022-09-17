@@ -34,7 +34,7 @@ public class CandidateController {
     }
     public void setAgent(String text)
     {
-        agentLabel.setText(text);
+        agentLabel.setText("agent "+text);
     }
     public void setCode(String text)
     {
