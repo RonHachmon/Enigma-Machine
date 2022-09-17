@@ -37,12 +37,6 @@ public class FindCandidateTask extends Task<Boolean> {
         DaemonThread daemonThreadFactory = new DaemonThread();
         timedExecute = Executors.newSingleThreadScheduledExecutor(daemonThreadFactory);
 
-/*        DMData dmData =new DMData();
-        dmData.setAssignmentSize(3);
-        dmData.setAmountOfAgents(1);
-        dmData.setEncryptedString("ABC");
-        dmData.setDifficulty(DifficultyLevel.EASY);*/
-
         decryptManager =new DecryptManager(machineManager,dmData);
 
     }
@@ -83,13 +77,12 @@ public class FindCandidateTask extends Task<Boolean> {
     }
 
     private void startTimedTask() {
-        scheduledFuture = timedExecute.scheduleAtFixedRate(() -> update(), 500, 1000, TimeUnit.MILLISECONDS);
+        scheduledFuture = timedExecute.scheduleAtFixedRate(() -> update(), 500, 500, TimeUnit.MILLISECONDS);
     }
     private void update()
     {
         if (decryptManager.getSizeOfCandidateList()>lastKnownIndex)
         {
-            System.out.println("in update");
             List<DecryptionCandidate> decryptionCandidates = decryptManager.getCandidateList().getList();
             for (int i = lastKnownIndex; i <decryptionCandidates.size() ; i++) {
                 uiAdapter.addNewCandidate(decryptionCandidates.get(i));
@@ -98,7 +91,12 @@ public class FindCandidateTask extends Task<Boolean> {
             uiAdapter.updateTotalFoundWords(lastKnownIndex);
 
         }
+        /*System.out.println("total work done "+ decryptManager.getWorkDone());*/
         updateProgress(decryptManager.getWorkDone(),totalWork);
+        if(decryptManager.getWorkDone()>=totalWork)
+        {
+            pause();
+        }
 
     }
 

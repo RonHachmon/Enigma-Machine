@@ -32,7 +32,6 @@ public class DecryptManager {
 
     public void startDeciphering() throws Exception{
         tasksManager = new TaskManger(dictionary,DMdata,machineManager,(stop) -> System.out.println("ff"));
-        System.out.println(" hey");
         tasksManager.start();
 
 

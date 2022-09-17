@@ -5,7 +5,6 @@ import java.util.List;
 public class Permutation {
     private String allAvailableChars;
     private int allAvailableCharsSize;
-    private List<Character> current;
     private boolean overFlow=false;
 
 
@@ -71,6 +70,11 @@ public class Permutation {
     public boolean isOverFlow()
     {
         return this.overFlow;
+    }
+
+    public void cleanOverFLow()
+    {
+        this.overFlow=false;
     }
 
 

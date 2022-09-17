@@ -49,17 +49,17 @@ public class TaskManger {
     public void start()
     {
         AssignmentProducer assignmentProducer = null;
-        System.out.println("starting task");
+        /*System.out.println("starting task");*/
         try {
             assignmentProducer = new AssignmentProducer(blockingQueue,dmData,machineManager);
             new Thread(assignmentProducer).start();
             for (int i = 0; i <dmData.getAmountOfAgents() ; i++) {
-                Agent agent=new Agent(blockingQueue,machineManager,dmData,candidateList,dictionary);
+                Agent agent=new Agent(blockingQueue,machineManager,dmData,candidateList,dictionary,i);
                 new Thread(agent).start();
             }
-            System.out.println("producer should have start ");
+
         } catch (Exception e) {
-            System.out.println("execption");
+            System.out.println("execption in producer");
             System.out.println(e.getClass());
             System.out.println(e.getMessage());
         }
@@ -86,13 +86,13 @@ public class TaskManger {
                 totalCombinations = impossible;
                 break;
         }
-        System.out.println("Total combination"+totalCombinations);
+        System.out.println("Total combination "+totalCombinations);
     }
-    public  long getTotalWork()
+    public static   long getTotalWork()
     {
         return totalCombinations;
     }
-    public long getWorkDone()
+    public static long getWorkDone()
     {
         return doneCombinations;
     }

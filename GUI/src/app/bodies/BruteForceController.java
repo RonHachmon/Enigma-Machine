@@ -134,6 +134,7 @@ public class BruteForceController extends MainAppScene implements Initializable,
         try {
 
             String input =dictionary.cleanWord(inputArea.getText());
+            System.out.println(input);
             String output = this.machineManager.encryptSentence(input.toUpperCase());
             outputArea.setText(output);
             mainAppController.updateMachineCode(machineManager.getCurrentCodeSetting());
