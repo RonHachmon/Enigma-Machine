@@ -58,6 +58,12 @@ public class Dictionary implements Serializable  {
     public boolean isAtDictionary(String encryptionOutput) {
 
         String[] allWord = encryptionOutput.split(" ");
+        //the whole word is just spaces
+        if(allWord.length==0)
+        {
+            return false;
+        }
+
         for (int i = 0; i <allWord.length ; i++) {
             if(!words.contains(allWord[i]))
             {
@@ -65,5 +71,9 @@ public class Dictionary implements Serializable  {
             }
         }
         return true;
+    }
+
+    public String cleanWord(String text) {
+        return text.replaceAll("[" + excludeChars + "]", "");
     }
 }

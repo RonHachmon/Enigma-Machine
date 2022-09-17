@@ -37,7 +37,7 @@ public class UIAdapter {
 
 
 
-    public void updateTotalProcessedWords(int delta) {
+    public void updateTotalFoundWords(int delta) {
         Platform.runLater(
                 () -> updateTotalFoundInteger.accept(delta)
         );

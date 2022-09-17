@@ -3,6 +3,7 @@ package app.bodies;
 import DTO.DMData;
 import DTO.DecryptionCandidate;
 import Engine.bruteForce2.DecryptManager;
+import Engine.bruteForce2.utils.Dictionary;
 import Engine.bruteForce2.utils.DifficultyLevel;
 import app.bodies.absractScene.MainAppScene;
 import app.bodies.interfaces.CodeHolder;
@@ -83,7 +84,7 @@ public class BruteForceController extends MainAppScene implements Initializable,
     private  FindCandidateTask currentRunningTask;
     private Tooltip toolTipError;
     private DMData dmData=new DMData();
-    private Set<String> dictionary;
+    private Dictionary dictionary;
     private DecryptManager decryptManager;
 
     @Override
@@ -96,12 +97,20 @@ public class BruteForceController extends MainAppScene implements Initializable,
 
         setToolTip();
 
-        assignmentSizeText.textProperty().
-                addListener((object, oldValue, newValue)->validateInput(newValue));
+        bindListenersToInputButtons();
+
 
         searchBar.textProperty().
                 addListener((object, oldValue, newValue)->filterDictionaryTable(newValue));
 
+    }
+
+    private void bindListenersToInputButtons() {
+        assignmentSizeText.textProperty().
+                addListener((object, oldValue, newValue)->allDataValid());
+        difficultyComboBox.valueProperty().addListener((object, oldValue, newValue)->allDataValid());
+        amountOfAgentsChoiceBox.valueProperty().addListener((object, oldValue, newValue)->allDataValid());
+        outputArea.visibleProperty().addListener((object, oldValue, newValue)->allDataValid());
     }
 
     public void updateAmountOfAgent() {
@@ -123,9 +132,12 @@ public class BruteForceController extends MainAppScene implements Initializable,
     @FXML
     void runClicked(ActionEvent event) {
         try {
-            String output = this.machineManager.encryptSentence(inputArea.getText().toUpperCase());
+
+            String input =dictionary.cleanWord(inputArea.getText());
+            String output = this.machineManager.encryptSentence(input.toUpperCase());
             outputArea.setText(output);
             mainAppController.updateMachineCode(machineManager.getCurrentCodeSetting());
+            allDataValid();
         }
         catch (Exception e) {
             Alert a = new Alert(Alert.AlertType.ERROR);
@@ -161,19 +173,30 @@ public class BruteForceController extends MainAppScene implements Initializable,
 
     @FXML
     void startBruteForce(ActionEvent event) {
-        currentRunningTask = new FindCandidateTask(0, createUIAdapter(),this,this.machineManager);
-        new Thread(currentRunningTask).start();
-        startButton.setDisable(true);
+        candidatesFlowPane.getChildren().clear();
 
+        pullDmData();
+        currentRunningTask = new FindCandidateTask(dmData, createUIAdapter(),this,this.machineManager);
+        new Thread(currentRunningTask).start();
 
         pauseButton.setDisable(false);
         stopButton.setDisable(false);
 
 
+        startButton.setDisable(true);
+        difficultyComboBox.setDisable(true);
+        amountOfAgentsChoiceBox.setDisable(true);
+        assignmentSizeText.setDisable(true);
+
+
     }
+
+
+
     @FXML
     void stopClicked(ActionEvent event) {
         startButton.setDisable(false);
+
 
     }
 
@@ -184,6 +207,11 @@ public class BruteForceController extends MainAppScene implements Initializable,
 
     //--------------------------------------------Task related--------------------------------
 
+    private void pullDmData() {
+        dmData.setDifficulty(difficultyComboBox.getValue());
+        dmData.setAmountOfAgents(amountOfAgentsChoiceBox.getValue());
+        dmData.setEncryptedString(outputArea.getText());
+    }
     private UIAdapter createUIAdapter() {
         return new UIAdapter(
                 decryptionCandidateData -> {
@@ -191,8 +219,7 @@ public class BruteForceController extends MainAppScene implements Initializable,
                     createWordCandidate(decryptionCandidateData);
                 },
                 (delta) -> {
-               /*     HistogramsUtils.log("EDT: INCREASE total processed words");
-                    totalProcessedWords.set(totalProcessedWords.get() + delta);*/
+                    this.totalFoundCandidate.set(delta);
                 },
                 () -> {
                     this.totalFoundCandidate.set(totalFoundCandidate.get() + 1);
@@ -200,27 +227,11 @@ public class BruteForceController extends MainAppScene implements Initializable,
 
         );
     }
-    private void createCandidate(Integer number) {
 
-            TextField candidate = loadFXML("/app/smallComponent/candidate.fxml");
-            candidate.setText(number.toString());
-            FlowPane.setMargin(candidate, new Insets(2, 10, 2, 10));
-            this.candidatesFlowPane.getChildren().add(candidate);
-
-    }
     private void createWordCandidate(DecryptionCandidate decryptionCandidate) {
 
         try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/app/smallComponent/wordCandidate.fxml"));
-            Node wordCandidate = loader.load();
-            wordCandidate.setFocusTraversable(false);
-            CandidateController wordCandidateController = loader.getController();
-
-            wordCandidateController.setTextFont();
-            wordCandidateController.setText(decryptionCandidate.getDecryptedString());
-            wordCandidateController.setAgent(String.valueOf(decryptionCandidate.getAgentID()));
-            wordCandidateController.setCode(decryptionCandidate.getCodeConfiguration());
+            Node wordCandidate = loadCandidate(decryptionCandidate);
 
             FlowPane.setMargin(wordCandidate, new Insets(2, 10, 2, 10));
             this.candidatesFlowPane.getChildren().add(wordCandidate);
@@ -228,6 +239,20 @@ public class BruteForceController extends MainAppScene implements Initializable,
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private Node loadCandidate(DecryptionCandidate decryptionCandidate) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/app/smallComponent/wordCandidate.fxml"));
+        Node wordCandidate = loader.load();
+        wordCandidate.setFocusTraversable(false);
+
+        CandidateController wordCandidateController = loader.getController();
+        wordCandidateController.setTextFont();
+        wordCandidateController.setText(decryptionCandidate.getDecryptedString());
+        wordCandidateController.setAgent(String.valueOf(decryptionCandidate.getAgentID()));
+        wordCandidateController.setCode(decryptionCandidate.getCodeConfiguration());
+        return wordCandidate;
     }
 
     public void bindTaskToUIComponents(Task<Boolean> aTask) {
@@ -273,7 +298,7 @@ public class BruteForceController extends MainAppScene implements Initializable,
     public void updateInitialDictionaryTable(){
         decryptManager=new DecryptManager(machineManager,dmData);
         dictionary =decryptManager.getDictionary();
-        dictionary.forEach(s ->dictionaryTable.getItems().add(s) );
+        dictionary.getDictionary().forEach(s ->dictionaryTable.getItems().add(s) );
     }
     private void showToolTip() {
         String currentInput = assignmentSizeText.getText();
@@ -286,7 +311,21 @@ public class BruteForceController extends MainAppScene implements Initializable,
             toolTipError.hide();
         }
     }
-    private void validateInput(String newValue) {
+    private void allDataValid()
+    {
+        if(assignmentInputValid(assignmentSizeText.getText()))
+        {
+            if(difficultyComboBox.getValue()!=null &&amountOfAgentsChoiceBox.getValue()!=null)
+            {
+                if(!outputArea.getText().isEmpty()) {
+                    startButton.setDisable(false);
+                    return;
+                }
+            }
+        }
+        startButton.setDisable(true);
+    }
+    private boolean assignmentInputValid(String newValue) {
         if(newValue.isEmpty())
         {
             assignmentSizeText.setId(null);
@@ -298,12 +337,14 @@ public class BruteForceController extends MainAppScene implements Initializable,
                 assignmentSizeText.setId(null);
                 validAssignment=true;
                 toolTipError.hide();
+                return true;
             } else {
                 validAssignment=false;
                 renderToolTip();
                 assignmentSizeText.setId("error-text-field");
             }
         }
+        return false;
     }
     private void renderToolTip() {
         Bounds boundsInScene = assignmentSizeText.localToScreen(assignmentSizeText.getBoundsInLocal());
@@ -324,11 +365,11 @@ public class BruteForceController extends MainAppScene implements Initializable,
         dictionaryTable.getItems().clear();
         if(newValue.isEmpty())
         {
-            dictionary.forEach(s ->dictionaryTable.getItems().add(s));
+            dictionary.getDictionary().forEach(s ->dictionaryTable.getItems().add(s));
 
         }
         else {
-            dictionary.stream().filter(s -> s.startsWith(newValue.toUpperCase())).
+            dictionary.getDictionary().stream().filter(s -> s.startsWith(newValue.toUpperCase())).
                     forEach(s ->dictionaryTable.getItems().add(s));
         }
     }

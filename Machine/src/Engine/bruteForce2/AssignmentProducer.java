@@ -56,11 +56,8 @@ public class AssignmentProducer implements Runnable {
 
         do{
             queue.offer(codeConfiguration.clone(codeConfiguration),1000, TimeUnit.MILLISECONDS);
-            System.out.println("Given = "+codeConfiguration.getCharIndexes() );
             nextPermutation=permutation.increasePermutation(dmData.getAssignmentSize(),codeConfiguration.getCharIndexes());
             this.codeConfiguration.setCharIndexes(nextPermutation);
-/*            Thread.sleep(200);*/
-
         }while (permutation.isOverFlow()==false);
         isDone=true;
         System.out.println("Producer Done");

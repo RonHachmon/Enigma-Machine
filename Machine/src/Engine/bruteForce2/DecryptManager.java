@@ -49,9 +49,9 @@ public class DecryptManager {
 
         }
     }
-    public Set<String> getDictionary()
+    public Dictionary getDictionary()
     {
-        return dictionary.getDictionary();
+        return dictionary;
     }
     public CandidateList getCandidateList()
     {
@@ -60,6 +60,15 @@ public class DecryptManager {
     public int getSizeOfCandidateList()
     {
         return tasksManager.getCandidateList().getSize();
+    }
+
+    public long getTotalTaskSize()
+    {
+        return tasksManager.getTotalWork();
+    }
+    public long getWorkDone()
+    {
+        return tasksManager.getWorkDone();
     }
 
 
