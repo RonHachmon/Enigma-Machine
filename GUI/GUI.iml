@@ -11,5 +11,7 @@
     <orderEntry type="module" module-name="Machine" />
     <orderEntry type="module" module-name="Prime-Logic" />
     <orderEntry type="module" module-name="CommoUtils" />
+    <orderEntry type="library" name="fontawesomefx-fontawesome-4.7.0-9.1.2" level="project" />
+    <orderEntry type="library" exported="" name="fontawesomefx-8.9" level="project" />
   </component>
 </module>
