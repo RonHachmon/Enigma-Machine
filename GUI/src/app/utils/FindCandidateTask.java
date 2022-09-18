@@ -69,7 +69,7 @@ public class FindCandidateTask extends Task<Boolean> {
     }
 
     private void startTimedTask() {
-        scheduledFuture = timedExecute.scheduleAtFixedRate(() -> update(), 500, 500, TimeUnit.MILLISECONDS);
+        scheduledFuture = timedExecute.scheduleAtFixedRate(() -> update(), 100, 100, TimeUnit.MILLISECONDS);
     }
 
 

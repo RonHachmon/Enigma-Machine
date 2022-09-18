@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
@@ -87,10 +88,13 @@
                   <Insets left="15.0" />
                </HBox.margin>
             </TextField>
-            <Button fx:id="startButton" disable="true" mnemonicParsing="false" onAction="#startBruteForce" text="start">
+            <Button fx:id="startButton" disable="true" mnemonicParsing="false" onAction="#startBruteForce">
                <HBox.margin>
                   <Insets left="5.0" />
                </HBox.margin>
+               <graphic>
+                  <FontAwesomeIconView glyphName="PLAY" />
+               </graphic>
             </Button>
          </children>
       </HBox>
@@ -116,14 +120,23 @@
             <TextField fx:id="searchBar" promptText="search" BorderPane.alignment="CENTER" />
          </top>
       </BorderPane>
-      <Button fx:id="runButton" alignment="CENTER" mnemonicParsing="false" onAction="#runClicked" text="run" textFill="#0b0000" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+      <Button fx:id="runButton" alignment="CENTER" mnemonicParsing="false" onAction="#runClicked" textFill="#0b0000" GridPane.columnIndex="3" GridPane.rowIndex="1">
+         <graphic>
+            <FontAwesomeIconView glyphName="ARROW_RIGHT" />
+         </graphic></Button>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.rowIndex="3">
          <children>
-            <Button fx:id="stopButton" mnemonicParsing="false" onAction="#stopClicked" text="stop" />
-            <Button fx:id="pauseButton" mnemonicParsing="false" onAction="#pauseClicked" text="pause">
+            <Button fx:id="stopButton" minWidth="50.0" mnemonicParsing="false" onAction="#stopClicked">
+               <graphic>
+                  <FontAwesomeIconView glyphName="STOP" />
+               </graphic></Button>
+            <Button fx:id="pauseButton" minWidth="50.0" mnemonicParsing="false" onAction="#pauseClicked">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>
+               <graphic>
+                  <FontAwesomeIconView glyphName="PAUSE" />
+               </graphic>
             </Button>
          </children>
       </HBox>
@@ -160,6 +173,9 @@
                </children>
             </HBox>
          </children>
+         <GridPane.margin>
+            <Insets left="10.0" />
+         </GridPane.margin>
       </VBox>
    </children>
 </GridPane>
