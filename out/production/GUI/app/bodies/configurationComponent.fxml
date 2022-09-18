@@ -54,7 +54,7 @@
                <children>
                   <HBox alignment="CENTER" maxHeight="30.0" prefHeight="20.0" prefWidth="200.0">
                      <children>
-                        <Label text="Amount of rotors :                 ">
+                        <Label text="Amount of rotors :                          ">
                            <padding>
                               <Insets left="5.0" />
                            </padding>
@@ -80,7 +80,7 @@
                   </HBox>
                   <HBox alignment="CENTER" maxHeight="30.0" prefHeight="20.0" prefWidth="200.0">
                      <children>
-                        <Label text="Amount of requied rotor:       ">
+                        <Label text="Amount of required rotors :           ">
                            <padding>
                               <Insets left="5.0" />
                            </padding>
@@ -103,7 +103,7 @@
                   </HBox>
                   <HBox alignment="CENTER" maxHeight="30.0" prefHeight="20.0" prefWidth="200.0">
                      <children>
-                        <Label text="Amount of reflector:              ">
+                        <Label text="Amount of reflectors :                    ">
                            <padding>
                               <Insets left="5.0" />
                            </padding>
@@ -126,7 +126,7 @@
                   </HBox>
                   <HBox alignment="CENTER" maxHeight="30.0" prefHeight="20.0" prefWidth="200.0">
                      <children>
-                        <Label text="Amount of processed input:  ">
+                        <Label text="Amount of processed messages :  ">
                            <padding>
                               <Insets left="5.0" />
                            </padding>

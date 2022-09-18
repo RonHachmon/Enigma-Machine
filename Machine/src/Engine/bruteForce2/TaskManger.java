@@ -28,7 +28,7 @@ public class TaskManger {
 
     private static long totalCombinations=0;
     private static long doneCombinations=0;
-
+    private static long totalTaskDurationInNanoSeconds = 0;
 
     //
     private List<MachineManager> agentMachines=new ArrayList<>();

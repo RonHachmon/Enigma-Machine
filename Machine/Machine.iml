@@ -8,7 +8,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="DTO" />
-    <orderEntry type="module" module-name="GUI" />
     <orderEntry type="module" module-name="CommoUtils" />
   </component>
 </module>

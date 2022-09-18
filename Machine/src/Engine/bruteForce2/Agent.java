@@ -49,6 +49,7 @@ public class Agent implements Runnable {
     @Override
     public void run() {
         try {
+            Instant startTaskClock = Instant.now();
             /*System.out.println("starting pull code");*/
             while (true) {
                 CodeConfiguration codeConfiguration = queue.poll(3000, TimeUnit.MILLISECONDS);
@@ -58,12 +59,11 @@ public class Agent implements Runnable {
                     String encryptionOutput;
                     for (int i = 0; i < dMdata.getAssignmentSize() ; i++) {
                         lock.checkIfLocked();
-                        if(toStop)
-                        {
+                        if (toStop) {
                             System.out.println("Agent stopped :)");
                             return;
                         }
-                       /* System.out.println("Agent working");*/
+                        /* System.out.println("Agent working");*/
                         /*System.out.println(machineManager.getInitialFullMachineCode());*/
 
                         encryptionOutput = machineManager.encryptSentence(dMdata.getEncryptedString());
@@ -71,18 +71,17 @@ public class Agent implements Runnable {
                         amountOfPermutaionIWent++;
                         amountOfPermutationIwentInTheLoop++;
 
-                        if(dictionary.isAtDictionary(encryptionOutput))
-                        {
+                        if (dictionary.isAtDictionary(encryptionOutput)) {
                             candidateList.addCandidate(createCandidate(encryptionOutput));
                         }
 
                         increaseCodePermutation(codeConfiguration);
-                        if(permutation.isOverFlow())
-                        {
+                        if (permutation.isOverFlow()) {
                             break;
                         }
                     }
-                    TaskManger.addWorkDone(dMdata.getAssignmentSize());
+                    long encryptionTimeInNanoSeconds = Duration.between(startTaskClock, Instant.now()).toNanos();
+                    TaskManger.addWorkDone(dMdata.getAssignmentSize(),encryptionTimeInNanoSeconds);
                 }
                 else
                 {
@@ -99,8 +98,6 @@ public class Agent implements Runnable {
             System.out.println(e.getMessage());
             Thread.currentThread().interrupt();
         }
-
-        long taskDuration = Duration.between(startTaskClock, Instant.now()).toMillis();
     }
 
     private boolean isDone() {

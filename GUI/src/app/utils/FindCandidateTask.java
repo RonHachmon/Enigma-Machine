@@ -94,14 +94,13 @@ public class FindCandidateTask extends Task<Boolean> {
             uiAdapter.updateTotalFoundWords(lastKnownIndex);
         }
         /*System.out.println("total work done "+ decryptManager.getWorkDone());*/
-        updateProgress(workDone,totalWork);
-        if(workDone>=totalWork)
+        updateProgress(workDone,totalWorkSize);
+        if(workDone>=totalWorkSize)
         {
             updateMessage("Done work");
             uiAdapter.done();
             this.cancelled();
         }
-
     }
 
 
@@ -109,6 +108,5 @@ public class FindCandidateTask extends Task<Boolean> {
         System.out.println("stopped");
         updateMessage("Cancelled ;/");
         this.cancelled();
-
     }
 }
