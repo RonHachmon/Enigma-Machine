@@ -20,14 +20,14 @@ public class TaskManger {
     private DMData dmData;
 
     private Consumer<Runnable> onCancel;
-    private CandidateList candidateList=new CandidateList();
+    private CandidateList candidateList = new CandidateList();
     BlockingQueue<CodeConfiguration> blockingQueue = new LinkedBlockingDeque<>(MAX_QUEUE_SIZE);
-    private static long totalCombinations=0;
-    private static long doneCombinations=0;
-
+    private static long totalCombinations = 0;
+    private static long doneCombinations = 0;
+    private static long totalTaskDurationInNanoSeconds = 0;
 
     //
-    private List<MachineManager> agentMachines=new ArrayList<>();
+    private List<MachineManager> agentMachines = new ArrayList<>();
 
     public CandidateList getCandidateList() {
         return candidateList;
@@ -37,24 +37,21 @@ public class TaskManger {
         this.machineManager = machineManager;
         this.onCancel = onCancel;
         dmData = dMData;
-        this.dictionary=dictionary;
+        this.dictionary = dictionary;
         calcMissionSize();
     }
-
 
     private void setAgentMachine() throws CloneNotSupportedException {
     }
 
-
-    public void start()
-    {
+    public void start() {
         AssignmentProducer assignmentProducer = null;
         /*System.out.println("starting task");*/
         try {
-            assignmentProducer = new AssignmentProducer(blockingQueue,dmData,machineManager);
+            assignmentProducer = new AssignmentProducer(blockingQueue, dmData, machineManager);
             new Thread(assignmentProducer).start();
-            for (int i = 0; i <dmData.getAmountOfAgents() ; i++) {
-                Agent agent=new Agent(blockingQueue,machineManager,dmData,candidateList,dictionary,i);
+            for (int i = 0; i < dmData.getAmountOfAgents(); i++) {
+                Agent agent = new Agent(blockingQueue, machineManager, dmData, candidateList, dictionary, i);
                 new Thread(agent).start();
             }
 
@@ -66,6 +63,7 @@ public class TaskManger {
 
 
     }
+
     private void calcMissionSize() {
         long easy = (long) Math.pow(machineManager.getAvailableChars().length(), machineManager.getCurrentRotorsList().size());
         long medium = easy * machineManager.getMachineInformation().getAvailableReflectors();
@@ -86,21 +84,26 @@ public class TaskManger {
                 totalCombinations = impossible;
                 break;
         }
-        System.out.println("Total combination "+totalCombinations);
+        System.out.println("Total combination " + totalCombinations);
     }
-    public static   long getTotalWork()
-    {
+
+    public long getTotalTaskDurationInNanoSeconds() {
+        return totalTaskDurationInNanoSeconds;
+    }
+    public static long getTotalWork() {
         return totalCombinations;
     }
-    public static long getWorkDone()
-    {
+
+    public long getAvgTaskDuration() {
+        return totalTaskDurationInNanoSeconds / (totalCombinations / dmData.getAssignmentSize());
+    }
+
+    public static long getWorkDone() {
         return doneCombinations;
     }
-    synchronized static public void addWorkDone(long number)
-    {
-        doneCombinations+=number;
+
+    synchronized static public void addWorkDone(long number, long currentEncryptionDuration) {
+        doneCombinations += number;
+        totalTaskDurationInNanoSeconds += currentEncryptionDuration;
     }
-
-
-
 }

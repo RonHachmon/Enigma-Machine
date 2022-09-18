@@ -25,10 +25,11 @@ public class FindCandidateTask extends Task<Boolean> {
     private ScheduledExecutorService timedExecute;
     private DecryptManager decryptManager;
     ScheduledFuture<?> scheduledFuture;
-    private long totalWork=0;
+    private long totalWorkSize = 0;
+    //private long totalWorkDuration;
 
 
- /*   private bruteForce;*/
+    /*   private bruteForce;*/
 
     public FindCandidateTask(DMData dmData, UIAdapter uiAdapter, BruteForceController bruteForceController, MachineManager machineManager) {
         this.uiAdapter = uiAdapter;
@@ -45,8 +46,9 @@ public class FindCandidateTask extends Task<Boolean> {
     @Override
     protected Boolean call() throws Exception {
         decryptManager.startDeciphering();
-        totalWork=decryptManager.getTotalTaskSize();
-        updateProgress(0,totalWork);
+        totalWorkSize = decryptManager.getTotalTaskSize();
+        //totalWorkDuration = decryptManager.getTotalTaskDurationInNanoSeconds();
+        updateProgress(0, totalWorkSize);
         startTimedTask();
 /*        System.out.println("test");
 
@@ -79,25 +81,21 @@ public class FindCandidateTask extends Task<Boolean> {
     private void startTimedTask() {
         scheduledFuture = timedExecute.scheduleAtFixedRate(() -> update(), 500, 500, TimeUnit.MILLISECONDS);
     }
-    private void update()
-    {
-        if (decryptManager.getSizeOfCandidateList()>lastKnownIndex)
-        {
+    private void update() {
+        if (decryptManager.getSizeOfCandidateList() > lastKnownIndex) {
             List<DecryptionCandidate> decryptionCandidates = decryptManager.getCandidateList().getList();
-            for (int i = lastKnownIndex; i <decryptionCandidates.size() ; i++) {
+            for (int i = lastKnownIndex; i < decryptionCandidates.size(); i++) {
                 uiAdapter.addNewCandidate(decryptionCandidates.get(i));
             }
-            lastKnownIndex=decryptionCandidates.size();
+            lastKnownIndex = decryptionCandidates.size();
             uiAdapter.updateTotalFoundWords(lastKnownIndex);
 
         }
         /*System.out.println("total work done "+ decryptManager.getWorkDone());*/
-        updateProgress(decryptManager.getWorkDone(),totalWork);
-        if(decryptManager.getWorkDone()>=totalWork)
-        {
+        updateProgress(decryptManager.getWorkDone(), totalWorkSize);
+        if (decryptManager.getWorkDone() >= totalWorkSize) {
             pause();
         }
-
     }
 
 
@@ -106,7 +104,6 @@ public class FindCandidateTask extends Task<Boolean> {
     {
         scheduledFuture.cancel(true);
     }
-
     public void resume()
     {
         startTimedTask();
