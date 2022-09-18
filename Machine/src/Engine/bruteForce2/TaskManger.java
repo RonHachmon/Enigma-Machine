@@ -22,18 +22,20 @@ public class TaskManger {
     private DMData dmData;
 
     private Consumer<Runnable> onCancel;
-    private CandidateList candidateList=new CandidateList();
+    private CandidateList candidateList = new CandidateList();
     BlockingQueue<CodeConfiguration> blockingQueue = new LinkedBlockingDeque<>(MAX_QUEUE_SIZE);
-    private QueueLock queueLock=new QueueLock() ;
+    private QueueLock queueLock = new QueueLock();
+
 
     private static long totalCombinations=0;
     private static long doneCombinations=0;
     private static long totalTaskDurationInNanoSeconds = 0;
 
+
     //
-    private List<MachineManager> agentMachines=new ArrayList<>();
+    private List<MachineManager> agentMachines = new ArrayList<>();
     private AssignmentProducer assignmentProducer;
-    private List<Agent> agents=new ArrayList<>();
+    private List<Agent> agents = new ArrayList<>();
 
     public CandidateList getCandidateList() {
         return candidateList;
@@ -43,34 +45,32 @@ public class TaskManger {
         this.machineManager = machineManager;
         this.onCancel = onCancel;
         dmData = dMData;
-        this.dictionary=dictionary;
+        this.dictionary = dictionary;
         calcMissionSize();
     }
 
-    public void pause()
-    {
+    public void pause() {
         queueLock.lock();
     }
-    public void resume()
-    {
+
+    public void resume() {
         queueLock.unlock();
     }
-    public void stop()
-    {
+
+    public void stop() {
         assignmentProducer.stop();
         agents.forEach(agent -> agent.stop());
     }
 
 
-    public void start()
-    {
+    public void start() {
         System.out.println("starting task");
         try {
-            this.assignmentProducer = new AssignmentProducer(blockingQueue,dmData,machineManager,queueLock);
+            this.assignmentProducer = new AssignmentProducer(blockingQueue, dmData, machineManager, queueLock);
             new Thread(this.assignmentProducer).start();
-            for (int i = 0; i <dmData.getAmountOfAgents() ; i++) {
+            for (int i = 0; i < dmData.getAmountOfAgents(); i++) {
 
-                Agent agent=new Agent(blockingQueue,machineManager,dmData,candidateList,dictionary,i,queueLock);
+                Agent agent = new Agent(blockingQueue, machineManager, dmData, candidateList, dictionary, i, queueLock);
                 new Thread(agent).start();
                 agents.add(agent);
             }
@@ -83,6 +83,7 @@ public class TaskManger {
 
 
     }
+
     private void calcMissionSize() {
         long easy = (long) Math.pow(machineManager.getAvailableChars().length(), machineManager.getCurrentRotorsList().size());
         long medium = easy * machineManager.getMachineInformation().getAvailableReflectors();
@@ -103,35 +104,45 @@ public class TaskManger {
                 totalCombinations = impossible;
                 break;
         }
-        System.out.println("Total combination "+totalCombinations);
+        System.out.println("Total combination " + totalCombinations);
     }
+
 
     public long getTotalTaskDurationInNanoSeconds() {
         return totalTaskDurationInNanoSeconds;
     }
+
+
     public static long getTotalWork() {
         return totalCombinations;
     }
+
 
     public long getAvgTaskDuration() {
         return totalTaskDurationInNanoSeconds / (totalCombinations / dmData.getAssignmentSize());
     }
 
+
     public static long getWorkDone() {
         return doneCombinations;
     }
 
-    public static void setTotalWork(long number)
-    {
-        totalCombinations=0;
+    public static void resetTotalWork() {
+        totalCombinations = 0;
     }
-    public static void setWorkDone(long number)
-    {
-        doneCombinations=0;
-    }
+
 
     synchronized static public void addWorkDone(long number, long currentEncryptionDuration) {
         doneCombinations += number;
         totalTaskDurationInNanoSeconds += currentEncryptionDuration;
     }
+
+    public static void resetWorkDone() {
+        doneCombinations = 0;
+    }
+
+    /*synchronized static public void addWorkDone(long number) {
+        doneCombinations += number;
+    }*/
+
 }

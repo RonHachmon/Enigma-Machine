@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 
 public class AssignmentProducer implements Runnable {
     private final QueueLock lock;
-    public static boolean isDone=false;
+    public static boolean isDone = false;
     private final MachineInformation machineInformation;
     private BlockingQueue<CodeConfiguration> queue;
     private DMData dmData;
@@ -24,30 +24,29 @@ public class AssignmentProducer implements Runnable {
     private Permutation permutation;
     private ListPermutation listPermutation;
     private MachineManager machineManager;
-    private boolean toStop=false;
+    private boolean toStop = false;
     private String startingIndexes;
 
     public AssignmentProducer(BlockingQueue<CodeConfiguration> codeQueue, DMData dmData, MachineManager machineManager, QueueLock queueLock) throws Exception {
         this.queue = codeQueue;
         this.dmData = dmData;
-        this.machineManager= (MachineManager) ObjectCloner.deepCopy(machineManager);
-        this.machineInformation=machineManager.getMachineInformation();
+        this.machineManager = (MachineManager) ObjectCloner.deepCopy(machineManager);
+        this.machineInformation = machineManager.getMachineInformation();
         this.setInitialConfiguration();
-        this.permutation=new Permutation(machineManager.getAvailableChars());
-        lock=queueLock;
+        this.permutation = new Permutation(machineManager.getAvailableChars());
+        lock = queueLock;
 
     }
 
     private void setInitialConfiguration() {
         //easy set up
-        this.startingIndexes="";
-        List<Integer> startingRotors=machineManager.getCurrentRotorsList();
-        int reflectorID=machineManager.getReflector();
-        for (int i =0;i<machineInformation.getAmountOfRotorsRequired();i++)
-        {
-            startingIndexes+=machineInformation.getAvailableChars().charAt(0);
+        this.startingIndexes = "";
+        List<Integer> startingRotors = machineManager.getCurrentRotorsList();
+        int reflectorID = machineManager.getReflector();
+        for (int i = 0; i < machineInformation.getAmountOfRotorsRequired(); i++) {
+            startingIndexes += machineInformation.getAvailableChars().charAt(0);
         }
-        codeConfiguration=new CodeConfiguration(startingIndexes,startingRotors,reflectorID);
+        codeConfiguration = new CodeConfiguration(startingIndexes, startingRotors, reflectorID);
     }
 
     @Override
@@ -61,7 +60,7 @@ public class AssignmentProducer implements Runnable {
     }
 
     private void chooseDifficulty() throws InterruptedException {
-    /*    System.out.println("starting push code");*/
+        /*    System.out.println("starting push code");*/
         switch (dmData.getDifficulty()) {
             case EASY:
                 this.generateCode();
@@ -76,33 +75,33 @@ public class AssignmentProducer implements Runnable {
                 this.goOverAllKRotor();
                 break;
         }
-        isDone=true;
+        isDone = true;
         System.out.println("Producer Done");
     }
+
     private void generateCode() throws InterruptedException {
         String nextPermutation;
-        do{
+        do {
             lock.checkIfLocked();
-            if(toStop)
-            {
+            if (toStop) {
                 System.out.println("Producer stopped  code :)");
                 return;
             }
-           /* System.out.println("Producer working");*/
-            queue.offer(codeConfiguration.clone(codeConfiguration),10000, TimeUnit.MILLISECONDS);
-            nextPermutation=permutation.increasePermutation(dmData.getAssignmentSize(),codeConfiguration.getCharIndexes());
+            /* System.out.println("Producer working");*/
+            queue.offer(codeConfiguration.clone(codeConfiguration), 10000, TimeUnit.MILLISECONDS);
+            nextPermutation = permutation.increasePermutation(dmData.getAssignmentSize(), codeConfiguration.getCharIndexes());
             this.codeConfiguration.setCharIndexes(nextPermutation);
-        }while (permutation.isOverFlow()==false);
+        } while (permutation.isOverFlow() == false);
         permutation.cleanOverFLow();
         codeConfiguration.setCharIndexes(this.startingIndexes);
     }
+
     private void goOverAllReflector() throws InterruptedException {
-        for (int i = 0; i <machineInformation.getAvailableReflectors() ; i++) {
+        for (int i = 0; i < machineInformation.getAvailableReflectors(); i++) {
             codeConfiguration.setReflectorID(i);
             this.generateCode();
-            if(toStop)
-            {
-               /* System.out.println("Producer stopped reflector combination :)");*/
+            if (toStop) {
+                /* System.out.println("Producer stopped reflector combination :)");*/
                 return;
             }
 
@@ -111,35 +110,32 @@ public class AssignmentProducer implements Runnable {
     }
 
     private void goOverAllKnownRotor() throws InterruptedException {
-        this.listPermutation=new ListPermutation(codeConfiguration.getRotorsID(),codeConfiguration.getRotorsID());
+        this.listPermutation = new ListPermutation(codeConfiguration.getRotorsID(), codeConfiguration.getRotorsID());
         List<Integer> currentIDs;
-        while (!listPermutation.done())
-        {
-            currentIDs=listPermutation.increasePermutation();
+        while (!listPermutation.done()) {
+            currentIDs = listPermutation.increasePermutation();
             codeConfiguration.setRotorsID(currentIDs);
             goOverAllReflector();
-            if(toStop)
-            {
-               /* System.out.println("Producer stopped rotor combination :)");*/
+            if (toStop) {
+                /* System.out.println("Producer stopped rotor combination :)");*/
                 return;
             }
         }
     }
+
     private void goOverAllKRotor() throws InterruptedException {
-        List<Integer> allRotors=new ArrayList<>();
-        for (int i = 0; i <machineInformation.getAmountOfRotors() ; i++) {
+        List<Integer> allRotors = new ArrayList<>();
+        for (int i = 0; i < machineInformation.getAmountOfRotors(); i++) {
             allRotors.add(i);
 
         }
-        this.listPermutation=new ListPermutation(codeConfiguration.getRotorsID(),allRotors);
+        this.listPermutation = new ListPermutation(codeConfiguration.getRotorsID(), allRotors);
         List<Integer> currentIDs;
-        while (!listPermutation.done())
-        {
-            currentIDs=listPermutation.increasePermutation();
+        while (!listPermutation.done()) {
+            currentIDs = listPermutation.increasePermutation();
             codeConfiguration.setRotorsID(currentIDs);
             goOverAllReflector();
-            if(toStop)
-            {
+            if (toStop) {
                 /*System.out.println("Producer stopped rotor combination :)");*/
                 return;
             }
@@ -148,6 +144,6 @@ public class AssignmentProducer implements Runnable {
 
 
     public void stop() {
-        this.toStop=true;
+        this.toStop = true;
     }
 }

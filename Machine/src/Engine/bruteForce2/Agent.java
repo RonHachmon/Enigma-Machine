@@ -33,19 +33,20 @@ public class Agent implements Runnable {
     private CandidateList candidateList;
     private Dictionary dictionary;
 
-    private int amountOfPermutaionIWent=0;
-    private boolean toStop=false;
+    private int amountOfPermutaionIWent = 0;
+    private boolean toStop = false;
 
     public Agent(BlockingQueue<CodeConfiguration> queue, MachineManager machineManager, DMData dMData, CandidateList candidateList, Dictionary dictionary, int ID, QueueLock queueLock) throws Exception {
-        this.id = ID+1;
+        this.id = ID + 1;
         this.machineManager = (MachineManager) ObjectCloner.deepCopy(machineManager);
         this.dMdata = dMData;
-        this.candidateList=candidateList;
-        this.queue=queue;
-        permutation=new Permutation(machineManager.getMachineInformation().getAvailableChars());
-        this.dictionary =dictionary;
-        this.lock=queueLock;
+        this.candidateList = candidateList;
+        this.queue = queue;
+        permutation = new Permutation(machineManager.getMachineInformation().getAvailableChars());
+        this.dictionary = dictionary;
+        this.lock = queueLock;
     }
+
     @Override
     public void run() {
         try {
@@ -55,9 +56,9 @@ public class Agent implements Runnable {
                 CodeConfiguration codeConfiguration = queue.poll(3000, TimeUnit.MILLISECONDS);
                 if (codeConfiguration != null) {
                     this.setInitialMachine(codeConfiguration);
-                    int amountOfPermutationIwentInTheLoop=0;
+                    int amountOfPermutationIwentInTheLoop = 0;
                     String encryptionOutput;
-                    for (int i = 0; i < dMdata.getAssignmentSize() ; i++) {
+                    for (int i = 0; i < dMdata.getAssignmentSize(); i++) {
                         lock.checkIfLocked();
                         if (toStop) {
                             System.out.println("Agent stopped :)");
@@ -80,14 +81,15 @@ public class Agent implements Runnable {
                             break;
                         }
                     }
+                    /*System.out.println("amount i went in the loop ");*/
+                    permutation.cleanOverFLow();
                     long encryptionTimeInNanoSeconds = Duration.between(startTaskClock, Instant.now()).toNanos();
-                    TaskManger.addWorkDone(dMdata.getAssignmentSize(),encryptionTimeInNanoSeconds);
-                }
-                else
-                {
-                    if(TaskManger.getWorkDone()>=TaskManger.getTotalWork())
-                    {
-                        System.out.println("Agent "+getAgentId()+" done");
+                    TaskManger.addWorkDone(amountOfPermutationIwentInTheLoop,encryptionTimeInNanoSeconds);
+                    if (this.isDone()) {
+                        return;
+                    }
+                } else {
+                    if (isDone()) {
                         return;
                     }
                 }
@@ -101,38 +103,38 @@ public class Agent implements Runnable {
     }
 
     private boolean isDone() {
-        if(TaskManger.getWorkDone()>=TaskManger.getTotalWork())
-        {
-            System.out.println("Agent "+getAgentId()+" done");
-            System.out.println("amount i went "+amountOfPermutaionIWent);
+        if (TaskManger.getWorkDone() >= TaskManger.getTotalWork()) {
+            System.out.println("Agent " + getAgentId() + " done");
+            System.out.println("amount i went " + amountOfPermutaionIWent);
             return true;
         }
         return false;
     }
 
     private void increaseCodePermutation(CodeConfiguration codeConfiguration) {
-        currentCharConfiguration=permutation.increasePermutation(1,currentCharConfiguration);
+        currentCharConfiguration = permutation.increasePermutation(1, currentCharConfiguration);
         this.machineManager.setStartingIndex(currentCharConfiguration);
     }
 
     private DecryptionCandidate createCandidate(String encryptionOutput) {
-        return new DecryptionCandidate(this.getAgentId(), encryptionOutput,machineManager.getInitialFullMachineCode());
+        return new DecryptionCandidate(this.getAgentId(), encryptionOutput, machineManager.getInitialFullMachineCode());
     }
 
-    private void setInitialMachine(CodeConfiguration codeConfiguration)
-    {
+    private void setInitialMachine(CodeConfiguration codeConfiguration) {
 
         this.machineManager.setSelectedRotors(codeConfiguration.getRotorsID());
         this.machineManager.setStartingIndex(codeConfiguration.getCharIndexes());
         this.machineManager.setSelectedReflector(codeConfiguration.getReflectorID());
-        currentCharConfiguration=codeConfiguration.getCharIndexes();
+        currentCharConfiguration = codeConfiguration.getCharIndexes();
 
     }
+
     public int getAgentId() {
         return id;
     }
+
     public void stop() {
-        this.toStop=true;
+        this.toStop = true;
     }
 
 
@@ -155,7 +157,6 @@ public class Agent implements Runnable {
             }
         }
     }*/
-
 
 
 }
