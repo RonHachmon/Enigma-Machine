@@ -135,6 +135,13 @@ public class BruteForceController extends MainAppScene implements Initializable,
 
             String input =dictionary.cleanWord(inputArea.getText());
             System.out.println(input);
+            if(!dictionary.isAtDictionary(input))
+            {
+                Alert a = new Alert(Alert.AlertType.ERROR);
+                a.setContentText("word not in dictionary");
+                a.setTitle("Invalid word");
+                a.show();
+            }
             String output = this.machineManager.encryptSentence(input.toUpperCase());
             outputArea.setText(output);
             mainAppController.updateMachineCode(machineManager.getCurrentCodeSetting());
@@ -164,11 +171,17 @@ public class BruteForceController extends MainAppScene implements Initializable,
 
     }
     @FXML
-    void selectedWord(MouseEvent event) {
-        if (event.getClickCount() == 2) {
-            this.addWordToInput(dictionaryTable.getSelectionModel().getSelectedItem());
-        }
+    void stopClicked(ActionEvent event) {
+        enableOrDisableInputButton(false);
+
+        currentRunningTask.stop();
+
+        pauseButton.setDisable(true);
+        stopButton.setDisable(true);
+
+
     }
+
 
 
 
@@ -184,21 +197,25 @@ public class BruteForceController extends MainAppScene implements Initializable,
         stopButton.setDisable(false);
 
 
-        startButton.setDisable(true);
-        difficultyComboBox.setDisable(true);
-        amountOfAgentsChoiceBox.setDisable(true);
-        assignmentSizeText.setDisable(true);
+        enableOrDisableInputButton(true);
 
 
     }
 
+    private void enableOrDisableInputButton(boolean disable) {
+        startButton.setDisable(disable);
+        difficultyComboBox.setDisable(disable);
+        amountOfAgentsChoiceBox.setDisable(disable);
+        assignmentSizeText.setDisable(disable);
+        inputArea.setDisable(disable);
+    }
 
 
     @FXML
-    void stopClicked(ActionEvent event) {
-        startButton.setDisable(false);
-
-
+    void selectedWord(MouseEvent event) {
+        if (event.getClickCount() == 2) {
+            this.addWordToInput(dictionaryTable.getSelectionModel().getSelectedItem());
+        }
     }
 
     @Override
@@ -224,6 +241,13 @@ public class BruteForceController extends MainAppScene implements Initializable,
                 },
                 () -> {
                     this.totalFoundCandidate.set(totalFoundCandidate.get() + 1);
+                },
+                ()->{
+                    enableOrDisableInputButton(false);
+                    this.currentRunningTask.stop();
+                    this.stopButton.setDisable(true);
+                    this.pauseButton.setDisable(true);
+
                 }
 
         );

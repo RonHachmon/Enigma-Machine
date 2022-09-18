@@ -4,6 +4,7 @@ import DTO.DMData;
 import Engine.bruteForce2.utils.CandidateList;
 import Engine.bruteForce2.utils.CodeConfiguration;
 import Engine.bruteForce2.utils.Dictionary;
+import Engine.bruteForce2.utils.QueueLock;
 import Engine.machineutils.MachineManager;
 import utils.Utils;
 
@@ -14,6 +15,7 @@ import java.util.function.Consumer;
 
 public class TaskManger {
 
+
     private static final int MAX_QUEUE_SIZE = 1000;
     private final Dictionary dictionary;
     private MachineManager machineManager;
@@ -22,12 +24,16 @@ public class TaskManger {
     private Consumer<Runnable> onCancel;
     private CandidateList candidateList=new CandidateList();
     BlockingQueue<CodeConfiguration> blockingQueue = new LinkedBlockingDeque<>(MAX_QUEUE_SIZE);
+    private QueueLock queueLock=new QueueLock() ;
+
     private static long totalCombinations=0;
     private static long doneCombinations=0;
 
 
     //
     private List<MachineManager> agentMachines=new ArrayList<>();
+    private AssignmentProducer assignmentProducer;
+    private List<Agent> agents=new ArrayList<>();
 
     public CandidateList getCandidateList() {
         return candidateList;
@@ -41,25 +47,36 @@ public class TaskManger {
         calcMissionSize();
     }
 
-
-    private void setAgentMachine() throws CloneNotSupportedException {
+    public void pause()
+    {
+        queueLock.lock();
+    }
+    public void resume()
+    {
+        queueLock.unlock();
+    }
+    public void stop()
+    {
+        assignmentProducer.stop();
+        agents.forEach(agent -> agent.stop());
     }
 
 
     public void start()
     {
-        AssignmentProducer assignmentProducer = null;
-        /*System.out.println("starting task");*/
+        System.out.println("starting task");
         try {
-            assignmentProducer = new AssignmentProducer(blockingQueue,dmData,machineManager);
-            new Thread(assignmentProducer).start();
+            this.assignmentProducer = new AssignmentProducer(blockingQueue,dmData,machineManager,queueLock);
+            new Thread(this.assignmentProducer).start();
             for (int i = 0; i <dmData.getAmountOfAgents() ; i++) {
-                Agent agent=new Agent(blockingQueue,machineManager,dmData,candidateList,dictionary,i);
+
+                Agent agent=new Agent(blockingQueue,machineManager,dmData,candidateList,dictionary,i,queueLock);
                 new Thread(agent).start();
+                agents.add(agent);
             }
 
         } catch (Exception e) {
-            System.out.println("execption in producer");
+            System.out.println("execption in task manger");
             System.out.println(e.getClass());
             System.out.println(e.getMessage());
         }
@@ -96,6 +113,16 @@ public class TaskManger {
     {
         return doneCombinations;
     }
+
+    public static void setTotalWork(long number)
+    {
+        totalCombinations=0;
+    }
+    public static void setWorkDone(long number)
+    {
+        doneCombinations=0;
+    }
+
     synchronized static public void addWorkDone(long number)
     {
         doneCombinations+=number;

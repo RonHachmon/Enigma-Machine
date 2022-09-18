@@ -73,8 +73,7 @@ public class HeaderController extends MainAppScene implements Initializable   {
         mainAppController.updateAllControllers();
 
 
-/*
-        FileChooser fileChooser = configFileChooser();
+/*        FileChooser fileChooser = configFileChooser();
         File selectedFile = fileChooser.showOpenDialog(null);
         if(selectedFile!=null)
         {
@@ -87,8 +86,9 @@ public class HeaderController extends MainAppScene implements Initializable   {
                         {
                             this.encryptButton.setDisable(true);
                             this.currentPath.setText(selectedFile.getAbsolutePath());
-                            mainAppController.updateAllControllers();
                             mainAppController.resetAll();
+                            mainAppController.updateAllControllers();
+
                         });
                     }
                         catch (Exception e)
@@ -104,8 +104,7 @@ public class HeaderController extends MainAppScene implements Initializable   {
 
                 }).start();
 
-        }
-*/
+        }*/
 
 
     }
