@@ -18,32 +18,36 @@ import java.util.concurrent.TimeUnit;
 public class FindCandidateTask extends Task<Boolean> {
     private final UIAdapter uiAdapter;
     private final BruteForceController controller;
-    private int lastKnownIndex=0;
+    private int lastKnownIndex = 0;
     private ScheduledExecutorService timedExecute;
     private DecryptManager decryptManager;
     ScheduledFuture<?> scheduledFuture;
+
     private long totalWorkSize = 0;
     //private long totalWorkDuration;
 
 
- /*   private bruteForce;*/
+
+    /*   private bruteForce;*/
 
     public FindCandidateTask(DMData dmData, UIAdapter uiAdapter, BruteForceController bruteForceController, MachineManager machineManager) {
         this.uiAdapter = uiAdapter;
-        this.controller=bruteForceController;
+        this.controller = bruteForceController;
         controller.bindTaskToUIComponents(this);
         DaemonThread daemonThreadFactory = new DaemonThread();
         timedExecute = Executors.newSingleThreadScheduledExecutor(daemonThreadFactory);
 
+
         decryptManager =new DecryptManager(machineManager,dmData);
 
     }
-    
-    
+
+
     @Override
     protected Boolean call() throws Exception {
         updateMessage("starting to work");
         decryptManager.startDeciphering();
+
         totalWorkSize = decryptManager.getTotalTaskSize();
         //totalWorkDuration = decryptManager.getTotalTaskDurationInNanoSeconds();
         updateProgress(0, totalWorkSize);
@@ -58,19 +62,16 @@ public class FindCandidateTask extends Task<Boolean> {
     }
 
 
-
-
-    public void pause()
-    {
+    public void pause() {
         scheduledFuture.cancel(true);
         decryptManager.pause();
     }
 
-    public void resume()
-    {
+    public void resume() {
         decryptManager.resume();
         startTimedTask();
     }
+
     @Override
     protected void cancelled() {
         timedExecute.shutdownNow();
@@ -79,21 +80,21 @@ public class FindCandidateTask extends Task<Boolean> {
         this.cancel();
         this.done();
     }
-    private void update()
-    {
+
+    private void update() {
 
         long workDone = decryptManager.getWorkDone();
-        System.out.println("work done: "+workDone);
+        System.out.println("work done: " + workDone);
         List<DecryptionCandidate> decryptionCandidates = decryptManager.getCandidateList().getList();
-        if (decryptionCandidates.size()>lastKnownIndex)
-        {
-            for (int i = lastKnownIndex; i <decryptionCandidates.size() ; i++) {
+        if (decryptionCandidates.size() > lastKnownIndex) {
+            for (int i = lastKnownIndex; i < decryptionCandidates.size(); i++) {
                 uiAdapter.addNewCandidate(decryptionCandidates.get(i));
             }
-            lastKnownIndex=decryptionCandidates.size();
+            lastKnownIndex = decryptionCandidates.size();
             uiAdapter.updateTotalFoundWords(lastKnownIndex);
         }
         /*System.out.println("total work done "+ decryptManager.getWorkDone());*/
+
         updateProgress(workDone,totalWorkSize);
         if(workDone>=totalWorkSize)
         {

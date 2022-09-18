@@ -71,8 +71,7 @@ public class ConfigurationController extends MainAppScene implements Initializab
             Stage settingStage = loadSettingStage();
             settingStage.initModality(Modality.WINDOW_MODAL);
             settingStage.showAndWait();
-            if(settingController.getIsCodeValid())
-            {
+            if (settingController.getIsCodeValid()) {
                 this.setMachineCode();
                 this.initialCodeConfig.setText(machineManager.getInitialFullMachineCode());
                 this.mainAppController.setInitialCode(machineManager.getInitialFullMachineCode());
@@ -85,45 +84,46 @@ public class ConfigurationController extends MainAppScene implements Initializab
             throw new RuntimeException(e);
         }
     }
+
     private Stage loadSettingStage() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(SETTING_SCENE_FXML));
 
         AnchorPane anchorPane = loader.load();
-        settingController=loader.getController();
+        settingController = loader.getController();
         settingController.setSetting(machineInformation);
-        Scene scene = new Scene(anchorPane,800,600);
-        Stage settingStage=new Stage();
+        Scene scene = new Scene(anchorPane, 800, 600);
+        Stage settingStage = new Stage();
         settingStage.setScene(scene);
         scene.getStylesheets().add(SETTING_CSS);
         settingStage.setTitle("machine setting");
         return settingStage;
     }
+
     private void setMachineCode() {
         List<Integer> rotorsID = new ArrayList<>();
         StringBuilder staringIndexes = new StringBuilder("");
         StringBuilder switchPlugs = new StringBuilder("");
 
-        this.settingController.getRotorIndexes().forEach(choiceBox -> rotorsID.add(choiceBox.getValue()-1));
+        this.settingController.getRotorIndexes().forEach(choiceBox -> rotorsID.add(choiceBox.getValue() - 1));
         this.settingController.getRotorStartingIndexes().forEach(characterChoiceBox -> staringIndexes.append(characterChoiceBox.getValue()));
-        this.settingController.getAllSwitchPlugChoiceBoxes().forEach(switchPlugsBox->switchPlugs.append(switchPlugsBox.getValue()));
+        this.settingController.getAllSwitchPlugChoiceBoxes().forEach(switchPlugsBox -> switchPlugs.append(switchPlugsBox.getValue()));
 
         Collections.reverse(rotorsID);
 
         machineManager.setSelectedRotors(rotorsID);
-        machineManager.setStartingIndex( staringIndexes.reverse().toString());
-        machineManager.setSelectedReflector(this.settingController.getSelectedReflector()-1);
-        if(!switchPlugs.toString().isEmpty())
-        {
+        machineManager.setStartingIndex(staringIndexes.reverse().toString());
+        machineManager.setSelectedReflector(this.settingController.getSelectedReflector() - 1);
+        if (!switchPlugs.toString().isEmpty()) {
             machineManager.setSwitchPlug(switchPlugs.toString());
         }
     }
 
     @FXML
     void setRandomCode(ActionEvent event) {
-        new Thread(()->
+        new Thread(() ->
         {
             this.machineManager.autoZeroMachine();
-            Platform.runLater(()->
+            Platform.runLater(() ->
             {
 
                 this.initialCodeConfig.setText(machineManager.getInitialFullMachineCode());
@@ -137,23 +137,21 @@ public class ConfigurationController extends MainAppScene implements Initializab
 
     }
 
-    public void updateMachineInformation()
-    {
+    public void updateMachineInformation() {
         amountOfRotors.setText(String.valueOf(machineInformation.getAmountOfRotors()));
         amountOfRequiredRotors.setText(String.valueOf(machineInformation.getAmountOfRotorsRequired()));
-        amountOfReflectors.setText(String.valueOf(machineInformation.getAvailableReflectors()) );
+        amountOfReflectors.setText(String.valueOf(machineInformation.getAvailableReflectors()));
         amountOfProcessedInput.setText(String.valueOf(machineManager.getAmountOfProcessedInputs()));
     }
 
-    public void resetInformation()
-    {
+    public void resetInformation() {
         amountOfRotors.setText(EMPTY);
         amountOfRequiredRotors.setText(EMPTY);
         amountOfReflectors.setText(EMPTY);
         amountOfProcessedInput.setText(EMPTY);
     }
-    public void resetCode()
-    {
+
+    public void resetCode() {
         this.currentCodeConfig.setText(EMPTY);
         this.initialCodeConfig.setText(EMPTY);
     }
@@ -169,8 +167,7 @@ public class ConfigurationController extends MainAppScene implements Initializab
         this.currentCodeConfig.setText(code);
     }
 
-    public void updateTotalEncryptedWord(int amount)
-    {
+    public void updateTotalEncryptedWord(int amount) {
         amountOfProcessedInput.setText(String.valueOf(amount));
     }
 
