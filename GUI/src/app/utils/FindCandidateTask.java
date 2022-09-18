@@ -18,9 +18,6 @@ import java.util.concurrent.TimeUnit;
 public class FindCandidateTask extends Task<Boolean> {
     private final UIAdapter uiAdapter;
     private final BruteForceController controller;
-
-    private int foundNumbers=0;
-    private PrimeFinder primeFinder =new PrimeFinder(20);
     private int lastKnownIndex=0;
     private ScheduledExecutorService timedExecute;
     private DecryptManager decryptManager;
@@ -29,7 +26,7 @@ public class FindCandidateTask extends Task<Boolean> {
     //private long totalWorkDuration;
 
 
-    /*   private bruteForce;*/
+ /*   private bruteForce;*/
 
     public FindCandidateTask(DMData dmData, UIAdapter uiAdapter, BruteForceController bruteForceController, MachineManager machineManager) {
         this.uiAdapter = uiAdapter;
@@ -45,34 +42,12 @@ public class FindCandidateTask extends Task<Boolean> {
     
     @Override
     protected Boolean call() throws Exception {
+        updateMessage("starting to work");
         decryptManager.startDeciphering();
         totalWorkSize = decryptManager.getTotalTaskSize();
         //totalWorkDuration = decryptManager.getTotalTaskDurationInNanoSeconds();
         updateProgress(0, totalWorkSize);
         startTimedTask();
-/*        System.out.println("test");
-
-
-        primeFinder.findPrimes(this);*/
-
-
-/*        System.out.println("starting task");
-        Integer runningNumber=10000;
-
-        while (foundNumbers!=20)
-        {
-            if(isPrime(runningNumber))
-            {
-                System.out.println("found number");
-                foundNumbers++;
-                updateProgress(foundNumbers,20);
-                uiAdapter.addNewCandidate(new PrimeNumberData(runningNumber));
-                Thread.sleep(1000);
-            }
-
-            runningNumber++;
-        }*/
-
 
         return null;
 
@@ -81,33 +56,59 @@ public class FindCandidateTask extends Task<Boolean> {
     private void startTimedTask() {
         scheduledFuture = timedExecute.scheduleAtFixedRate(() -> update(), 500, 500, TimeUnit.MILLISECONDS);
     }
-    private void update() {
-        if (decryptManager.getSizeOfCandidateList() > lastKnownIndex) {
-            List<DecryptionCandidate> decryptionCandidates = decryptManager.getCandidateList().getList();
-            for (int i = lastKnownIndex; i < decryptionCandidates.size(); i++) {
-                uiAdapter.addNewCandidate(decryptionCandidates.get(i));
-            }
-            lastKnownIndex = decryptionCandidates.size();
-            uiAdapter.updateTotalFoundWords(lastKnownIndex);
 
-        }
-        /*System.out.println("total work done "+ decryptManager.getWorkDone());*/
-        updateProgress(decryptManager.getWorkDone(), totalWorkSize);
-        if (decryptManager.getWorkDone() >= totalWorkSize) {
-            pause();
-        }
-    }
 
 
 
     public void pause()
     {
         scheduledFuture.cancel(true);
+        decryptManager.pause();
     }
+
     public void resume()
     {
+        decryptManager.resume();
         startTimedTask();
+    }
+    @Override
+    protected void cancelled() {
+        timedExecute.shutdownNow();
+        decryptManager.stop();
+        super.cancelled();
+        this.cancel();
+        this.done();
+    }
+    private void update()
+    {
+
+        long workDone = decryptManager.getWorkDone();
+        System.out.println("work done: "+workDone);
+        List<DecryptionCandidate> decryptionCandidates = decryptManager.getCandidateList().getList();
+        if (decryptionCandidates.size()>lastKnownIndex)
+        {
+            for (int i = lastKnownIndex; i <decryptionCandidates.size() ; i++) {
+                uiAdapter.addNewCandidate(decryptionCandidates.get(i));
+            }
+            lastKnownIndex=decryptionCandidates.size();
+            uiAdapter.updateTotalFoundWords(lastKnownIndex);
+        }
+        /*System.out.println("total work done "+ decryptManager.getWorkDone());*/
+        updateProgress(workDone,totalWork);
+        if(workDone>=totalWork)
+        {
+            updateMessage("Done work");
+            uiAdapter.done();
+            this.cancelled();
+        }
+
     }
 
 
+    public void stop() {
+        System.out.println("stopped");
+        updateMessage("Cancelled ;/");
+        this.cancelled();
+
+    }
 }

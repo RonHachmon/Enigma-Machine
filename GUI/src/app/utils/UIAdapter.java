@@ -12,10 +12,12 @@ public class UIAdapter {
 
     private Consumer<Integer> updateTotalFoundInteger;
     private Runnable updateDistinct;
-    public UIAdapter(Consumer<DecryptionCandidate> addNewCandidate, Consumer<Integer> updateTotalFoundWords, Runnable updateDistinct) {
+    private Runnable onDone;
+    public UIAdapter(Consumer<DecryptionCandidate> addNewCandidate, Consumer<Integer> updateTotalFoundWords, Runnable updateDistinct,Runnable onDone) {
         this.addNewCandidate = addNewCandidate;
         this.updateTotalFoundInteger = updateTotalFoundWords;
         this.updateDistinct = updateDistinct;
+        this.onDone=onDone;
     }
     public void addNewCandidate(DecryptionCandidate decryptionCandidate) {
         Platform.runLater(
@@ -26,14 +28,13 @@ public class UIAdapter {
         );
     }
 
-/*    public void addNewCandidate(PrimeNumberData primeNumber) {
+    public void done() {
         Platform.runLater(
                 () -> {
-                    addNewPrimeNumber.accept(primeNumber);
-                    updateDistinct.run();
+                    onDone.run();
                 }
         );
-    }*/
+    }
 
 
 

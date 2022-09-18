@@ -61,7 +61,7 @@ public class Permutation {
             stringBuilder.setCharAt(i,allAvailableChars.charAt(add));
 
         }
-        if(carry==1)
+        if(carry==1||amountToIncrease>0)
         {
             overFlow=true;
         }

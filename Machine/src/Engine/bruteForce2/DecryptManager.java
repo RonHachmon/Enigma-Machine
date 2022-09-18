@@ -28,6 +28,24 @@ public class DecryptManager {
         this.DMdata=dmData;
         this.loadDictionary();
     }
+    public void pause()
+    {
+        tasksManager.pause();
+    }
+    public void resume()
+    {
+        tasksManager.resume();
+    }
+    public void stop()
+    {
+        TaskManger.setTotalWork(0);
+        TaskManger.setWorkDone(0);
+        if(tasksManager!=null)
+        {
+            tasksManager.stop();
+        }
+
+    }
 
     public void startDeciphering() throws Exception{
         //TODO: build onCancel method
