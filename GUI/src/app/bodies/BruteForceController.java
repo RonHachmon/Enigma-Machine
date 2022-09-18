@@ -13,6 +13,7 @@ import app.utils.candidate.CandidateController;
 import app.utils.eDifficulty;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -78,7 +79,7 @@ public class BruteForceController extends MainAppScene implements Initializable,
     @FXML
     private Label percentageLabel;
 
-
+    //private SimpleLongProperty taskDurationInNanoSeconds = new SimpleLongProperty();
     private SimpleIntegerProperty totalFoundCandidate=new SimpleIntegerProperty();
     private boolean validAssignment=false;
     private  FindCandidateTask currentRunningTask;
@@ -183,22 +184,15 @@ public class BruteForceController extends MainAppScene implements Initializable,
         pauseButton.setDisable(false);
         stopButton.setDisable(false);
 
-
         startButton.setDisable(true);
         difficultyComboBox.setDisable(true);
         amountOfAgentsChoiceBox.setDisable(true);
         assignmentSizeText.setDisable(true);
-
-
     }
-
-
 
     @FXML
     void stopClicked(ActionEvent event) {
         startButton.setDisable(false);
-
-
     }
 
     @Override

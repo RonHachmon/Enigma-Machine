@@ -23,7 +23,6 @@ public class DecryptManager {
     private TaskManger tasksManager;
     private Dictionary dictionary=new Dictionary();
 
-
     public DecryptManager(MachineManager machineManager,DMData dmData) {
         this.machineManager = machineManager;
         this.DMdata=dmData;
@@ -31,19 +30,16 @@ public class DecryptManager {
     }
 
     public void startDeciphering() throws Exception{
+        //TODO: build onCancel method
         tasksManager = new TaskManger(dictionary,DMdata,machineManager,(stop) -> System.out.println("ff"));
         tasksManager.start();
-
-
-
     }
-    private void loadDictionary()
-    {
+    private void loadDictionary() {
         CTEEnigma enigma_machine = null;
         try {
             enigma_machine = JAXBClassGenerator.unmarshall(machineManager.getFilePath(), CTEEnigma.class);
             CTEDictionary cteDictionary = enigma_machine.getCTEDecipher().getCTEDictionary();
-            this.dictionary.setDictionary(cteDictionary.getWords(),cteDictionary.getExcludeChars());
+            this.dictionary.setDictionary(cteDictionary.getWords(), cteDictionary.getExcludeChars());
         } catch (JAXBException e) {
 
         }
@@ -60,13 +56,17 @@ public class DecryptManager {
     {
         return tasksManager.getCandidateList().getSize();
     }
-
     public long getTotalTaskSize()
     {
         return tasksManager.getTotalWork();
     }
-    public long getWorkDone()
-    {
+    public long getTotalTaskDurationInNanoSeconds(){
+        return tasksManager.getTotalTaskDurationInNanoSeconds();
+    }
+    public long getAvgTaskDuration() {
+        return tasksManager.getAvgTaskDuration();
+    }
+    public long getWorkDone() {
         return tasksManager.getWorkDone();
     }
 
