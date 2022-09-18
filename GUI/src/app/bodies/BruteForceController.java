@@ -161,6 +161,7 @@ public class BruteForceController extends MainAppScene implements Initializable,
                 a.setContentText("word not in dictionary");
                 a.setTitle("Invalid word");
                 a.show();
+                return;
             }
             String output = this.machineManager.encryptSentence(input.toUpperCase());
             outputArea.setText(output);
