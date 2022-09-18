@@ -3,6 +3,7 @@ package app.bodies;
 import DTO.DMData;
 import DTO.DecryptionCandidate;
 import Engine.bruteForce2.DecryptManager;
+import Engine.bruteForce2.TaskManger;
 import Engine.bruteForce2.utils.Dictionary;
 import Engine.bruteForce2.utils.DifficultyLevel;
 import app.bodies.absractScene.MainAppScene;
@@ -31,6 +32,8 @@ import utils.Utils;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.*;
 
 public class BruteForceController extends MainAppScene implements Initializable, CodeHolder {
@@ -78,10 +81,21 @@ public class BruteForceController extends MainAppScene implements Initializable,
 
     @FXML
     private Label percentageLabel;
+    @FXML
+    private Label encryptTimeLabel;
+
+    @FXML
+    private Label averageTimeLabel;
 
 
-    //private SimpleLongProperty taskDurationInNanoSeconds = new SimpleLongProperty();
+    @FXML
+    private Label taskDone;
+
+
+/*    private SimpleLongProperty averageTimeNanoSeconds = new SimpleLongProperty();
+    private SimpleLongProperty taskDurationInNanoSeconds = new SimpleLongProperty();*/
     private SimpleIntegerProperty totalFoundCandidate=new SimpleIntegerProperty();
+    private SimpleStringProperty amountDone=new SimpleStringProperty();
     private boolean validAssignment=false;
     private  FindCandidateTask currentRunningTask;
 
@@ -89,12 +103,16 @@ public class BruteForceController extends MainAppScene implements Initializable,
     private DMData dmData = new DMData();
     private Dictionary dictionary;
     private DecryptManager decryptManager;
+    private Instant startTaskClock;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
         Arrays.stream(DifficultyLevel.values()).sequential().forEach(eDifficulty -> difficultyComboBox.getItems().add(eDifficulty));
         amountOfCandidateFound.textProperty().bind(Bindings.format("%,d", totalFoundCandidate));
+
+/*        encryptTimeLabel.textProperty().bind(Bindings.format("%,d", taskDurationInNanoSeconds));
+        averageTimeLabel.textProperty().bind(Bindings.format("%,d", averageTimeNanoSeconds));*/
 
         setInitialDictionaryTable();
 
@@ -138,7 +156,7 @@ public class BruteForceController extends MainAppScene implements Initializable,
 
             String input = dictionary.cleanWord(inputArea.getText());
             System.out.println(input);
-            if (!dictionary.isAtDictionary(input)) {
+            if (!dictionary.isAtDictionary(input.toUpperCase())) {
                 Alert a = new Alert(Alert.AlertType.ERROR);
                 a.setContentText("word not in dictionary");
                 a.setTitle("Invalid word");
@@ -173,7 +191,9 @@ public class BruteForceController extends MainAppScene implements Initializable,
     @FXML
     void stopClicked(ActionEvent event) {
         enableOrDisableInputButton(false);
-
+        this.averageTimeLabel.setText(String.valueOf(currentRunningTask.getAvgTime()));
+        long encryptionTimeInNanoSeconds = Duration.between(startTaskClock, Instant.now()).toMillis();
+        this.encryptTimeLabel.setText(String.valueOf(encryptionTimeInNanoSeconds));
         currentRunningTask.stop();
 
         pauseButton.setDisable(true);
@@ -185,8 +205,9 @@ public class BruteForceController extends MainAppScene implements Initializable,
 
     @FXML
     void startBruteForce(ActionEvent event) {
-        candidatesFlowPane.getChildren().clear();
+        this.resetAll();
 
+         this.startTaskClock = Instant.now();
         pullDmData();
         currentRunningTask = new FindCandidateTask(dmData, createUIAdapter(), this, this.machineManager);
         new Thread(currentRunningTask).start();
@@ -198,6 +219,15 @@ public class BruteForceController extends MainAppScene implements Initializable,
         enableOrDisableInputButton(true);
 
 
+    }
+
+    private void resetAll() {
+        candidatesFlowPane.getChildren().clear();
+/*        this.encryptTimeLabel.setText(" ");
+        this.averageTimeLabel.setText(" ");*/
+        this.totalFoundCandidate.set(0);
+        this.encryptTimeLabel.setText("");
+        this.averageTimeLabel.setText("");
     }
 
     private void enableOrDisableInputButton(boolean disable) {
@@ -241,13 +271,23 @@ public class BruteForceController extends MainAppScene implements Initializable,
                 () -> {
                     this.totalFoundCandidate.set(totalFoundCandidate.get() + 1);
                 },
+                //on done
                 () -> {
                     enableOrDisableInputButton(false);
                     this.currentRunningTask.stop();
                     this.stopButton.setDisable(true);
                     this.pauseButton.setDisable(true);
+                    long avgTime = currentRunningTask.getAvgTime();
+                    this.averageTimeLabel.setText(String.valueOf(avgTime));
+                    long encryptionTimeInNanoSeconds = Duration.between(startTaskClock, Instant.now()).toMillis();
+                    this.encryptTimeLabel.setText(String.valueOf(encryptionTimeInNanoSeconds));
 
+                },
+                (string) ->{
+                    this.taskDone.setText(string);
                 }
+
+
 
         );
     }
@@ -279,13 +319,17 @@ public class BruteForceController extends MainAppScene implements Initializable,
         return wordCandidate;
     }
 
-    public void bindTaskToUIComponents(Task<Boolean> aTask) {
+    public void bindTaskToUIComponents(FindCandidateTask aTask) {
 
         // task message
         /*       taskMessageLabel.textProperty().bind(aTask.messageProperty());*/
 
+/*        this.taskDurationInNanoSeconds.bind(aTask.getTotalTimeProperty());
+        this.averageTimeNanoSeconds.bind(aTask.getAvgTimeProperty());*/
+
         // task progress bar
         taskProgressBar.progressProperty().bind(aTask.progressProperty());
+       /* taskDone.textProperty().bind(aTask.totalWork());*/
 
         // task percent label
         percentageLabel.textProperty().bind(

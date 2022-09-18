@@ -127,26 +127,36 @@
             </Button>
          </children>
       </HBox>
-      <ProgressBar fx:id="taskProgressBar" maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="559.0" progress="0.0" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.rowIndex="4" GridPane.vgrow="ALWAYS" />
+      <BorderPane GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.rowIndex="4" GridPane.vgrow="ALWAYS">
+         <center>
+            <ProgressBar fx:id="taskProgressBar" maxWidth="1.7976931348623157E308" prefHeight="18.0" prefWidth="559.0" progress="0.0" />
+         </center>
+         <top>
+            <Label fx:id="taskDone" alignment="CENTER" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER" />
+         </top>
+      </BorderPane>
       <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3">
          <children>
             <Label alignment="CENTER" prefHeight="17.0" prefWidth="94.0" text="Found words:" />
             <Label fx:id="amountOfCandidateFound" maxWidth="1.7976931348623157E308" prefHeight="17.0" />
          </children>
       </HBox>
-      <Label fx:id="percentageLabel" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+      <Label fx:id="percentageLabel" GridPane.columnIndex="3" GridPane.rowIndex="4">
+         <GridPane.margin>
+            <Insets top="16.0" />
+         </GridPane.margin></Label>
       <VBox GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
          <children>
             <HBox alignment="CENTER" prefHeight="50.0" prefWidth="142.0">
                <children>
-                  <Label alignment="CENTER" prefHeight="17.0" prefWidth="116.0" text="Encryption duration:" />
+                  <Label alignment="CENTER" prefHeight="17.0" prefWidth="145.0" text="Encryption duration in mil:" />
                   <Label fx:id="encryptTimeLabel" maxWidth="1.7976931348623157E308" prefHeight="17.0" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="50.0" prefWidth="142.0">
                <children>
-                  <Label alignment="CENTER" prefHeight="17.0" prefWidth="116.0" text="avg agent work time" />
-                  <Label fx:id="avregaeTimeLabel" maxWidth="1.7976931348623157E308" prefHeight="17.0" />
+                  <Label alignment="CENTER" prefHeight="17.0" prefWidth="165.0" text="Avg agent work time in mil:" />
+                  <Label fx:id="averageTimeLabel" maxWidth="1.7976931348623157E308" prefHeight="17.0" />
                </children>
             </HBox>
          </children>

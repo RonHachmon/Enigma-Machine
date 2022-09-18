@@ -29,13 +29,15 @@ public class TaskManger {
 
     private static long totalCombinations=0;
     private static long doneCombinations=0;
-    private static long totalTaskDurationInNanoSeconds = 0;
+    private static long totalTaskDurationInNanoSeconds = 1;
 
 
     //
     private List<MachineManager> agentMachines = new ArrayList<>();
     private AssignmentProducer assignmentProducer;
     private List<Agent> agents = new ArrayList<>();
+
+
 
     public CandidateList getCandidateList() {
         return candidateList;
@@ -108,8 +110,9 @@ public class TaskManger {
     }
 
 
-    public long getTotalTaskDurationInNanoSeconds() {
-        return totalTaskDurationInNanoSeconds;
+    public long getTotalTaskDurationInMilliSeconds() {
+
+        return (totalTaskDurationInNanoSeconds);
     }
 
 
@@ -119,12 +122,18 @@ public class TaskManger {
 
 
     public long getAvgTaskDuration() {
-        return totalTaskDurationInNanoSeconds / (totalCombinations / dmData.getAssignmentSize());
+        return (totalTaskDurationInNanoSeconds / (totalCombinations / dmData.getAssignmentSize()));
     }
 
 
     public static long getWorkDone() {
         return doneCombinations;
+    }
+    public static void resetStaticMembers() {
+        TaskManger.resetTotalWork();
+        TaskManger.resetWorkDone();
+        TaskManger.resetTime();
+
     }
 
     public static void resetTotalWork() {
@@ -139,6 +148,9 @@ public class TaskManger {
 
     public static void resetWorkDone() {
         doneCombinations = 0;
+    }
+    public static void resetTime() {
+        totalTaskDurationInNanoSeconds = 1;
     }
 
     /*synchronized static public void addWorkDone(long number) {

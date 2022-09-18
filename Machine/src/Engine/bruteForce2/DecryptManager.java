@@ -38,8 +38,7 @@ public class DecryptManager {
     }
 
     public void stop() {
-        TaskManger.resetTotalWork();
-        TaskManger.resetWorkDone();
+  /*      TaskManger.resetStaticMembers();*/
         if (tasksManager != null) {
             tasksManager.stop();
         }
@@ -83,7 +82,7 @@ public class DecryptManager {
         return tasksManager.getTotalWork();
     }
     public long getTotalTaskDurationInNanoSeconds(){
-        return tasksManager.getTotalTaskDurationInNanoSeconds();
+        return tasksManager.getTotalTaskDurationInMilliSeconds();
     }
     public long getAvgTaskDuration() {
         return tasksManager.getAvgTaskDuration();

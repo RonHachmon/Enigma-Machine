@@ -83,7 +83,7 @@ public class Agent implements Runnable {
                     }
                     /*System.out.println("amount i went in the loop ");*/
                     permutation.cleanOverFLow();
-                    long encryptionTimeInNanoSeconds = Duration.between(startTaskClock, Instant.now()).toNanos();
+                    long encryptionTimeInNanoSeconds = Duration.between(startTaskClock, Instant.now()).toMillis();
                     TaskManger.addWorkDone(amountOfPermutationIwentInTheLoop,encryptionTimeInNanoSeconds);
                     if (this.isDone()) {
                         return;

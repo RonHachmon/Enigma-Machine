@@ -3,9 +3,14 @@ package app.utils;
 import DTO.DMData;
 import DTO.DecryptionCandidate;
 import Engine.bruteForce2.DecryptManager;
+import Engine.bruteForce2.TaskManger;
 import Engine.machineutils.MachineManager;
 import app.bodies.BruteForceController;
 import app.utils.threads.DaemonThread;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleLongProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import primeengine.PrimeFinder;
 
@@ -22,8 +27,12 @@ public class FindCandidateTask extends Task<Boolean> {
     private ScheduledExecutorService timedExecute;
     private DecryptManager decryptManager;
     ScheduledFuture<?> scheduledFuture;
+    private SimpleStringProperty totalWork=new SimpleStringProperty();
 
     private long totalWorkSize = 0;
+
+    private long totalTime=0;
+    private long avgTime=0;
     //private long totalWorkDuration;
 
 
@@ -45,12 +54,14 @@ public class FindCandidateTask extends Task<Boolean> {
 
     @Override
     protected Boolean call() throws Exception {
+        TaskManger.resetStaticMembers();
         updateMessage("starting to work");
         decryptManager.startDeciphering();
 
         totalWorkSize = decryptManager.getTotalTaskSize();
         //totalWorkDuration = decryptManager.getTotalTaskDurationInNanoSeconds();
         updateProgress(0, totalWorkSize);
+        uiAdapter.updateProgress(0+"/"+totalWorkSize);
         startTimedTask();
 
         return null;
@@ -71,6 +82,12 @@ public class FindCandidateTask extends Task<Boolean> {
         decryptManager.resume();
         startTimedTask();
     }
+    public void stop() {
+        System.out.println("stopped");
+        setTime();
+        updateMessage("Cancelled ;/");
+        this.cancelled();
+    }
 
     @Override
     protected void cancelled() {
@@ -84,7 +101,7 @@ public class FindCandidateTask extends Task<Boolean> {
     private void update() {
 
         long workDone = decryptManager.getWorkDone();
-        System.out.println("work done: " + workDone);
+       /* System.out.println("work done: " + workDone);*/
         List<DecryptionCandidate> decryptionCandidates = decryptManager.getCandidateList().getList();
         if (decryptionCandidates.size() > lastKnownIndex) {
             for (int i = lastKnownIndex; i < decryptionCandidates.size(); i++) {
@@ -96,8 +113,10 @@ public class FindCandidateTask extends Task<Boolean> {
         /*System.out.println("total work done "+ decryptManager.getWorkDone());*/
 
         updateProgress(workDone,totalWorkSize);
+        uiAdapter.updateProgress(workDone+"/"+totalWorkSize);
         if(workDone>=totalWorkSize)
         {
+            setTime();
             updateMessage("Done work");
             uiAdapter.done();
             this.cancelled();
@@ -105,9 +124,23 @@ public class FindCandidateTask extends Task<Boolean> {
     }
 
 
-    public void stop() {
-        System.out.println("stopped");
-        updateMessage("Cancelled ;/");
-        this.cancelled();
+
+
+    private void setTime() {
+        this.totalTime= decryptManager.getTotalTaskDurationInNanoSeconds();
+        this.avgTime=decryptManager.getAvgTaskDuration();
+    }
+
+    public long getAvgTime () {
+        return avgTime;
+    }
+
+    public long getTotalTime() {
+        return totalTime;
+    }
+
+
+    public SimpleStringProperty totalWork() {
+        return totalWork;
     }
 }
