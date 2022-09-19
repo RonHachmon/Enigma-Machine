@@ -114,7 +114,7 @@
                   <Font size="15.0" />
                </font>
                <graphic>
-                  <FontAwesomeIconView glyphName="ARCHIVE" />
+                  <FontAwesomeIconView glyphName="ARCHIVE" styleClass="font-awesome" />
                </graphic>
             </Button>
          </children>
@@ -157,7 +157,7 @@
       </CheckBox>
       <Button fx:id="runButton" alignment="CENTER" mnemonicParsing="false" onAction="#runClicked" textFill="#0b0000" GridPane.columnIndex="3" GridPane.rowIndex="1">
          <graphic>
-            <FontAwesomeIconView glyphName="ARROW_RIGHT" />
+            <FontAwesomeIconView glyphName="ARROW_RIGHT" styleClass="font-awesome" />
          </graphic></Button>
    </children>
 </GridPane>

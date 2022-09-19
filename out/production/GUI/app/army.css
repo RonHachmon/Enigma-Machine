@@ -10,6 +10,14 @@
  -fx-border-color:#3e4a32;
  -fx-border-width:7px;
 }
+
+.font-awesome{
+     -fx-text-fill:white;
+     -fx-background-color:white;
+}
+.glyph-icon {
+    -fx-fill: white;
+}
 .header-butt{
     -fx-background-color:#333333;
     -fx-text-fill:#efefef;
