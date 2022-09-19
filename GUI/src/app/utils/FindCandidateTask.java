@@ -113,7 +113,7 @@ public class FindCandidateTask extends Task<Boolean> {
         /*System.out.println("total work done "+ decryptManager.getWorkDone());*/
 
         updateProgress(workDone,totalWorkSize);
-        uiAdapter.updateProgress(workDone+"/"+totalWorkSize);
+        uiAdapter.updateProgress("permutation: "+workDone+"/"+totalWorkSize);
         if(workDone>=totalWorkSize)
         {
             setTime();

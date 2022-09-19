@@ -34,6 +34,7 @@ import java.util.*;
 
 public class BruteForceController extends MainAppScene implements Initializable, CodeHolder {
 
+    public static final String WORD_CANDIDATE_FXML = "/app/smallComponent/wordCandidate.fxml";
     @FXML
     private Label currentCode;
 
@@ -88,8 +89,6 @@ public class BruteForceController extends MainAppScene implements Initializable,
     @FXML
     private FontAwesomeIconView pauseFontAwesome;
 
-/*    private SimpleLongProperty averageTimeNanoSeconds = new SimpleLongProperty();
-    private SimpleLongProperty taskDurationInNanoSeconds = new SimpleLongProperty();*/
     private SimpleIntegerProperty totalFoundCandidate=new SimpleIntegerProperty();
     private SimpleStringProperty amountDone=new SimpleStringProperty();
     private boolean validAssignment=false;
@@ -106,9 +105,6 @@ public class BruteForceController extends MainAppScene implements Initializable,
     public void initialize(URL location, ResourceBundle resources) {
         Arrays.stream(DifficultyLevel.values()).sequential().forEach(eDifficulty -> difficultyComboBox.getItems().add(eDifficulty));
         amountOfCandidateFound.textProperty().bind(Bindings.format("%,d", totalFoundCandidate));
-
-/*        encryptTimeLabel.textProperty().bind(Bindings.format("%,d", taskDurationInNanoSeconds));
-        averageTimeLabel.textProperty().bind(Bindings.format("%,d", averageTimeNanoSeconds));*/
 
         setInitialDictionaryTable();
 
@@ -138,7 +134,7 @@ public class BruteForceController extends MainAppScene implements Initializable,
     }
 
     private void setToolTip() {
-        toolTipError = new Tooltip("input must be a number");
+        toolTipError = new Tooltip("input must be a positive number");
         toolTipError.setId("error-tool-tip");
         //changes duration until tool tip is shown
         Utils.hackTooltipStartTiming(toolTipError, 100);
@@ -219,8 +215,6 @@ public class BruteForceController extends MainAppScene implements Initializable,
 
     private void resetAll() {
         candidatesFlowPane.getChildren().clear();
-/*        this.encryptTimeLabel.setText(" ");
-        this.averageTimeLabel.setText(" ");*/
         this.totalFoundCandidate.set(0);
         this.encryptTimeLabel.setText("");
         this.averageTimeLabel.setText("");
@@ -303,7 +297,7 @@ public class BruteForceController extends MainAppScene implements Initializable,
 
     private Node loadCandidate(DecryptionCandidate decryptionCandidate) throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/app/smallComponent/wordCandidate.fxml"));
+        loader.setLocation(getClass().getResource(WORD_CANDIDATE_FXML));
         Node wordCandidate = loader.load();
         wordCandidate.setFocusTraversable(false);
 
@@ -317,15 +311,10 @@ public class BruteForceController extends MainAppScene implements Initializable,
 
     public void bindTaskToUIComponents(FindCandidateTask aTask) {
 
-        // task message
-        /*       taskMessageLabel.textProperty().bind(aTask.messageProperty());*/
-
-/*        this.taskDurationInNanoSeconds.bind(aTask.getTotalTimeProperty());
-        this.averageTimeNanoSeconds.bind(aTask.getAvgTimeProperty());*/
 
         // task progress bar
         taskProgressBar.progressProperty().bind(aTask.progressProperty());
-       /* taskDone.textProperty().bind(aTask.totalWork());*/
+
 
         // task percent label
         percentageLabel.textProperty().bind(
@@ -336,11 +325,6 @@ public class BruteForceController extends MainAppScene implements Initializable,
                                         aTask.progressProperty(),
                                         100)),
                         " %"));
-
-/*        // task cleanup upon finish
-        aTask.valueProperty().addListener((observable, oldValue, newValue) -> {
-            onTaskFinished(Optional.ofNullable(onFinish));
-        });*/
     }
 
 
@@ -393,13 +377,22 @@ public class BruteForceController extends MainAppScene implements Initializable,
         if (newValue.isEmpty()) {
             assignmentSizeText.setId(null);
             toolTipError.hide();
-        } else {
+        }
+        else {
             if (Utils.isNumeric(newValue)) {
-                dmData.setAssignmentSize(Integer.parseInt(newValue));
-                assignmentSizeText.setId(null);
-                validAssignment = true;
-                toolTipError.hide();
-                return true;
+                int number = Integer.parseInt(newValue);
+                if(number>0) {
+                    dmData.setAssignmentSize(Integer.parseInt(newValue));
+                    assignmentSizeText.setId(null);
+                    validAssignment = true;
+                    toolTipError.hide();
+                    return true;
+                }
+                else {
+                    validAssignment = false;
+                    renderToolTip();
+                    assignmentSizeText.setId("error-text-field");
+                }
             } else {
                 validAssignment = false;
                 renderToolTip();

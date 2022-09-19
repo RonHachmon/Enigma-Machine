@@ -14,10 +14,10 @@
       <menus>
         <Menu id="top-title" mnemonicParsing="false" text="Setting">
           <items>
-            <Menu id="top-title" mnemonicParsing="false" text="Change css">
+            <Menu id="top-title" mnemonicParsing="false" text="Change style">
                      <items>
-                  <MenuItem id="top-title" mnemonicParsing="false" onAction="#plainCss" text="plain.css" />
-                  <MenuItem id="top-title" mnemonicParsing="false" onAction="#armyCss" text="army.css" />
+                  <MenuItem id="top-title" mnemonicParsing="false" onAction="#plainCss" text="regular" />
+                  <MenuItem id="top-title" mnemonicParsing="false" onAction="#armyCss" text="army" />
                      </items></Menu>
           </items>
         </Menu>
