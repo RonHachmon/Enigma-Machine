@@ -11,6 +11,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import Engine.machineutils.MachineManager;
@@ -35,6 +36,7 @@ public class HeaderController extends MainAppScene implements Initializable   {
 
     @FXML
     private Label titleLabel;
+
     @FXML
     void bruteForceClicked(ActionEvent event) {
         bruteForceButton.setDisable(true);
