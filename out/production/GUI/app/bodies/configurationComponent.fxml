@@ -171,13 +171,16 @@
          <children>
             <BorderPane>
                <center>
-                  <Label fx:id="currentCodeConfig" alignment="CENTER" contentDisplay="CENTER" minWidth="200.0" prefHeight="30.0" prefWidth="320.0" styleClass="code-box-setting">
+                  <Label fx:id="currentCodeConfig" alignment="CENTER" contentDisplay="CENTER" minWidth="200.0" prefHeight="30.0" styleClass="code-box-setting">
                      <opaqueInsets>
                         <Insets left="5.0" right="5.0" />
                      </opaqueInsets>
                      <font>
                         <Font size="18.0" />
                      </font>
+                     <padding>
+                        <Insets left="40.0" right="40.0" />
+                     </padding>
                   </Label>
                </center>
                <top>
@@ -189,13 +192,16 @@
                   <Insets top="15.0" />
                </VBox.margin>
                <center>
-                  <Label fx:id="initialCodeConfig" alignment="CENTER" contentDisplay="CENTER" minWidth="200.0" prefHeight="30.0" prefWidth="320.0" styleClass="code-box-setting">
+                  <Label fx:id="initialCodeConfig" alignment="CENTER" contentDisplay="CENTER" minWidth="200.0" prefHeight="30.0" styleClass="code-box-setting">
                      <opaqueInsets>
                         <Insets left="5.0" right="5.0" />
                      </opaqueInsets>
                      <font>
                         <Font size="18.0" />
                      </font>
+                     <padding>
+                        <Insets left="40.0" right="40.0" />
+                     </padding>
                   </Label>
                </center>
                <top>

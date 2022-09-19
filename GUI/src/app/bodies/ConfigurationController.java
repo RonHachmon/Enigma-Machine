@@ -94,7 +94,8 @@ public class ConfigurationController extends MainAppScene implements Initializab
         Scene scene = new Scene(anchorPane, 800, 600);
         Stage settingStage = new Stage();
         settingStage.setScene(scene);
-        scene.getStylesheets().add(SETTING_CSS);
+  /*      encryptComponent.getScene().getStylesheets().add(String.valueOf(getClass().getResource(NORMAL_CSS)));*/
+        scene.getStylesheets().add(String.valueOf(getClass().getResource(SETTING_CSS)));
         settingStage.setTitle("machine setting");
         return settingStage;
     }

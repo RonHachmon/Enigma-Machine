@@ -36,7 +36,7 @@ public class Utils {
             case "III":
                 return 3;
             case "IV":
-                return 3;
+                return 4;
             case "V":
                 return 5;
             default:

@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -25,6 +26,7 @@ public class MainAppController implements Initializable {
 
     private MachineManager machineManager=new MachineManager();
     @FXML private VBox headerComponent;
+    @FXML private CheckMenuItem animationButton;
     @FXML private HeaderController headerComponentController;
     @FXML private GridPane configurationComponent;
     @FXML private ConfigurationController configurationComponentController;
@@ -32,10 +34,11 @@ public class MainAppController implements Initializable {
     @FXML private EncryptController encryptComponentController;
     @FXML private GridPane bruteForceComponent;
     @FXML private BruteForceController bruteForceComponentController;
+    public static final String ARMY_CSS = "/app/army.css";
+    public static final String NORMAL_CSS = "/app/app.css";
 
 
     private List<CodeHolder> codeHolders=new ArrayList<>();
-    /*private  final CodeHolder codeHolders [] = {bruteForceComponentController,encryptComponentController,configurationComponentController};*/
     private final List<MainAppScene> mainAppScenes = new ArrayList<>();
 
     @FXML
@@ -50,10 +53,17 @@ public class MainAppController implements Initializable {
 
     }
     @FXML
+    void enabledAnimation(ActionEvent event)
+    {
+            bruteForceComponentController.enableAnimation(animationButton.isSelected());
+            encryptComponentController.enableAnimation(animationButton.isSelected());
+    }
+    @FXML
     void armyCss(ActionEvent event)
     {
         encryptComponent.getScene().getStylesheets().clear();
-        encryptComponent.getScene().getStylesheets().add("/app/army.css");
+        encryptComponent.getScene().getStylesheets().add(String.valueOf(getClass().getResource(ARMY_CSS)));
+        /*encryptComponent.getScene().getStylesheets().add("/app/army.css");*/
 
     }
 
@@ -61,7 +71,8 @@ public class MainAppController implements Initializable {
     void plainCss(ActionEvent event)
     {
         encryptComponent.getScene().getStylesheets().clear();
-        encryptComponent.getScene().getStylesheets().add("/app/app.css");
+        encryptComponent.getScene().getStylesheets().add(String.valueOf(getClass().getResource(NORMAL_CSS)));
+        /*encryptComponent.getScene().getStylesheets().add("/app/app.css");*/
     }
 
     private void addControllerToArray() {
@@ -139,6 +150,7 @@ public class MainAppController implements Initializable {
         configurationComponentController.resetInformation();
         configurationComponentController.disableConfigButtons();
         encryptComponentController.clearStats();
+        bruteForceComponentController.clearScreen();
     }
     public void clearEncryptText()
     {
