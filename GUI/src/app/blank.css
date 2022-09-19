@@ -1,5 +1,6 @@
-/*.root { -fx-font-size: 12px;
- }*/
+/*
+!*.root { -fx-font-size: 12px;
+ }*!
 
 
 #top-title{
@@ -103,4 +104,4 @@
     -fx-text-fill: linear-gradient(white, #d0d0d0);
     -fx-border-radius:30;
     -fx-border-width:3px;
-}
+}*/

@@ -13,9 +13,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" prefHeight="136.0" prefWidth="625.0" style="-fx-border-color: black;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.header.HeaderController">
+<VBox id="main-app-header" alignment="CENTER" prefHeight="136.0" prefWidth="625.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.header.HeaderController">
    <children>
-      <Label fx:id="titleLabel" alignment="CENTER" contentDisplay="CENTER" style="-fx-text-fill: black;" text="Cracking The Enigma" textAlignment="CENTER" VBox.vgrow="NEVER">
+      <Label fx:id="titleLabel" alignment="CENTER" contentDisplay="CENTER" text="Cracking The Enigma" textAlignment="CENTER" VBox.vgrow="NEVER">
          <font>
             <Font name="Aharoni Bold" size="24.0" />
          </font>
@@ -23,7 +23,7 @@
             <Insets top="5.0" />
          </padding>
       </Label>
-      <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="167.0" prefWidth="623.0" stylesheets="@../app.css">
+      <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="167.0" prefWidth="623.0">
          <columnConstraints>
             <ColumnConstraints halignment="CENTER" hgrow="NEVER" maxWidth="305.66668701171875" minWidth="10.0" prefWidth="21.0" />
             <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="300.0" minWidth="180.0" prefWidth="186.0" />
@@ -60,7 +60,7 @@
                <children>
                   <HBox alignment="CENTER" maxHeight="55.0" minHeight="55.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="55.0" prefWidth="55.0">
                      <children>
-                        <Button fx:id="machineButton" disable="true" minHeight="25.0" minWidth="186.0" mnemonicParsing="false" onAction="#machineClicked" styleClass="menu-button" text="Set Machine">
+                        <Button fx:id="machineButton" minHeight="25.0" minWidth="186.0" mnemonicParsing="false" onAction="#machineClicked" styleClass="header-butt" text="Set Machine">
                            <HBox.margin>
                               <Insets left="5.0" right="10.0" />
                            </HBox.margin>
@@ -68,7 +68,7 @@
                               <Font size="21.0" />
                            </font>
                         </Button>
-                        <Button fx:id="encryptButton" disable="true" minHeight="25.0" minWidth="186.0" mnemonicParsing="false" onAction="#encryptClicked" styleClass="menu-button" text="Encrypt/Decrypt">
+                        <Button fx:id="encryptButton" disable="true" minHeight="25.0" minWidth="186.0" mnemonicParsing="false" onAction="#encryptClicked" styleClass="header-butt" text="Encrypt/Decrypt">
                            <HBox.margin>
                               <Insets left="10.0" right="10.0" />
                            </HBox.margin>
@@ -76,7 +76,7 @@
                               <Font size="21.0" />
                            </font>
                         </Button>
-                        <Button fx:id="bruteForceButton" disable="true" minHeight="25.0" minWidth="186.0" mnemonicParsing="false" onAction="#bruteForceClicked" styleClass="menu-button" text="Brute Force">
+                        <Button fx:id="bruteForceButton" disable="true" minHeight="25.0" minWidth="186.0" mnemonicParsing="false" onAction="#bruteForceClicked" styleClass="header-butt" text="Brute Force">
                            <HBox.margin>
                               <Insets left="10.0" right="5.0" />
                            </HBox.margin>

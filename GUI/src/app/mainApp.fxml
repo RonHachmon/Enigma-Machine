@@ -3,49 +3,22 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" style="-fx-border-color: black;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.MainAppController">
+<VBox prefHeight="400.0" prefWidth="640.0" stylesheets="" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.MainAppController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
-        <Menu mnemonicParsing="false" text="File">
+        <Menu id="top-title" mnemonicParsing="false" text="Setting">
           <items>
-            <MenuItem mnemonicParsing="false" text="New" />
-            <MenuItem mnemonicParsing="false" text="Open…" />
-            <Menu mnemonicParsing="false" text="Open Recent" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Close" />
-            <MenuItem mnemonicParsing="false" text="Save" />
-            <MenuItem mnemonicParsing="false" text="Save As…" />
-            <MenuItem mnemonicParsing="false" text="Revert" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Preferences…" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Quit" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Edit">
-          <items>
-            <MenuItem mnemonicParsing="false" text="Undo" />
-            <MenuItem mnemonicParsing="false" text="Redo" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Cut" />
-            <MenuItem mnemonicParsing="false" text="Copy" />
-            <MenuItem mnemonicParsing="false" text="Paste" />
-            <MenuItem mnemonicParsing="false" text="Delete" />
-            <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem mnemonicParsing="false" text="Select All" />
-            <MenuItem mnemonicParsing="false" text="Unselect All" />
-          </items>
-        </Menu>
-        <Menu mnemonicParsing="false" text="Help">
-          <items>
-            <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
+            <Menu id="top-title" mnemonicParsing="false" text="Change css">
+                     <items>
+                  <MenuItem id="top-title" mnemonicParsing="false" onAction="#plainCss" text="plain.css" />
+                  <MenuItem id="top-title" mnemonicParsing="false" onAction="#armyCss" text="army.css" />
+                     </items></Menu>
           </items>
         </Menu>
       </menus>
@@ -57,7 +30,7 @@
                 <fx:include fx:id="headerComponent" source="header/appHeader.fxml" />
               </top>
               <center>
-                <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                <StackPane id="main-app-body" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                   <children>
                     <fx:include fx:id="configurationComponent" source="bodies/configurationComponent.fxml" BorderPane.alignment="CENTER" />
                     <fx:include fx:id="encryptComponent" source="bodies/encryptComponent.fxml" BorderPane.alignment="CENTER" />

@@ -3,7 +3,6 @@ package app.bodies;
 import DTO.DMData;
 import DTO.DecryptionCandidate;
 import Engine.bruteForce2.DecryptManager;
-import Engine.bruteForce2.TaskManger;
 import Engine.bruteForce2.utils.Dictionary;
 import Engine.bruteForce2.utils.DifficultyLevel;
 import app.bodies.absractScene.MainAppScene;
@@ -11,13 +10,10 @@ import app.bodies.interfaces.CodeHolder;
 import app.utils.FindCandidateTask;
 import app.utils.UIAdapter;
 import app.utils.candidate.CandidateController;
-import app.utils.eDifficulty;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -28,8 +24,6 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.text.Font;
 import utils.Utils;
 
 import java.io.IOException;
@@ -92,7 +86,7 @@ public class BruteForceController extends MainAppScene implements Initializable,
     private Label taskDone;
 
     @FXML
-    private FontAwesomeIconView fontAwesome;
+    private FontAwesomeIconView pauseFontAwesome;
 
 /*    private SimpleLongProperty averageTimeNanoSeconds = new SimpleLongProperty();
     private SimpleLongProperty taskDurationInNanoSeconds = new SimpleLongProperty();*/
@@ -181,11 +175,11 @@ public class BruteForceController extends MainAppScene implements Initializable,
     void pauseClicked(ActionEvent event) {
         pauseFlag = !pauseFlag;
         if (pauseFlag) {
-            fontAwesome.setGlyphName("PLAY");
+            pauseFontAwesome.setGlyphName("PLAY");
             currentRunningTask.pause();
         }
         else {
-            fontAwesome.setGlyphName("PAUSE");
+            pauseFontAwesome.setGlyphName("PAUSE");
             currentRunningTask.resume();
         }
     }
