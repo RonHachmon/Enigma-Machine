@@ -69,11 +69,15 @@ public class TaskManger {
         System.out.println("starting task");
         try {
             this.assignmentProducer = new AssignmentProducer(blockingQueue, dmData, machineManager, queueLock);
-            new Thread(this.assignmentProducer).start();
+            Thread producer = new Thread(this.assignmentProducer);
+            producer.setName("Producer");
+            producer.start();
             for (int i = 0; i < dmData.getAmountOfAgents(); i++) {
 
                 Agent agent = new Agent(blockingQueue, machineManager, dmData, candidateList, dictionary, i, queueLock);
-                new Thread(agent).start();
+                Thread AgentThread = new Thread(agent);
+                AgentThread.setName("Agent "+(i+1));
+                AgentThread.start();
                 agents.add(agent);
             }
 

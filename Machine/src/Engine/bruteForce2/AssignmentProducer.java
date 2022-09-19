@@ -82,13 +82,14 @@ public class AssignmentProducer implements Runnable {
     private void generateCode() throws InterruptedException {
         String nextPermutation;
         do {
+
             lock.checkIfLocked();
             if (toStop) {
                 System.out.println("Producer stopped  code :)");
                 return;
             }
             /* System.out.println("Producer working");*/
-            queue.offer(codeConfiguration.clone(codeConfiguration), 10000, TimeUnit.MILLISECONDS);
+            queue.put(codeConfiguration.clone(codeConfiguration));
             nextPermutation = permutation.increasePermutation(dmData.getAssignmentSize(), codeConfiguration.getCharIndexes());
             this.codeConfiguration.setCharIndexes(nextPermutation);
         } while (permutation.isOverFlow() == false);

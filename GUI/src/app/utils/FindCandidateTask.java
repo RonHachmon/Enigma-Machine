@@ -74,16 +74,19 @@ public class FindCandidateTask extends Task<Boolean> {
 
 
     public void pause() {
+
         scheduledFuture.cancel(true);
+        System.out.println(" Task paused");
         decryptManager.pause();
     }
 
     public void resume() {
         decryptManager.resume();
+        System.out.println("Task resumed");
         startTimedTask();
     }
     public void stop() {
-        System.out.println("stopped");
+        System.out.println(" Task stopped");
         setTime();
         updateMessage("Cancelled ;/");
         this.cancelled();
@@ -100,6 +103,7 @@ public class FindCandidateTask extends Task<Boolean> {
 
     private void update() {
 
+        /*System.out.println("Task in update");*/
         long workDone = decryptManager.getWorkDone();
        /* System.out.println("work done: " + workDone);*/
         List<DecryptionCandidate> decryptionCandidates = decryptManager.getCandidateList().getList();
