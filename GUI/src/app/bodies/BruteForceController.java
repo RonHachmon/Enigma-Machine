@@ -12,6 +12,7 @@ import app.utils.FindCandidateTask;
 import app.utils.UIAdapter;
 import app.utils.candidate.CandidateController;
 import app.utils.eDifficulty;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleLongProperty;
@@ -27,6 +28,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import utils.Utils;
 
@@ -75,7 +77,6 @@ public class BruteForceController extends MainAppScene implements Initializable,
     private Button pauseButton;
     @FXML
     private ProgressBar taskProgressBar;
-
     @FXML
     private Label amountOfCandidateFound;
 
@@ -87,16 +88,18 @@ public class BruteForceController extends MainAppScene implements Initializable,
     @FXML
     private Label averageTimeLabel;
 
-
     @FXML
     private Label taskDone;
 
+    @FXML
+    private FontAwesomeIconView fontAwesome;
 
 /*    private SimpleLongProperty averageTimeNanoSeconds = new SimpleLongProperty();
     private SimpleLongProperty taskDurationInNanoSeconds = new SimpleLongProperty();*/
     private SimpleIntegerProperty totalFoundCandidate=new SimpleIntegerProperty();
     private SimpleStringProperty amountDone=new SimpleStringProperty();
     private boolean validAssignment=false;
+    private boolean pauseFlag = false;
     private  FindCandidateTask currentRunningTask;
 
     private Tooltip toolTipError;
@@ -107,7 +110,6 @@ public class BruteForceController extends MainAppScene implements Initializable,
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
         Arrays.stream(DifficultyLevel.values()).sequential().forEach(eDifficulty -> difficultyComboBox.getItems().add(eDifficulty));
         amountOfCandidateFound.textProperty().bind(Bindings.format("%,d", totalFoundCandidate));
 
@@ -177,16 +179,15 @@ public class BruteForceController extends MainAppScene implements Initializable,
 
     @FXML
     void pauseClicked(ActionEvent event) {
-        Button pauseAndResume = (Button) event.getSource();
-        if (pauseAndResume.getText().equals("pause")) {
-            pauseAndResume.setText("resume");
+        pauseFlag = !pauseFlag;
+        if (pauseFlag) {
+            fontAwesome.setGlyphName("PLAY");
             currentRunningTask.pause();
-
-        } else {
-            pauseAndResume.setText("pause");
+        }
+        else {
+            fontAwesome.setGlyphName("PAUSE");
             currentRunningTask.resume();
         }
-
     }
 
     @FXML

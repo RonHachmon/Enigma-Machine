@@ -20,6 +20,7 @@ public class Main extends Application {
         primaryStage.setTitle("Cracking The Enigma");
         Parent load = FXMLLoader.load(getClass().getResource(APP_FXML));
         Scene scene = new Scene(load,1000,600);
+        scene.getStylesheets().add("/app/army.css");
         primaryStage.setScene(scene);
         primaryStage.show();
     }

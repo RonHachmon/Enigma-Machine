@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -36,13 +37,16 @@
             <RowConstraints maxHeight="70.0" minHeight="50.0" prefHeight="51.0" vgrow="ALWAYS" />
          </rowConstraints>
          <children>
-            <Button id="load-button" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#loadXML" prefHeight="42.0" prefWidth="270.0" text="Load Machine XML" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+            <Button id="load-button" alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#loadXML" prefHeight="42.0" prefWidth="270.0" text="Load XML  " GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
                <font>
                   <Font size="17.0" />
                </font>
+               <graphic>
+                  <FontAwesomeIconView fill="#086e17" glyphName="FILE" size="18" />
+               </graphic>
             </Button>
             <TextField id="path" fx:id="currentPath" editable="false" prefHeight="42.0" prefWidth="400.0" promptText="Current path" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                <padding>

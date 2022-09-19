@@ -9,6 +9,7 @@ import app.header.HeaderController;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -37,7 +38,6 @@ public class MainAppController implements Initializable {
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
         addControllerToArray();
-
         encryptComponent.setVisible(false);
         bruteForceComponent.setVisible(false);
 
