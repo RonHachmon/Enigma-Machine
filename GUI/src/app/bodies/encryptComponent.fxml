@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="349.0" prefWidth="600.0" stylesheets="@../app.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.bodies.EncryptController">
+<GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="349.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.bodies.EncryptController">
    <columnConstraints>
       <ColumnConstraints halignment="CENTER" hgrow="NEVER" maxWidth="305.66668701171875" minWidth="10.0" prefWidth="21.0" />
       <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="120.0" />
@@ -37,21 +37,24 @@
       <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
    </rowConstraints>
    <children>
-      <Label fx:id="currentCode" alignment="CENTER" contentDisplay="CENTER" GridPane.columnIndex="1" GridPane.columnSpan="6" GridPane.vgrow="ALWAYS">
+      <Label fx:id="currentCode" alignment="CENTER" contentDisplay="CENTER" styleClass="code-box-setting" GridPane.columnIndex="1" GridPane.columnSpan="6" GridPane.vgrow="ALWAYS">
          <font>
             <Font size="20.0" />
          </font>
+         <padding>
+            <Insets left="40.0" right="40.0" />
+         </padding>
       </Label>
       <BorderPane GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.vgrow="ALWAYS">
          <center>
             <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="107.0" prefWidth="250.0">
                <content>
-                  <FlowPane fx:id="inputKeyboard" prefHeight="77.0" prefWidth="355.0" prefWrapLength="150.0" rowValignment="TOP" />
+                  <FlowPane fx:id="inputKeyboard" prefHeight="77.0" prefWidth="355.0" prefWrapLength="150.0" rowValignment="TOP" styleClass="keyboard-space" />
                </content>
             </ScrollPane>
          </center>
          <top>
-            <Label text="input keyboard" BorderPane.alignment="CENTER">
+            <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" styleClass="title" text="input keyboard" BorderPane.alignment="CENTER">
                <font>
                   <Font size="15.0" />
                </font>
@@ -66,12 +69,12 @@
          <center>
             <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="107.0" prefWidth="250.0">
                <content>
-                  <FlowPane fx:id="outputKeyboard" prefHeight="77.0" prefWidth="355.0" prefWrapLength="150.0" rowValignment="TOP" />
+                  <FlowPane fx:id="outputKeyboard" prefHeight="77.0" prefWidth="355.0" prefWrapLength="150.0" rowValignment="TOP" styleClass="keyboard-space" />
                </content>
             </ScrollPane>
          </center>
          <top>
-            <Label text="output keyboard" BorderPane.alignment="CENTER">
+            <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" styleClass="title" text="output keyboard" BorderPane.alignment="CENTER">
                <font>
                   <Font size="15.0" />
                </font>

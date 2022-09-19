@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="349.0" prefWidth="600.0" stylesheets="@../app.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.bodies.ConfigurationController">
+<GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="349.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.bodies.ConfigurationController">
    <columnConstraints>
       <ColumnConstraints halignment="CENTER" hgrow="NEVER" maxWidth="305.66668701171875" minWidth="10.0" prefWidth="21.0" />
       <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="170.0" prefWidth="186.0" />
@@ -48,7 +48,7 @@
             <Insets left="5.0" right="5.0" />
          </GridPane.margin>
       </Button>
-      <BorderPane GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+      <BorderPane id="information" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
          <center>
             <VBox alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="100.0">
                <children>
@@ -171,7 +171,7 @@
          <children>
             <BorderPane>
                <center>
-                  <Label fx:id="currentCodeConfig" alignment="TOP_LEFT" minWidth="200.0" prefHeight="30.0" prefWidth="320.0" style="-fx-border-color: black;">
+                  <Label fx:id="currentCodeConfig" alignment="CENTER" contentDisplay="CENTER" minWidth="200.0" prefHeight="30.0" prefWidth="320.0" styleClass="code-box-setting">
                      <opaqueInsets>
                         <Insets left="5.0" right="5.0" />
                      </opaqueInsets>
@@ -189,7 +189,7 @@
                   <Insets top="15.0" />
                </VBox.margin>
                <center>
-                  <Label fx:id="initialCodeConfig" alignment="TOP_LEFT" minWidth="200.0" prefHeight="30.0" prefWidth="320.0" style="-fx-border-color: black;">
+                  <Label fx:id="initialCodeConfig" alignment="CENTER" contentDisplay="CENTER" minWidth="200.0" prefHeight="30.0" prefWidth="320.0" styleClass="code-box-setting">
                      <opaqueInsets>
                         <Insets left="5.0" right="5.0" />
                      </opaqueInsets>

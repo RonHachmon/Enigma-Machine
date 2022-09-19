@@ -7,6 +7,7 @@ import app.bodies.absractScene.MainAppScene;
 import app.bodies.interfaces.CodeHolder;
 import app.header.HeaderController;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
@@ -29,7 +30,7 @@ public class MainAppController implements Initializable {
     @FXML private EncryptController encryptComponentController;
     @FXML private GridPane bruteForceComponent;
     @FXML private BruteForceController bruteForceComponentController;
-    @FXML private Label amountOfCandidateFound;
+
 
     private List<CodeHolder> codeHolders=new ArrayList<>();
     /*private  final CodeHolder codeHolders [] = {bruteForceComponentController,encryptComponentController,configurationComponentController};*/
@@ -45,6 +46,18 @@ public class MainAppController implements Initializable {
 
         mainAppScenes.forEach(mainAppScene -> mainAppScene.setMainAppController(this));
 
+    }
+    @FXML
+    void armyCss(ActionEvent event)
+    {
+        encryptComponent.getScene().getStylesheets().clear();
+        encryptComponent.getScene().getStylesheets().add("/app/army.css");
+    }
+    @FXML
+    void plainCss(ActionEvent event)
+    {
+        encryptComponent.getScene().getStylesheets().clear();
+        encryptComponent.getScene().getStylesheets().add("/app/app.css");
     }
 
     private void addControllerToArray() {

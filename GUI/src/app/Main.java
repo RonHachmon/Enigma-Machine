@@ -19,7 +19,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Cracking The Enigma");
         Parent load = FXMLLoader.load(getClass().getResource(APP_FXML));
-        Scene scene = new Scene(load,1000,600);
+        Scene scene = new Scene(load,1100,600);
         scene.getStylesheets().add("/app/army.css");
         primaryStage.setScene(scene);
         primaryStage.show();

@@ -1,6 +1,12 @@
 /*.root { -fx-font-size: 12px;
  }*/
 
+#top-title{
+    -fx-border-radius:0;
+     -fx-background-radius: 0;
+    -fx-border-width:1px;
+      -fx-font-size: 12px;
+}
 
 .keyboard{
    -fx-background-color:
@@ -23,8 +29,15 @@
 
 
 }
+#main-app-header{
+-fx-border-color:black;
+}
+-code-box{
+-fx-border-color : black;
+}
 
 /*pressed keyboard*/
+
 #pressed-key{
      -fx-border-color:yellow;
      -fx-text-fill: yellow;
@@ -70,7 +83,8 @@
 -fx-border-color:#696969;
 -fx-min-width: 300px;
 
-}*/
+}*//*
+
 
 
 
@@ -87,6 +101,7 @@
     -fx-text-fill:white;
 }
 
+*/
 /*.menu-button{
    -fx-background-color:
         #4287f5,
@@ -105,7 +120,8 @@
 
 }*/
 
-.menu-button{
+
+.header-butt{
     -fx-background-color:#0874bc;
     -fx-background-radius: 30;
     -fx-background-insets: 0,1,2,3,0;
@@ -117,9 +133,6 @@
     -fx-border-radius:30;
     -fx-border-width:3px;
 
-
-}
-#shiny-orange {
 
 }
 
