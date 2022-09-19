@@ -1,6 +1,5 @@
 /*.root { -fx-font-size: 12px;
  }*/
-
 #main-app-body{
  -fx-background-color:#8b8e95;
      -fx-border-color:#3e4a32;
@@ -11,7 +10,7 @@
  -fx-border-color:#3e4a32;
  -fx-border-width:7px;
 }
-/*.menu-button{
+.header-butt{
     -fx-background-color:#333333;
     -fx-text-fill:#efefef;
     -fx-background-radius: 30;
@@ -21,8 +20,7 @@
     -fx-padding: 5 10 5 10;
     -fx-border-radius:30;
     -fx-border-width:3px;
-}*/
-
+}
 .code-box-setting{
     -fx-border-color:black;
     -fx-background-color:white;
@@ -42,7 +40,6 @@
      -fx-border-radius:10;
       -fx-background-color:#bec0b2;
 }
-
 .title{
     -fx-background-radius: 0;
     -fx-border-color:black;
@@ -50,7 +47,6 @@
       -fx-background-color:#bec0b2;
       -fx-text-fill:#333333;
 }
-
 .keyboard-space{
      -fx-background-color:#ffffff;
       -fx-border-color:black;
@@ -78,9 +74,7 @@
 
 }
 
-
 /*pressed keyboard*/
-
 #pressed-key{
      -fx-border-color:yellow;
      -fx-text-fill: yellow;
@@ -131,7 +125,6 @@
 #candidate-text{
     -fx-text-fill:white;
 }
-
 
 
 
@@ -195,7 +188,6 @@
     -fx-opacity: 0;
     -fx-padding: 2;
 }
-*/
 
 
 

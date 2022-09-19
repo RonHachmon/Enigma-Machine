@@ -60,7 +60,7 @@
                <children>
                   <HBox alignment="CENTER" maxHeight="55.0" minHeight="55.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="55.0" prefWidth="55.0">
                      <children>
-                        <Button fx:id="machineButton" minHeight="25.0" minWidth="186.0" mnemonicParsing="false" onAction="#machineClicked" styleClass="menu-button" text="Set Machine">
+                        <Button fx:id="machineButton" minHeight="25.0" minWidth="186.0" mnemonicParsing="false" onAction="#machineClicked" styleClass="header-butt" text="Set Machine">
                            <HBox.margin>
                               <Insets left="5.0" right="10.0" />
                            </HBox.margin>
@@ -68,7 +68,7 @@
                               <Font size="21.0" />
                            </font>
                         </Button>
-                        <Button fx:id="encryptButton" disable="true" minHeight="25.0" minWidth="186.0" mnemonicParsing="false" onAction="#encryptClicked" styleClass="menu-button" text="Encrypt/Decrypt">
+                        <Button fx:id="encryptButton" disable="true" minHeight="25.0" minWidth="186.0" mnemonicParsing="false" onAction="#encryptClicked" styleClass="header-butt" text="Encrypt/Decrypt">
                            <HBox.margin>
                               <Insets left="10.0" right="10.0" />
                            </HBox.margin>
@@ -76,7 +76,7 @@
                               <Font size="21.0" />
                            </font>
                         </Button>
-                        <Button fx:id="bruteForceButton" disable="true" minHeight="25.0" minWidth="186.0" mnemonicParsing="false" onAction="#bruteForceClicked" styleClass="menu-button" text="Brute Force">
+                        <Button fx:id="bruteForceButton" disable="true" minHeight="25.0" minWidth="186.0" mnemonicParsing="false" onAction="#bruteForceClicked" styleClass="header-butt" text="Brute Force">
                            <HBox.margin>
                               <Insets left="10.0" right="5.0" />
                            </HBox.margin>

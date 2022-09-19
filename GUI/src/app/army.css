@@ -10,7 +10,7 @@
  -fx-border-color:#3e4a32;
  -fx-border-width:7px;
 }
-.menu-button{
+.header-butt{
     -fx-background-color:#333333;
     -fx-text-fill:#efefef;
     -fx-background-radius: 30;

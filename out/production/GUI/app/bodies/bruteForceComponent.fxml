@@ -41,32 +41,7 @@
       <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
    </rowConstraints>
    <children>
-      <VBox GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
-         <children>
-            <HBox alignment="CENTER" prefHeight="50.0" prefWidth="142.0">
-               <children>
-                  <Label alignment="CENTER" prefHeight="17.0" prefWidth="145.0" text="Encryption duration in mil:" />
-                  <Label fx:id="encryptTimeLabel" maxWidth="1.7976931348623157E308" prefHeight="17.0" />
-               </children>
-            </HBox>
-            <HBox alignment="CENTER" prefHeight="50.0" prefWidth="142.0">
-               <children>
-                  <Label alignment="CENTER" prefHeight="17.0" prefWidth="165.0" text="Avg agent work time in mil:" />
-                  <Label fx:id="averageTimeLabel" maxWidth="1.7976931348623157E308" prefHeight="17.0" />
-               </children>
-            </HBox>
-         </children>
-         <GridPane.margin>
-            <Insets left="10.0" />
-         </GridPane.margin>
-      </VBox>
-      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3">
-         <children>
-            <Label alignment="CENTER" prefHeight="17.0" prefWidth="94.0" text="Found words:" />
-            <Label fx:id="amountOfCandidateFound" maxWidth="1.7976931348623157E308" prefHeight="17.0" />
-         </children>
-      </HBox>
-      <Label fx:id="currentCode" alignment="CENTER" contentDisplay="CENTER" GridPane.columnIndex="1" GridPane.columnSpan="6" GridPane.vgrow="ALWAYS">
+      <Label fx:id="currentCode" alignment="CENTER" contentDisplay="CENTER" styleClass="code-box-setting" GridPane.columnIndex="1" GridPane.columnSpan="6" GridPane.vgrow="ALWAYS">
          <font>
             <Font size="20.0" />
          </font>
@@ -119,9 +94,6 @@
                <HBox.margin>
                   <Insets left="5.0" />
                </HBox.margin>
-               <graphic>
-                  <FontAwesomeIconView glyphName="PLAY" />
-               </graphic>
             </Button>
          </children>
       </HBox>
@@ -147,23 +119,14 @@
             <TextField fx:id="searchBar" promptText="search" BorderPane.alignment="CENTER" />
          </top>
       </BorderPane>
-      <Button fx:id="runButton" alignment="CENTER" mnemonicParsing="false" onAction="#runClicked" textFill="#0b0000" GridPane.columnIndex="3" GridPane.rowIndex="1">
-         <graphic>
-            <FontAwesomeIconView glyphName="ARROW_RIGHT" />
-         </graphic></Button>
+      <Button fx:id="runButton" alignment="CENTER" mnemonicParsing="false" onAction="#runClicked" text="run" textFill="#0b0000" GridPane.columnIndex="3" GridPane.rowIndex="1" />
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.rowIndex="3">
          <children>
-            <Button fx:id="stopButton" minWidth="50.0" mnemonicParsing="false" onAction="#stopClicked">
-               <graphic>
-                  <FontAwesomeIconView glyphName="STOP" />
-               </graphic></Button>
-            <Button fx:id="pauseButton" minWidth="50.0" mnemonicParsing="false" onAction="#pauseClicked">
+            <Button fx:id="stopButton" minWidth="50.0" mnemonicParsing="false" onAction="#stopClicked" text="stop" />
+            <Button fx:id="pauseButton" minWidth="50.0" mnemonicParsing="false" onAction="#pauseClicked" text="pause">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>
-               <graphic>
-                  <FontAwesomeIconView fx:id="fontAwesome" glyphName="PAUSE" />
-               </graphic>
             </Button>
          </children>
       </HBox>
