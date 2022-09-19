@@ -13,7 +13,7 @@ public class QueueLock {
     public void unlock() {
         synchronized(this.mLock) {
             mLocked = false;
-            mLock.notify();
+            mLock.notifyAll();
         }
 
     }
@@ -23,12 +23,15 @@ public class QueueLock {
             synchronized(mLock) {
                 while (mLocked) {
                     try {
+                        System.out.println(Thread.currentThread().getName()+" in lock");
                         mLock.wait();
+                        System.out.println(Thread.currentThread().getName()+" passed lock");
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
                 }
             }
+
 
     }
 
