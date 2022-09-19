@@ -66,14 +66,14 @@ public class HeaderController extends MainAppScene implements Initializable   {
     @FXML
     void loadXML(ActionEvent event) {
 
-        machineManager.createMachineFromXML("test_files/ex2-basic.xml");
+  /*      machineManager.createMachineFromXML("test_files/ex2-basic.xml");
         this.currentPath.setText("test_files/ex2-basic.xml");
 
         mainAppController.resetAll();
-        mainAppController.updateAllControllers();
+        mainAppController.updateAllControllers();*/
 
 
-/*        FileChooser fileChooser = configFileChooser();
+        FileChooser fileChooser = configFileChooser();
         File selectedFile = fileChooser.showOpenDialog(null);
         if(selectedFile!=null)
         {
@@ -104,9 +104,7 @@ public class HeaderController extends MainAppScene implements Initializable   {
 
                 }).start();
 
-        }*/
-
-
+        }
     }
 
     private FileChooser configFileChooser() {
