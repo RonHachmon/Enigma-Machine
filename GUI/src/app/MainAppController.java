@@ -11,10 +11,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import Engine.machineutils.MachineManager;
+import javafx.scene.text.Font;
 
 import java.net.URL;
 import java.util.*;
@@ -52,7 +54,9 @@ public class MainAppController implements Initializable {
     {
         encryptComponent.getScene().getStylesheets().clear();
         encryptComponent.getScene().getStylesheets().add("/app/army.css");
+
     }
+
     @FXML
     void plainCss(ActionEvent event)
     {

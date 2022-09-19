@@ -190,6 +190,8 @@ public class BruteForceController extends MainAppScene implements Initializable,
 
         pauseButton.setDisable(true);
         stopButton.setDisable(true);
+        this.pauseFlag=false;
+        pauseFontAwesome.setGlyphName("PAUSE");
 
 
     }
