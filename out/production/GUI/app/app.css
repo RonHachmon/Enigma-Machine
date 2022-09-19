@@ -1,5 +1,6 @@
 /*.root { -fx-font-size: 12px;
- }*/
+ }*//*
+
 
 #top-title{
     -fx-border-radius:0;
@@ -36,7 +37,9 @@
 -fx-border-color : black;
 }
 
-/*pressed keyboard*/
+*/
+/*pressed keyboard*//*
+
 
 #pressed-key{
      -fx-border-color:yellow;
@@ -77,17 +80,6 @@
 }
 
 
-
-/*.button:{
--fx-border-width:100%;
--fx-border-color:#696969;
--fx-min-width: 300px;
-
-}*//*
-
-
-
-
 .button:hover{
 -fx-border-width:2px;
 -fx-border-color:#696969;
@@ -100,26 +92,6 @@
 #candidate-text{
     -fx-text-fill:white;
 }
-
-*/
-/*.menu-button{
-   -fx-background-color:
-        #4287f5,
-        linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
-        linear-gradient(#20262b, #191d22),
-        radial-gradient(center 50% 0%, radius 100%, rgba(50,30,200,0.9), rgba(24,24,24,0));
-    -fx-background-insets: 0,1,2,0;
-    -fx-text-fill: white;
-    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
-    -fx-font-family: "Arial";
-    -fx-text-fill: linear-gradient(white, #d0d0d0);
-    -fx-font-size: 20px;
-    -fx-padding: 5 10 5 10;
-    -fx-border-color:white;
-    -fx-border-width:2px;
-
-}*/
-
 
 .header-butt{
     -fx-background-color:#0874bc;
@@ -139,3 +111,5 @@
 
 
 
+
+*/

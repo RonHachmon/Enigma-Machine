@@ -50,8 +50,8 @@ public class MainAppController implements Initializable {
     @FXML
     void armyCss(ActionEvent event)
     {
-        encryptComponent.getScene().getStylesheets().clear();
-        encryptComponent.getScene().getStylesheets().add("/app/army.css");
+   /*     encryptComponent.getScene().getStylesheets().clear();
+        encryptComponent.getScene().getStylesheets().add("/app/army.css");*/
     }
     @FXML
     void plainCss(ActionEvent event)

@@ -1,24 +1,17 @@
+/*.root { -fx-font-size: 12px;
+ }*/
+
 #main-app-body{
-    -fx-background-color:#8b8e95;
-    -fx-border-color:#3e4a32;
-    -fx-border-width:7px;
+ -fx-background-color:#8b8e95;
+     -fx-border-color:#3e4a32;
+  -fx-border-width:7px;
 }
-
-#top-title{
-    -fx-border-radius:0;
-     -fx-background-radius: 0;
-    -fx-border-width:1px;
-    -fx-text-fill:#00FF00;
-    -fx-font-size: 9px;
-     -fx-background-color:white;
-}
-
 #main-app-header{
  -fx-background-color:#8b8e95;
  -fx-border-color:#3e4a32;
  -fx-border-width:7px;
 }
-.header-butt{
+/*.menu-button{
     -fx-background-color:#333333;
     -fx-text-fill:#efefef;
     -fx-background-radius: 30;
@@ -28,7 +21,8 @@
     -fx-padding: 5 10 5 10;
     -fx-border-radius:30;
     -fx-border-width:3px;
-}
+}*/
+
 .code-box-setting{
     -fx-border-color:black;
     -fx-background-color:white;
@@ -48,6 +42,7 @@
      -fx-border-radius:10;
       -fx-background-color:#bec0b2;
 }
+
 .title{
     -fx-background-radius: 0;
     -fx-border-color:black;
@@ -55,6 +50,7 @@
       -fx-background-color:#bec0b2;
       -fx-text-fill:#333333;
 }
+
 .keyboard-space{
      -fx-background-color:#ffffff;
       -fx-border-color:black;
@@ -81,6 +77,7 @@
 
 
 }
+
 
 /*pressed keyboard*/
 
@@ -138,6 +135,7 @@
 
 
 
+
 .table-view,
 .table-view .column-header,
 .table-view .column-header-background .filler,
@@ -162,13 +160,13 @@
 
 .table-row-cell:odd{
 
-    -fx-background-color: #bec0b2;
+    -fx-background-color: #bec0f2;
     -fx-background-insets: 0, 0 0 1 0;
     -fx-padding: 0.0em;
 }
 
 .table-row-cell:even{
-    -fx-background-color: #678f6c;
+    -fx-background-color: #bec002;
     -fx-background-insets: 0, 0 0 1 0;
     -fx-padding: 0.0em;
 }
@@ -192,30 +190,12 @@
     -fx-background-color:  linear-gradient(to right, #1dbbdd44, #93f9b944);
 }
 
-
-/* MENU BAR + Top-level MENU BUTTONS */
-/*** The menu bar itself ***/
-.menu-bar {
-    -fx-background-color: #263238;
+.table-view .virtual-flow .scroll-bar .increment-button,
+.table-view .virtual-flow .scroll-bar .decrement-button {
+    -fx-opacity: 0;
+    -fx-padding: 2;
 }
-
-
-
-
-
-/* MENU ITEM (children of a MENU BUTTON) */
-/*** The item itself (not hovered / focused) ***/
-.menu-item {
-    -fx-background-color:#455a64;
-}
-
-
-/* CONTEXT MENU */
-/*** The context menu that contains a menu's menu items ***/
-.context-menu {
-    -fx-background-color:  #455a64;
-    }
-
+*/
 
 
 
