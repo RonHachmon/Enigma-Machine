@@ -1,20 +1,20 @@
 /*.root { -fx-font-size: 12px;
- }*//*
+ }*/
 
 
 #top-title{
     -fx-border-radius:0;
-     -fx-background-radius: 0;
+    -fx-background-radius: 0;
     -fx-border-width:1px;
-      -fx-font-size: 12px;
+    -fx-font-size: 12px;
 }
 
 .keyboard{
-   -fx-background-color:
-        #090a0c,
-        linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
-        linear-gradient(#20262b, #191d22),
-        radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));
+    -fx-background-color:
+            #090a0c,
+            linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
+            linear-gradient(#20262b, #191d22),
+            radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));
     -fx-background-radius: 50%;
     -fx-background-insets: 0,1,2,0;
     -fx-text-fill: white;
@@ -31,19 +31,18 @@
 
 }
 #main-app-header{
--fx-border-color:black;
+    -fx-border-color:black;
 }
 -code-box{
--fx-border-color : black;
+    -fx-border-color : black;
 }
 
-*/
-/*pressed keyboard*//*
+
 
 
 #pressed-key{
-     -fx-border-color:yellow;
-     -fx-text-fill: yellow;
+    -fx-border-color:yellow;
+    -fx-text-fill: yellow;
 }
 
 #error-tool-tip{
@@ -53,14 +52,14 @@
 
 #error-text-field{
     -fx-border-color:#d9534f ;
-     -fx-border-width:2px;
+    -fx-border-width:2px;
 }
 
 
 #load-button{
     -fx-background-color: #23b574;
     -fx-text-fill: #f7f7f7;
-     -fx-background-radius: 0%;
+    -fx-background-radius: 0%;
     -fx-border-radius:0%;
     -fx-border-color:#1a1a1a ;
     -fx-border-width:1px;
@@ -68,25 +67,25 @@
 }
 #load-button:hover{
 
--fx-border-width:3px;
+    -fx-border-width:3px;
 
 }
 
 #path{
-   -fx-background-radius: 0%;
-   -fx-text-fill: #1a1a1a;
-   -fx-border-color:#1a1a1a ;
-   -fx-border-width:1px;
+    -fx-background-radius: 0%;
+    -fx-text-fill: #1a1a1a;
+    -fx-border-color:#1a1a1a ;
+    -fx-border-width:1px;
 }
 
 
 .button:hover{
--fx-border-width:2px;
--fx-border-color:#696969;
+    -fx-border-width:2px;
+    -fx-border-color:#696969;
 }
 
 .candidate{
--fx-font-weight:900;
+    -fx-font-weight:900;
 
 }
 #candidate-text{
@@ -104,12 +103,4 @@
     -fx-text-fill: linear-gradient(white, #d0d0d0);
     -fx-border-radius:30;
     -fx-border-width:3px;
-
-
 }
-
-
-
-
-
-*/

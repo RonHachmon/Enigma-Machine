@@ -153,13 +153,13 @@
 
 .table-row-cell:odd{
 
-    -fx-background-color: #bec0f2;
+    -fx-background-color: #bbbbb2;
     -fx-background-insets: 0, 0 0 1 0;
     -fx-padding: 0.0em;
 }
 
 .table-row-cell:even{
-    -fx-background-color: #bec002;
+    -fx-background-color: #678f6c;
     -fx-background-insets: 0, 0 0 1 0;
     -fx-padding: 0.0em;
 }
