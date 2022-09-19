@@ -37,13 +37,16 @@
       <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
    </rowConstraints>
    <children>
-      <Label fx:id="currentCode" alignment="CENTER" contentDisplay="CENTER" styleClass="code-box-setting" GridPane.columnIndex="1" GridPane.columnSpan="6" GridPane.vgrow="ALWAYS">
+      <Label fx:id="currentCode" alignment="CENTER" contentDisplay="CENTER" styleClass="code-box-setting" GridPane.columnSpan="2147483647" GridPane.vgrow="ALWAYS">
          <font>
             <Font size="20.0" />
          </font>
          <padding>
             <Insets left="40.0" right="40.0" />
          </padding>
+         <GridPane.margin>
+            <Insets right="70.0" />
+         </GridPane.margin>
       </Label>
       <BorderPane GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.vgrow="ALWAYS">
          <center>

@@ -50,7 +50,7 @@ public class Agent implements Runnable {
     @Override
     public void run() {
         try {
-            Instant startTaskClock = Instant.now();
+
             /*System.out.println("starting pull code");*/
             while (true) {
                 CodeConfiguration codeConfiguration = queue.poll(3000, TimeUnit.MILLISECONDS);
@@ -58,6 +58,7 @@ public class Agent implements Runnable {
                     this.setInitialMachine(codeConfiguration);
                     int amountOfPermutationIwentInTheLoop = 0;
                     String encryptionOutput;
+                    Instant startTaskClock=Instant.now();
                     for (int i = 0; i < dMdata.getAssignmentSize(); i++) {
                         lock.checkIfLocked();
                         if (toStop) {
@@ -83,7 +84,8 @@ public class Agent implements Runnable {
                     }
                     /*System.out.println("amount i went in the loop ");*/
                     permutation.cleanOverFLow();
-                    long encryptionTimeInNanoSeconds = Duration.between(startTaskClock, Instant.now()).toMillis();
+                    long encryptionTimeInNanoSeconds = Duration.between(startTaskClock, Instant.now()).toNanos();
+                    System.out.println("time "+ encryptionTimeInNanoSeconds);
                     TaskManger.addWorkDone(amountOfPermutationIwentInTheLoop,encryptionTimeInNanoSeconds);
                     if (this.isDone()) {
                         return;
@@ -138,25 +140,6 @@ public class Agent implements Runnable {
     }
 
 
-
-/*    @Override
->>>>>>> 757172a (basic consumer producer)
-    public void run() {
-        Instant startTaskTime = Instant.now();
-        List<Integer> currentRotorPositions = machineManager.getCurrentRotorsList();
-
-        for (int i = 0; i < dMdata.getAssignmentSize(); i++) {
-            try {
-                Instant startingTime = Instant.now();
-                String candidateMessage = machineManager.encryptSentence(dMdata.getEncryptedString().toUpperCase());
-                encryptionTimeDurationInNanoSeconds = Duration.between(startingTime, Instant.now()).toNanos();
-
-
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }*/
 
 
 }

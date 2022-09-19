@@ -3,6 +3,10 @@ package app.bodies;
 import Engine.machineutils.NewStatisticInput;
 import app.bodies.absractScene.MainAppScene;
 import app.bodies.interfaces.CodeHolder;
+import javafx.animation.FadeTransition;
+import javafx.animation.RotateTransition;
+import javafx.animation.ScaleTransition;
+import javafx.animation.TranslateTransition;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -73,6 +77,7 @@ public class EncryptController extends MainAppScene implements Initializable, Co
     private Integer currentNanoDuration=0;
     SimpleBooleanProperty isManual = new SimpleBooleanProperty(false);
     boolean clearTextClicked=false;
+    private boolean toAnimate=false;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -221,7 +226,45 @@ public class EncryptController extends MainAppScene implements Initializable, Co
 
     @Override
     public void updateCode(String code) {
-        this.currentCode.setText(code);
+        if (toAnimate) {
+            scaleAnimation(code);
+        }
+        else {
+            this.currentCode.setText(code);
+        }
+    }
+
+    private void scaleAnimation(String code) {
+
+            TranslateTransition translateTransition = new TranslateTransition();
+            translateTransition.setNode(this.currentCode);
+            translateTransition.setDuration(javafx.util.Duration.millis(400));
+            translateTransition.setFromY(0);
+            translateTransition.setToY(-20);
+
+            FadeTransition fadeTransition = new FadeTransition();
+            fadeTransition.setNode(this.currentCode);
+            fadeTransition.setDuration(javafx.util.Duration.millis(300));
+            fadeTransition.setFromValue(0.2);
+            fadeTransition.setToValue(0);
+            translateTransition.play();
+            fadeTransition.play();
+            fadeTransition.setOnFinished((actionEvent) ->
+            {
+                this.currentCode.setText(code);
+                TranslateTransition transition = new TranslateTransition();
+                transition.setNode(this.currentCode);
+                transition.setDuration(javafx.util.Duration.millis(400));
+                transition.setFromY(20);
+                transition.setToY(0);
+                FadeTransition fade = new FadeTransition();
+                fade.setNode(this.currentCode);
+                fade.setDuration(javafx.util.Duration.millis(300));
+                fade.setFromValue(0);
+                fade.setToValue(1);
+                fade.play();
+                transition.play();
+            });
     }
 
 
@@ -235,6 +278,7 @@ public class EncryptController extends MainAppScene implements Initializable, Co
             Label keyBoardLabel = (Label) node;
             if (keyPressed.equals(keyBoardLabel.getText())) {
                 keyBoardLabel.setId("pressed-key");
+                rotateAnimation(keyBoardLabel);
             }
         });
 
@@ -245,9 +289,18 @@ public class EncryptController extends MainAppScene implements Initializable, Co
             Label keyBoardLabel = (Label) node;
             if (keyPressed.equals(keyBoardLabel.getText())) {
                 keyBoardLabel.setId("pressed-key");
+                rotateAnimation(keyBoardLabel);
             }
         });
 
+    }
+
+    private void rotateAnimation(Label keyBoardLabel) {
+            RotateTransition rotateTransition = new RotateTransition();
+            rotateTransition.setNode(keyBoardLabel);
+            rotateTransition.setDuration(javafx.util.Duration.millis(400));
+            rotateTransition.setByAngle(360);
+            rotateTransition.play();
     }
 
 
@@ -325,6 +378,10 @@ public class EncryptController extends MainAppScene implements Initializable, Co
         } catch (IOException e) {
             return null;
         }
+    }
+
+    public void enableAnimation(boolean selected) {
+        this.toAnimate=selected;
     }
 }
 

@@ -44,31 +44,31 @@
    <children>
       <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3">
          <children>
-            <Label alignment="CENTER" prefHeight="17.0" prefWidth="94.0" text="Found words:">
+            <Label alignment="CENTER" prefHeight="17.0" styleClass="text-labels" text="Found words:">
                <font>
                   <Font size="14.0" />
                </font></Label>
-            <Label fx:id="amountOfCandidateFound" maxWidth="1.7976931348623157E308" prefHeight="17.0" />
+            <Label fx:id="amountOfCandidateFound" maxWidth="1.7976931348623157E308" prefHeight="17.0" styleClass="text-labels" />
          </children>
       </HBox>
       <VBox GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
          <children>
             <HBox alignment="CENTER" prefHeight="50.0" prefWidth="142.0">
                <children>
-                  <Label alignment="CENTER" prefHeight="20.0" prefWidth="167.0" text="Encryption duration in mil:">
+                  <Label alignment="CENTER" prefHeight="20.0" styleClass="text-labels" text="Encryption duration in mil:">
                      <font>
                         <Font size="14.0" />
                      </font></Label>
-                  <Label fx:id="encryptTimeLabel" maxWidth="1.7976931348623157E308" prefHeight="17.0" />
+                  <Label fx:id="encryptTimeLabel" maxWidth="1.7976931348623157E308" prefHeight="17.0" styleClass="text-labels" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="50.0" prefWidth="142.0">
                <children>
-                  <Label alignment="CENTER" prefHeight="20.0" prefWidth="172.0" text="Avg agent work time in mil:">
+                  <Label alignment="CENTER" prefHeight="20.0" styleClass="text-labels" text="Avg agent work time in nano:">
                      <font>
                         <Font size="14.0" />
                      </font></Label>
-                  <Label fx:id="averageTimeLabel" maxWidth="1.7976931348623157E308" prefHeight="17.0" />
+                  <Label fx:id="averageTimeLabel" maxWidth="1.7976931348623157E308" prefHeight="17.0" styleClass="text-labels" />
                </children>
             </HBox>
          </children>
@@ -83,6 +83,9 @@
          <padding>
             <Insets left="40.0" right="40.0" />
          </padding>
+         <GridPane.margin>
+            <Insets right="70.0" />
+         </GridPane.margin>
       </Label>
       <BorderPane GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.vgrow="ALWAYS">
          <center>

@@ -7,12 +7,9 @@ import Engine.bruteForce2.TaskManger;
 import Engine.machineutils.MachineManager;
 import app.bodies.BruteForceController;
 import app.utils.threads.DaemonThread;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
-import primeengine.PrimeFinder;
+
 
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -136,6 +133,10 @@ public class FindCandidateTask extends Task<Boolean> {
     }
 
     public long getAvgTime () {
+        if(avgTime==0)
+        {
+            avgTime=decryptManager.getAvgTaskDuration();
+        }
         return avgTime;
     }
 
@@ -146,5 +147,10 @@ public class FindCandidateTask extends Task<Boolean> {
 
     public SimpleStringProperty totalWork() {
         return totalWork;
+    }
+
+    public void reset() {
+        uiAdapter.updateProgress("");
+        updateProgress(0,100);
     }
 }

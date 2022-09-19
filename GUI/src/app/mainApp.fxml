@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.CheckMenuItem?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
@@ -19,6 +20,7 @@
                   <MenuItem id="top-title" mnemonicParsing="false" onAction="#plainCss" text="regular" />
                   <MenuItem id="top-title" mnemonicParsing="false" onAction="#armyCss" text="army" />
                      </items></Menu>
+                  <CheckMenuItem fx:id="animationButton" mnemonicParsing="false" onAction="#enabledAnimation" text="Enable Animation" />
           </items>
         </Menu>
       </menus>

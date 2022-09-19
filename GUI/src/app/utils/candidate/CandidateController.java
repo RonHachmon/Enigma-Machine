@@ -1,5 +1,6 @@
 package app.utils.candidate;
 
+import app.header.HeaderController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
@@ -7,9 +8,11 @@ import javafx.scene.text.Font;
 import utils.Utils;
 
 import java.awt.*;
+import java.io.InputStream;
 
 public class CandidateController {
 
+    public static final String COMMAND_PROMPT_TTF = "/resources/windows_command_prompt.ttf";
     @FXML
     private Label textLabel;
 
@@ -22,7 +25,9 @@ public class CandidateController {
     private Tooltip fullText;
     public void setTextFont()
     {
-        Font font = Font.loadFont("file:resources/fonts/windows_command_prompt.ttf", 15);
+       /* fullText.class.getResource(COMMAND_PROMPT_TTF);*/
+        InputStream inputStream= HeaderController.class.getResourceAsStream(COMMAND_PROMPT_TTF);
+        Font font = Font.loadFont(inputStream, 15);
         textLabel.setFont(font);
     }
     public void setText(String text)

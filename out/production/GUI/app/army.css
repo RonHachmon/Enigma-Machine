@@ -18,6 +18,11 @@
 .glyph-icon {
     -fx-fill: white;
 }
+.text-labels{
+ -fx-text-fill:white;
+ -fx-font-size: 14px;
+  -fx-font-weight: bold;
+}
 .header-butt{
     -fx-background-color:#333333;
     -fx-text-fill:#efefef;

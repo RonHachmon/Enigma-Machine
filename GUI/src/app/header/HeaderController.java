@@ -2,6 +2,9 @@ package app.header;
 
 import app.MainAppController;
 import app.bodies.absractScene.MainAppScene;
+import app.utils.candidate.CandidateController;
+import javafx.animation.FadeTransition;
+import javafx.animation.RotateTransition;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
@@ -17,10 +20,12 @@ import javafx.stage.FileChooser;
 import Engine.machineutils.MachineManager;
 
 import java.io.File;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class HeaderController extends MainAppScene implements Initializable   {
+    public static final String COMMAND_PROMPT_TTF = "/resources/windows_command_prompt.ttf";
 
     @FXML
     private Button machineButton;
@@ -90,6 +95,7 @@ public class HeaderController extends MainAppScene implements Initializable   {
                             this.currentPath.setText(selectedFile.getAbsolutePath());
                             mainAppController.resetAll();
                             mainAppController.updateAllControllers();
+                            this.machineButton.setDisable(true);
 
                         });
                     }
@@ -108,6 +114,7 @@ public class HeaderController extends MainAppScene implements Initializable   {
 
         }
     }
+
 
     private FileChooser configFileChooser() {
         FileChooser fileChooser = new FileChooser();
@@ -133,7 +140,9 @@ public class HeaderController extends MainAppScene implements Initializable   {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Font font = Font.loadFont("file:resources/fonts/windows_command_prompt.ttf", 26);
+        InputStream inputStream=HeaderController.class.getResourceAsStream(COMMAND_PROMPT_TTF);
+        Font font = Font.loadFont(inputStream, 26);
+/*        Font font = Font.loadFont("file:resources/fonts/windows_command_prompt.ttf", 26);*/
         titleLabel.setFont(font);
     }
 }

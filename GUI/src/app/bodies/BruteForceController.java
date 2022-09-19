@@ -11,6 +11,8 @@ import app.utils.FindCandidateTask;
 import app.utils.UIAdapter;
 import app.utils.candidate.CandidateController;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import javafx.animation.RotateTransition;
+import javafx.animation.ScaleTransition;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -100,6 +102,7 @@ public class BruteForceController extends MainAppScene implements Initializable,
     private Dictionary dictionary;
     private DecryptManager decryptManager;
     private Instant startTaskClock;
+    private boolean toAnimate =false;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -127,6 +130,7 @@ public class BruteForceController extends MainAppScene implements Initializable,
     }
 
     public void updateAmountOfAgent() {
+        amountOfAgentsChoiceBox.getItems().clear();
         for (int j = 0; j < machineManager.getBruteForceData().getMaxAmountOfAgent(); j++) {
             amountOfAgentsChoiceBox.getItems().add(j + 1);
 
@@ -183,7 +187,8 @@ public class BruteForceController extends MainAppScene implements Initializable,
     @FXML
     void stopClicked(ActionEvent event) {
         enableOrDisableInputButton(false);
-        this.averageTimeLabel.setText(String.valueOf(currentRunningTask.getAvgTime()));
+        long avgTime = currentRunningTask.getAvgTime();
+        this.averageTimeLabel.setText(String.valueOf(avgTime));
         long encryptionTimeInNanoSeconds = Duration.between(startTaskClock, Instant.now()).toMillis();
         this.encryptTimeLabel.setText(String.valueOf(encryptionTimeInNanoSeconds));
         currentRunningTask.stop();
@@ -259,6 +264,7 @@ public class BruteForceController extends MainAppScene implements Initializable,
                 },
                 (delta) -> {
                     this.totalFoundCandidate.set(delta);
+
                 },
                 () -> {
                     this.totalFoundCandidate.set(totalFoundCandidate.get() + 1);
@@ -273,6 +279,7 @@ public class BruteForceController extends MainAppScene implements Initializable,
                     this.averageTimeLabel.setText(String.valueOf(avgTime));
                     long encryptionTimeInNanoSeconds = Duration.between(startTaskClock, Instant.now()).toMillis();
                     this.encryptTimeLabel.setText(String.valueOf(encryptionTimeInNanoSeconds));
+                    scaleAnimation();
 
                 },
                 (string) ->{
@@ -282,6 +289,18 @@ public class BruteForceController extends MainAppScene implements Initializable,
 
 
         );
+    }
+    private void scaleAnimation() {
+        if (toAnimate) {
+            ScaleTransition scaleTransition = new ScaleTransition();
+            scaleTransition.setNode(amountOfCandidateFound);
+            scaleTransition.setDuration(javafx.util.Duration.millis(800));
+            scaleTransition.setByX(2.0);
+            scaleTransition.setByY(2.0);
+            scaleTransition.setCycleCount(2);
+            scaleTransition.setAutoReverse(true);
+            scaleTransition.play();
+        }
     }
 
     private void createWordCandidate(DecryptionCandidate decryptionCandidate) {
@@ -350,6 +369,7 @@ public class BruteForceController extends MainAppScene implements Initializable,
     public void updateInitialDictionaryTable() {
         decryptManager = new DecryptManager(machineManager, dmData);
         dictionary = decryptManager.getDictionary();
+        dictionaryTable.getItems().clear();
         dictionary.getDictionary().forEach(s -> dictionaryTable.getItems().add(s));
     }
 
@@ -427,6 +447,25 @@ public class BruteForceController extends MainAppScene implements Initializable,
             dictionary.getDictionary().stream().filter(s -> s.startsWith(newValue.toUpperCase())).
                     forEach(s -> dictionaryTable.getItems().add(s));
         }
+    }
+
+    public void enableAnimation(boolean selected) {
+        this.toAnimate=selected;
+    }
+
+    public void clearScreen() {
+        this.candidatesFlowPane.getChildren().clear();
+        inputArea.clear();
+        outputArea.clear();
+        this.resetAll();
+        this.assignmentSizeText.setText("");
+        amountOfAgentsChoiceBox.setValue(null);
+        difficultyComboBox.setValue(null);
+        if(this.currentRunningTask!=null)
+        {
+            this.currentRunningTask.reset();
+        }
+
     }
 
     //--------------------------------------------End: inner Logic button related--------------------------------
