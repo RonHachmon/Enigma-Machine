@@ -151,7 +151,6 @@ public class BruteForceController extends MainAppScene implements Initializable,
         try {
 
             String input = dictionary.cleanWord(inputArea.getText());
-            System.out.println(input);
             if (!dictionary.isAtDictionary(input.toUpperCase())) {
                 Alert a = new Alert(Alert.AlertType.ERROR);
                 a.setContentText("word not in dictionary");
