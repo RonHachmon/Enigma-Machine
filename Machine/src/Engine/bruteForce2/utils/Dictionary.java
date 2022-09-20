@@ -57,15 +57,6 @@ public class Dictionary implements Serializable  {
 
     public boolean isAtDictionary(String encryptionOutput) {
 
-/*        if(encryptionOutput.equals("RANCH TEXT"))
-        {
-            System.out.println("Yoo");
-        }
-        if(encryptionOutput.contains("RANCH")||encryptionOutput.contains("TEXT"))
-        {
-            System.out.println(encryptionOutput);
-            System.out.println("Yoo??!!?!?");
-        }*/
         String[] allWord = encryptionOutput.split(" ");
         //the whole word is just spaces
         if(allWord.length==0)

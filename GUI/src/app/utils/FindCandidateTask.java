@@ -83,7 +83,6 @@ public class FindCandidateTask extends Task<Boolean> {
         startTimedTask();
     }
     public void stop() {
-        System.out.println(" Task stopped");
         setTime();
         updateMessage("Cancelled ;/");
         this.cancelled();

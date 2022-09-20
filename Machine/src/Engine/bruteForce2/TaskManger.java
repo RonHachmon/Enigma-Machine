@@ -66,7 +66,6 @@ public class TaskManger {
 
 
     public void start() {
-        System.out.println("starting task");
         try {
             this.assignmentProducer = new AssignmentProducer(blockingQueue, dmData, machineManager, queueLock);
             Thread producer = new Thread(this.assignmentProducer);
@@ -159,8 +158,5 @@ public class TaskManger {
         totalTaskDurationInNanoSeconds = 1;
     }
 
-    /*synchronized static public void addWorkDone(long number) {
-        doneCombinations += number;
-    }*/
 
 }

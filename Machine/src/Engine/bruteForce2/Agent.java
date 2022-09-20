@@ -62,7 +62,6 @@ public class Agent implements Runnable {
                     for (int i = 0; i < dMdata.getAssignmentSize(); i++) {
                         lock.checkIfLocked();
                         if (toStop) {
-                            System.out.println("Agent stopped :)");
                             return;
                         }
                         /* System.out.println("Agent working");*/
@@ -85,7 +84,6 @@ public class Agent implements Runnable {
                     /*System.out.println("amount i went in the loop ");*/
                     permutation.cleanOverFLow();
                     long encryptionTimeInNanoSeconds = Duration.between(startTaskClock, Instant.now()).toNanos();
-                    System.out.println("time "+ encryptionTimeInNanoSeconds);
                     TaskManger.addWorkDone(amountOfPermutationIwentInTheLoop,encryptionTimeInNanoSeconds);
                     if (this.isDone()) {
                         return;
@@ -106,8 +104,6 @@ public class Agent implements Runnable {
 
     private boolean isDone() {
         if (TaskManger.getWorkDone() >= TaskManger.getTotalWork()) {
-            System.out.println("Agent " + getAgentId() + " done");
-            System.out.println("amount i went " + amountOfPermutaionIWent);
             return true;
         }
         return false;
