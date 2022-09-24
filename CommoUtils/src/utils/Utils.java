@@ -83,4 +83,22 @@ public class Utils {
         }
         return size * factorial(size - 1);
     }
+    public static String formatToIntWithCommas(long longNumber) {
+        StringBuilder stringBuilder=new StringBuilder("");
+        int count=0;
+        int number;
+        while (longNumber!=0)
+        {
+            number= (int) (longNumber%10);
+            if(count%3==0&&count!=0)
+            {
+                stringBuilder.append(",");
+            }
+            stringBuilder.append(number);
+            count++;
+            longNumber=longNumber/10;
+        }
+        return stringBuilder.reverse().toString();
+
+    }
 }

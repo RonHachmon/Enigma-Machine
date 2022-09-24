@@ -6,18 +6,13 @@ import app.bodies.EncryptController;
 import app.bodies.absractScene.MainAppScene;
 import app.bodies.interfaces.CodeHolder;
 import app.header.HeaderController;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
-import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import Engine.machineutils.MachineManager;
-import javafx.scene.text.Font;
 
 import java.net.URL;
 import java.util.*;
@@ -34,8 +29,8 @@ public class MainAppController implements Initializable {
     @FXML private EncryptController encryptComponentController;
     @FXML private GridPane bruteForceComponent;
     @FXML private BruteForceController bruteForceComponentController;
-    public static final String ARMY_CSS = "/app/army.css";
-    public static final String NORMAL_CSS = "/app/app.css";
+    public static final String ARMY_CSS = "/resources/css/army.css";
+    public static final String NORMAL_CSS = "/resources/css/app.css";
 
 
     private List<CodeHolder> codeHolders=new ArrayList<>();
@@ -44,11 +39,11 @@ public class MainAppController implements Initializable {
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
         addControllerToArray();
+
         encryptComponent.setVisible(false);
         bruteForceComponent.setVisible(false);
 
         headerComponentController.setMachineManager(machineManager);
-
         mainAppScenes.forEach(mainAppScene -> mainAppScene.setMainAppController(this));
 
     }
@@ -63,7 +58,6 @@ public class MainAppController implements Initializable {
     {
         encryptComponent.getScene().getStylesheets().clear();
         encryptComponent.getScene().getStylesheets().add(String.valueOf(getClass().getResource(ARMY_CSS)));
-        /*encryptComponent.getScene().getStylesheets().add("/app/army.css");*/
 
     }
 
@@ -72,7 +66,6 @@ public class MainAppController implements Initializable {
     {
         encryptComponent.getScene().getStylesheets().clear();
         encryptComponent.getScene().getStylesheets().add(String.valueOf(getClass().getResource(NORMAL_CSS)));
-        /*encryptComponent.getScene().getStylesheets().add("/app/app.css");*/
     }
 
     private void addControllerToArray() {
@@ -117,26 +110,29 @@ public class MainAppController implements Initializable {
             mainAppScene.setMachineInformation(machineManager.getMachineInformation());
         });
         this.updateMachineInformation();
-        this.updateMachineKeyBoard();
+
+        encryptComponentController.updateMachineKeyboard();
+
         this.bruteForceComponentController.updateInitialDictionaryTable();
         this.bruteForceComponentController.updateAmountOfAgent();
     }
 
-    private void updateMachineKeyBoard() {
-        encryptComponentController.updateMachineKeyboard();
-    }
+
 
     public void updateMachineCode(String currentCodeSetting) {
         codeHolders.forEach(codeHolder -> codeHolder.updateCode(currentCodeSetting));
     }
     public void setInitialCode(String code) {
         encryptComponentController.addCodeToComboBox(code);
-        codeHolders.forEach(codeHolder -> codeHolder.updateCode(code));
+        updateMachineCode(code);
     }
 
     public void enableEncrypt()
     {
         headerComponentController.enableEncrypt(true);
+    }
+    public void enableBruteForce() {
+        headerComponentController.enableBruteForce(true);
     }
 
     //called when new machine is loaded
@@ -149,7 +145,9 @@ public class MainAppController implements Initializable {
         configurationComponentController.resetCode();
         configurationComponentController.resetInformation();
         configurationComponentController.disableConfigButtons();
+
         encryptComponentController.clearStats();
+
         bruteForceComponentController.clearScreen();
     }
     public void clearEncryptText()
@@ -157,9 +155,7 @@ public class MainAppController implements Initializable {
         this.encryptComponentController.clearText();
     }
 
-    public void enableBruteForce() {
-        headerComponentController.enableBruteForce(true);
-    }
+
 
     public void updateTotalWordEncrypted(int processedInputCounter) {
         this.configurationComponentController.updateTotalEncryptedWord(processedInputCounter);

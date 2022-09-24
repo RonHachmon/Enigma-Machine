@@ -3,7 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 
-<Label alignment="CENTER" contentDisplay="CENTER" prefHeight="37.0" prefWidth="38.0" style="-fx-border-width: 2px;" styleClass="keyboard" stylesheets="@../app.css" text="W" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<Label alignment="CENTER" contentDisplay="CENTER" prefHeight="37.0" prefWidth="38.0" styleClass="keyboard" text="W" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <opaqueInsets>
       <Insets />
    </opaqueInsets>

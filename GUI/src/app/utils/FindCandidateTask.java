@@ -7,10 +7,13 @@ import Engine.bruteForce2.TaskManger;
 import Engine.machineutils.MachineManager;
 import app.bodies.BruteForceController;
 import app.utils.threads.DaemonThread;
+import com.sun.javafx.binding.StringFormatter;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.concurrent.Task;
+import utils.Utils;
 
 
+import java.text.NumberFormat;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -20,9 +23,10 @@ import java.util.concurrent.TimeUnit;
 public class FindCandidateTask extends Task<Boolean> {
     private final UIAdapter uiAdapter;
     private final BruteForceController controller;
+    private DecryptManager decryptManager;
     private int lastKnownIndex = 0;
     private ScheduledExecutorService timedExecute;
-    private DecryptManager decryptManager;
+
     ScheduledFuture<?> scheduledFuture;
     private SimpleStringProperty totalWork=new SimpleStringProperty();
 
@@ -30,11 +34,6 @@ public class FindCandidateTask extends Task<Boolean> {
 
     private long totalTime=0;
     private long avgTime=0;
-    //private long totalWorkDuration;
-
-
-
-    /*   private bruteForce;*/
 
     public FindCandidateTask(DMData dmData, UIAdapter uiAdapter, BruteForceController bruteForceController, MachineManager machineManager) {
         this.uiAdapter = uiAdapter;
@@ -42,8 +41,6 @@ public class FindCandidateTask extends Task<Boolean> {
         controller.bindTaskToUIComponents(this);
         DaemonThread daemonThreadFactory = new DaemonThread();
         timedExecute = Executors.newSingleThreadScheduledExecutor(daemonThreadFactory);
-
-
         decryptManager =new DecryptManager(machineManager,dmData);
 
     }
@@ -55,10 +52,12 @@ public class FindCandidateTask extends Task<Boolean> {
         updateMessage("starting to work");
         decryptManager.startDeciphering();
 
+
+
+
         totalWorkSize = decryptManager.getTotalTaskSize();
-        //totalWorkDuration = decryptManager.getTotalTaskDurationInNanoSeconds();
         updateProgress(0, totalWorkSize);
-        uiAdapter.updateProgress(0+"/"+totalWorkSize);
+        uiAdapter.updateProgress("permutation: "+0+"/"+Utils.formatToIntWithCommas(totalWorkSize));
         startTimedTask();
 
         return null;
@@ -73,13 +72,11 @@ public class FindCandidateTask extends Task<Boolean> {
     public void pause() {
 
         scheduledFuture.cancel(true);
-        System.out.println(" Task paused");
         decryptManager.pause();
     }
 
     public void resume() {
         decryptManager.resume();
-        System.out.println("Task resumed");
         startTimedTask();
     }
     public void stop() {
@@ -98,10 +95,8 @@ public class FindCandidateTask extends Task<Boolean> {
     }
 
     private void update() {
-
-        /*System.out.println("Task in update");*/
         long workDone = decryptManager.getWorkDone();
-       /* System.out.println("work done: " + workDone);*/
+
         List<DecryptionCandidate> decryptionCandidates = decryptManager.getCandidateList().getList();
         if (decryptionCandidates.size() > lastKnownIndex) {
             for (int i = lastKnownIndex; i < decryptionCandidates.size(); i++) {
@@ -110,11 +105,16 @@ public class FindCandidateTask extends Task<Boolean> {
             lastKnownIndex = decryptionCandidates.size();
             uiAdapter.updateTotalFoundWords(lastKnownIndex);
         }
-        /*System.out.println("total work done "+ decryptManager.getWorkDone());*/
+
 
         updateProgress(workDone,totalWorkSize);
-        uiAdapter.updateProgress("permutation: "+workDone+"/"+totalWorkSize);
-        if(workDone>=totalWorkSize)
+        uiAdapter.updateProgress("permutation: "+Utils.formatToIntWithCommas(workDone)+"/"+Utils.formatToIntWithCommas(totalWorkSize));
+
+        checkIfDone(workDone);
+    }
+
+    private void checkIfDone(long workDone) {
+        if(workDone >=totalWorkSize)
         {
             setTime();
             updateMessage("Done work");
@@ -122,8 +122,6 @@ public class FindCandidateTask extends Task<Boolean> {
             this.cancelled();
         }
     }
-
-
 
 
     private void setTime() {
@@ -139,14 +137,6 @@ public class FindCandidateTask extends Task<Boolean> {
         return avgTime;
     }
 
-    public long getTotalTime() {
-        return totalTime;
-    }
-
-
-    public SimpleStringProperty totalWork() {
-        return totalWork;
-    }
 
     public void reset() {
         uiAdapter.updateProgress("");
