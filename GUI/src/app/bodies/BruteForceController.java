@@ -275,9 +275,9 @@ public class BruteForceController extends MainAppScene implements Initializable,
                     this.stopButton.setDisable(true);
                     this.pauseButton.setDisable(true);
                     long avgTime = currentRunningTask.getAvgTime();
-                    this.averageTimeLabel.setText(String.valueOf(avgTime));
-                    long encryptionTimeInNanoSeconds = Duration.between(startTaskClock, Instant.now()).toMillis();
-                    this.encryptTimeLabel.setText(String.valueOf(encryptionTimeInNanoSeconds));
+                    this.averageTimeLabel.setText(avgTime+" ns");
+                    long encryptionTimeInNanoSeconds = (Duration.between(startTaskClock, Instant.now()).toMillis())/1_000;
+                    this.encryptTimeLabel.setText(encryptionTimeInNanoSeconds+" sec");
                     scaleAnimation();
 
                 },

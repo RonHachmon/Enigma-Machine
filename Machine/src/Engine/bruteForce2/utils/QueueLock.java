@@ -19,18 +19,19 @@ public class QueueLock {
     }
     public void checkIfLocked()
     {
-
-            synchronized(mLock) {
+        if(mLocked) {
+            synchronized (mLock) {
                 while (mLocked) {
                     try {
-                  /*      System.out.println(Thread.currentThread().getName()+" in lock");*/
+                        /*      System.out.println(Thread.currentThread().getName()+" in lock");*/
                         mLock.wait();
-            /*            System.out.println(Thread.currentThread().getName()+" passed lock");*/
+                        /*            System.out.println(Thread.currentThread().getName()+" passed lock");*/
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
                 }
             }
+        }
 
 
     }

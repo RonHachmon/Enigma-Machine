@@ -1,12 +1,7 @@
 package app.header;
 
-import app.MainAppController;
 import app.bodies.absractScene.MainAppScene;
-import app.utils.candidate.CandidateController;
-import javafx.animation.FadeTransition;
-import javafx.animation.RotateTransition;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -14,7 +9,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import Engine.machineutils.MachineManager;
@@ -25,7 +19,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class HeaderController extends MainAppScene implements Initializable   {
-    public static final String COMMAND_PROMPT_TTF = "/resources/windows_command_prompt.ttf";
+    public static final String COMMAND_PROMPT_TTF = "/resources/fonts/windows_command_prompt.ttf";
 
     @FXML
     private Button machineButton;
@@ -73,7 +67,7 @@ public class HeaderController extends MainAppScene implements Initializable   {
     @FXML
     void loadXML(ActionEvent event) {
 
-  /*      machineManager.createMachineFromXML("test_files/ex2-basic.xml");
+/*        machineManager.createMachineFromXML("/ex2-basic.xml");
         this.currentPath.setText("test_files/ex2-basic.xml");
 
         mainAppController.resetAll();

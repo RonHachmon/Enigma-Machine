@@ -7,12 +7,11 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.text.Font;
 import utils.Utils;
 
-import java.awt.*;
 import java.io.InputStream;
 
 public class CandidateController {
 
-    public static final String COMMAND_PROMPT_TTF = "/resources/windows_command_prompt.ttf";
+    public static final String COMMAND_PROMPT_TTF = "/resources/fonts/windows_command_prompt.ttf";
     @FXML
     private Label textLabel;
 

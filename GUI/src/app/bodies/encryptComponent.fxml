@@ -16,151 +16,211 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="349.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.bodies.EncryptController">
+<GridPane styleClass="grid-panes" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.bodies.EncryptController">
    <columnConstraints>
-      <ColumnConstraints halignment="CENTER" hgrow="NEVER" maxWidth="305.66668701171875" minWidth="10.0" prefWidth="21.0" />
-      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="120.0" />
-      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="120.0" />
-      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="-Infinity" minWidth="40.0" prefWidth="40.0" />
-      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="120.0" />
-      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="120.0" />
-      <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="125.0" prefWidth="100.0" />
-      <ColumnConstraints hgrow="NEVER" maxWidth="525.6666564941406" minWidth="10.0" prefWidth="18.66668701171875" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="10.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="200.0" prefWidth="200.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="10.0" minWidth="10.0" prefWidth="10.0" />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints fillHeight="false" maxHeight="-Infinity" minHeight="50.0" prefHeight="50.0" vgrow="ALWAYS" />
-      <RowConstraints fillHeight="false" maxHeight="-Infinity" minHeight="50.0" prefHeight="50.0" vgrow="ALWAYS" />
-      <RowConstraints maxHeight="-Infinity" minHeight="50.0" prefHeight="50.0" vgrow="ALWAYS" />
-      <RowConstraints minHeight="150.0" prefHeight="150.0" vgrow="ALWAYS" />
-      <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="10.0" minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
-      <Label fx:id="currentCode" alignment="CENTER" contentDisplay="CENTER" styleClass="code-box-setting" GridPane.columnSpan="2147483647" GridPane.vgrow="ALWAYS">
-         <font>
-            <Font size="20.0" />
-         </font>
-         <padding>
-            <Insets left="40.0" right="40.0" />
-         </padding>
-         <GridPane.margin>
-            <Insets right="70.0" />
-         </GridPane.margin>
-      </Label>
-      <BorderPane GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.vgrow="ALWAYS">
+      <BorderPane styleClass="pane" GridPane.columnIndex="1">
          <center>
-            <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="107.0" prefWidth="250.0">
-               <content>
-                  <FlowPane fx:id="inputKeyboard" prefHeight="77.0" prefWidth="355.0" prefWrapLength="150.0" rowValignment="TOP" styleClass="keyboard-space" />
-               </content>
-            </ScrollPane>
+            <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="349.0" prefWidth="600.0">
+               <columnConstraints>
+                  <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="150.0" prefWidth="155.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="150.0" prefWidth="150.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="-Infinity" minWidth="40.0" prefWidth="40.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="150.0" prefWidth="150.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="150.0" prefWidth="150.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints fillHeight="false" maxHeight="-Infinity" minHeight="50.0" prefHeight="50.0" vgrow="ALWAYS" />
+                  <RowConstraints fillHeight="false" maxHeight="1.7976931348623157E308" minHeight="50.0" vgrow="ALWAYS" />
+                  <RowConstraints fillHeight="false" maxHeight="1.7976931348623157E308" minHeight="50.0" prefHeight="100.0" vgrow="ALWAYS" />
+                  <RowConstraints maxHeight="1.7976931348623157E308" minHeight="125.66668701171875" prefHeight="154.33334350585938" vgrow="ALWAYS" />
+                  <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="NEVER" />
+               </rowConstraints>
+               <children>
+                  <BorderPane GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                     <center>
+                        <TextArea fx:id="inputArea" prefWidth="120.0" promptText="input" styleClass="encrypt-text-area" />
+                     </center>
+                     <top>
+                        <Label id="message-title" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="INPUT" BorderPane.alignment="CENTER">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                           <BorderPane.margin>
+                              <Insets />
+                           </BorderPane.margin>
+                        </Label>
+                     </top>
+                     <GridPane.margin>
+                        <Insets left="10.0" />
+                     </GridPane.margin>
+                  </BorderPane>
+                  <BorderPane GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+                     <center>
+                        <TextArea fx:id="outputArea" editable="false" prefWidth="120.0" promptText="output" styleClass="encrypt-text-area">
+                           <BorderPane.margin>
+                              <Insets />
+                           </BorderPane.margin>
+                        </TextArea>
+                     </center>
+                     <top>
+                        <Label id="message-title" alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="OUTPUT" BorderPane.alignment="CENTER">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                     </top>
+                     <GridPane.margin>
+                        <Insets right="10.0" />
+                     </GridPane.margin>
+                  </BorderPane>
+                  <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100000.0" GridPane.columnSpan="5" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.vgrow="ALWAYS">
+                     <center>
+                        <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100000.0">
+                           <content>
+                              <FlowPane fx:id="outputKeyboard" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="162.0" prefWidth="618.0" prefWrapLength="150.0" rowValignment="TOP" styleClass="keyboard-space" />
+                           </content>
+                        </ScrollPane>
+                     </center>
+                     <GridPane.margin>
+                        <Insets left="10.0" right="10.0" top="20.0" />
+                     </GridPane.margin>
+                  </BorderPane>
+                  <HBox alignment="CENTER" GridPane.columnSpan="5" GridPane.rowIndex="1">
+                     <children>
+                        <FlowPane fx:id="inputKeyboard" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" opacity="0.0" prefHeight="0.0" prefWidth="0.0" prefWrapLength="0.0" visible="false" />
+                        <Button minHeight="40.0" minWidth="120.0" mnemonicParsing="false" onAction="#clearTextClicked" prefHeight="31.0" prefWidth="170.0" text="CLEAR TEXT">
+                           <HBox.margin>
+                              <Insets bottom="12.0" left="10.0" right="10.0" top="12.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Button>
+                        <Button minHeight="40.0" minWidth="120.0" mnemonicParsing="false" onAction="#resetCodeClicked" prefHeight="31.0" prefWidth="170.0" text="RESET CODE">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button minHeight="40.0" minWidth="120.0" mnemonicParsing="false" onAction="#resetAndClear" prefHeight="40.0" prefWidth="170.0" text="CLEAR + RESET">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button fx:id="sendToStaticsButton" contentDisplay="RIGHT" minHeight="40.0" minWidth="120.0" mnemonicParsing="false" onAction="#addToStatistic" prefHeight="40.0" prefWidth="170.0" text="ADD TO STAT">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                           <graphic>
+                              <FontAwesomeIconView glyphName="ARCHIVE" styleClass="font-awesome" />
+                           </graphic>
+                        </Button>
+                     </children>
+                     <GridPane.margin>
+                        <Insets right="5.0" />
+                     </GridPane.margin>
+                  </HBox>
+                  <CheckBox id="check-box" fx:id="isManualButton" alignment="BOTTOM_LEFT" contentDisplay="CENTER" mnemonicParsing="false" styleClass="title-label" text="manual" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="BOTTOM" GridPane.vgrow="ALWAYS">
+                     <GridPane.margin>
+                        <Insets bottom="5.0" left="9.0" />
+                     </GridPane.margin>
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </CheckBox>
+                  <Button id="encypt-button" fx:id="runButton" alignment="CENTER" mnemonicParsing="false" onAction="#runClicked" textFill="#0b0000" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                     <graphic>
+                        <FontAwesomeIconView glyphName="ARROW_RIGHT" styleClass="font-awesome" />
+                     </graphic>
+                  </Button>
+                  <Label id="code-box-setting" fx:id="currentCode" alignment="CENTER" contentDisplay="CENTER" minWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+                     <opaqueInsets>
+                        <Insets left="5.0" right="5.0" />
+                     </opaqueInsets>
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <padding>
+                        <Insets left="40.0" right="40.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </GridPane>
          </center>
-         <top>
-            <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" styleClass="title" text="input keyboard" BorderPane.alignment="CENTER">
-               <font>
-                  <Font size="15.0" />
-               </font>
-               <BorderPane.margin>
-                  <Insets bottom="2.0" />
-               </BorderPane.margin></Label>
-         </top>
-      </BorderPane>
-      <TextArea fx:id="inputArea" prefHeight="50.0" prefWidth="120.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" GridPane.vgrow="ALWAYS" />
-      <TextArea fx:id="outputArea" editable="false" prefHeight="50.0" prefWidth="120.0" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" GridPane.vgrow="ALWAYS" />
-      <BorderPane GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="3">
-         <center>
-            <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="107.0" prefWidth="250.0">
-               <content>
-                  <FlowPane fx:id="outputKeyboard" prefHeight="77.0" prefWidth="355.0" prefWrapLength="150.0" rowValignment="TOP" styleClass="keyboard-space" />
-               </content>
-            </ScrollPane>
-         </center>
-         <top>
-            <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" styleClass="title" text="output keyboard" BorderPane.alignment="CENTER">
-               <font>
-                  <Font size="15.0" />
-               </font>
-               <BorderPane.margin>
-                  <Insets bottom="2.0" />
-               </BorderPane.margin></Label>
-         </top>
-      </BorderPane>
-      <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.rowIndex="2">
-         <children>
-            <Button minHeight="30.0" minWidth="120.0" mnemonicParsing="false" onAction="#clearTextClicked" prefHeight="31.0" prefWidth="89.0" text="clear text">
-               <HBox.margin>
-                  <Insets bottom="12.0" left="10.0" right="10.0" top="12.0" />
-               </HBox.margin>
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Button>
-            <Button minHeight="30.0" minWidth="120.0" mnemonicParsing="false" onAction="#resetCodeClicked" prefHeight="31.0" prefWidth="100.0" text="reset code">
-               <font>
-                  <Font size="15.0" />
-               </font>
-               <HBox.margin>
-                  <Insets right="10.0" />
-               </HBox.margin>
-            </Button>
-            <Button minHeight="30.0" minWidth="120.0" mnemonicParsing="false" onAction="#resetAndClear" prefHeight="31.0" prefWidth="100.0" text="clear &amp; reset ">
-               <font>
-                  <Font size="15.0" />
-               </font>
-               <HBox.margin>
-                  <Insets right="10.0" />
-               </HBox.margin>
-            </Button>
-            <Button fx:id="sendToStaticsButton" contentDisplay="RIGHT" minHeight="30.0" minWidth="120.0" mnemonicParsing="false" onAction="#addToStatistic" prefHeight="31.0" prefWidth="100.0" text="Add to stats">
-               <font>
-                  <Font size="15.0" />
-               </font>
-               <graphic>
-                  <FontAwesomeIconView glyphName="ARCHIVE" styleClass="font-awesome" />
-               </graphic>
-            </Button>
-         </children>
-      </HBox>
-      <BorderPane maxHeight="1.7976931348623157E308" prefWidth="115.0" style="-fx-border-color: black; -fx-background-color: gray;" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.rowSpan="3" GridPane.valignment="TOP">
          <GridPane.margin>
-            <Insets left="10.0" />
+            <Insets top="10.0" />
          </GridPane.margin>
+      </BorderPane>
+      <BorderPane prefHeight="200.0" prefWidth="200.0" styleClass="pane" GridPane.columnIndex="2">
+         <top>
+            <VBox BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="5.0" left="9.0" top="20.0" />
+               </BorderPane.margin>
+               <children>
+                  <HBox alignment="CENTER">
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                     <children>
+                        <Label styleClass="title-label" text="STATISTICS" />
+                        <FontAwesomeIconView glyphName="PLUS_CIRCLE" size="15.0" styleClass="font-awesome">
+                           <HBox.margin>
+                              <Insets left="50.0" />
+                           </HBox.margin>
+                        </FontAwesomeIconView>
+                     </children>
+                  </HBox>
+                  <ComboBox id="choose-box-stat" fx:id="codeChooseBox" maxWidth="1.7976931348623157E308" promptText="choose code">
+                     <VBox.margin>
+                        <Insets right="5.0" />
+                     </VBox.margin></ComboBox>
+               </children>
+            </VBox>
+         </top>
          <center>
-            <ScrollPane fitToHeight="true" fitToWidth="true" BorderPane.alignment="TOP_RIGHT">
+            <ScrollPane fitToHeight="true" fitToWidth="true" BorderPane.alignment="CENTER">
                <content>
                   <TableView fx:id="statisticTable" prefHeight="100000.0" prefWidth="111.0" style="-fx-border-color: black;">
                     <columns>
-                      <TableColumn fx:id="inputColumn" editable="false" prefWidth="75.0" text="input" />
-                      <TableColumn fx:id="outputColumn" editable="false" prefWidth="75.0" text="output" />
-                        <TableColumn fx:id="timeColumn" editable="false" prefWidth="75.0" text="nano sec" />
+                      <TableColumn fx:id="inputColumn" editable="false" prefWidth="75.0" text="Input" />
+                      <TableColumn fx:id="outputColumn" editable="false" prefWidth="87.0" text="Output" />
+                        <TableColumn fx:id="timeColumn" editable="false" maxWidth="2000.0" prefWidth="30.0" text="ns" />
                     </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                      </columnResizePolicy>
                   </TableView>
                </content>
+               <BorderPane.margin>
+                  <Insets bottom="15.0" left="10.0" right="10.0" top="2.0" />
+               </BorderPane.margin>
             </ScrollPane>
          </center>
-         <top>
-            <ComboBox fx:id="codeChooseBox" prefHeight="25.0" prefWidth="250.0" promptText="choose code" BorderPane.alignment="TOP_LEFT">
-               <BorderPane.margin>
-                  <Insets bottom="5.0" />
-               </BorderPane.margin>
-            </ComboBox>
-         </top>
-      </BorderPane>
-      <CheckBox fx:id="isManualButton" alignment="BOTTOM_LEFT" contentDisplay="CENTER" mnemonicParsing="false" text="manual" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="ALWAYS" GridPane.valignment="BOTTOM" GridPane.vgrow="ALWAYS">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
          <GridPane.margin>
-            <Insets bottom="5.0" left="5.0" />
+            <Insets left="10.0" top="10.0" />
          </GridPane.margin>
-         <font>
-            <Font size="15.0" />
-         </font>
-      </CheckBox>
-      <Button fx:id="runButton" alignment="CENTER" mnemonicParsing="false" onAction="#runClicked" textFill="#0b0000" GridPane.columnIndex="3" GridPane.rowIndex="1">
-         <graphic>
-            <FontAwesomeIconView glyphName="ARROW_RIGHT" styleClass="font-awesome" />
-         </graphic></Button>
+      </BorderPane>
    </children>
 </GridPane>

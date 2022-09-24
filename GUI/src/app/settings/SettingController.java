@@ -35,8 +35,6 @@ public class SettingController implements Initializable {
     private List<Character> availableCharacters = new ArrayList<>();
 
     private Integer selectedReflector = null;
-
-
     private List<ChoiceBox<Integer>> rotorIndexes = new ArrayList<>();
     private List<ChoiceBox<Character>> rotorStartingIndexes = new ArrayList<>();
 
