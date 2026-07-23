@@ -1,0 +1,5 @@
+# Container files run on Linux and must keep LF line endings, even when the
+# repo is cloned on Windows with core.autocrlf enabled.
+*.sh          text eol=lf
+Dockerfile    text eol=lf
+.dockerignore text eol=lf

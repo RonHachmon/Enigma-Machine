@@ -1,0 +1,9 @@
+# Keep the build context small
+.git/
+.gitignore
+.idea/
+out/
+**/*.iml
+**/*.class
+*.log
+hs_err_pid*
